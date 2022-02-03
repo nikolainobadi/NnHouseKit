@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  HouseDetailRootView.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/3/22.
@@ -12,9 +12,14 @@ import NnHouseDetail_Logic_Presentation
 public final class HouseDetailRootView: NiblessView {
     
     // MARK: - Properties
+    private let isCreator: Bool
     private let houseName: String
     private let config: HouseDetailViewConfig
     private let responder: HouseDetailUIResponder
+    
+    private lazy var dataSource: HouseDetailMembersDataSource = {
+        HouseDetailMembersDataSource(tableView, isCreator: isCreator)
+    }()
     
     
     // MARK: - Views
@@ -68,10 +73,12 @@ public final class HouseDetailRootView: NiblessView {
     
     
     // MARK: - Init
-    public init(houseName: String,
+    public init(isCreator: Bool,
+                houseName: String,
                 config: HouseDetailViewConfig,
                 responder: HouseDetailUIResponder) {
         
+        self.isCreator = isCreator
         self.houseName = houseName
         self.config = config
         self.responder = responder
@@ -125,7 +132,7 @@ extension HouseDetailRootView: HouseDetailInterface {
     }
     
     func updateList(_ members: [HouseMemberViewModel]) {
-        
+//        dataSource.update(members)
     }
 }
 
