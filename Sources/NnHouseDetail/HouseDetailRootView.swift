@@ -7,10 +7,12 @@
 
 import UIKit
 import NnUIViewKitPackage
+import NnHouseDetail_Logic_Presentation
 
 public final class HouseDetailRootView: NiblessView {
     
     // MARK: - Properties
+    private let houseName: String
     private let config: HouseDetailViewConfig
     private let responder: HouseDetailUIResponder
     
@@ -26,7 +28,7 @@ public final class HouseDetailRootView: NiblessView {
     }()
     
     lazy var titleLabel: UILabel = {
-        UILabel()
+        UILabel(houseName)
             .autoSize()
             .addShadow()
             .setAlignment(.center)
@@ -66,7 +68,11 @@ public final class HouseDetailRootView: NiblessView {
     
     
     // MARK: - Init
-    public init(config: HouseDetailViewConfig, responder: HouseDetailUIResponder) {
+    public init(houseName: String,
+                config: HouseDetailViewConfig,
+                responder: HouseDetailUIResponder) {
+        
+        self.houseName = houseName
         self.config = config
         self.responder = responder
         super.init(frame: .zero)
@@ -118,13 +124,9 @@ extension HouseDetailRootView: HouseDetailInterface {
         UIBarButtonItem(customView: editHouseButton)
     }
     
-    func updateHouseName(_ name: String) {
-        titleLabel.text = name
+    func updateList(_ members: [HouseMemberViewModel]) {
+        
     }
-    
-//    func updateMembers(_ members: [HouseMemberViewModel]) {
-//        dataSource.update(members)
-//    }
 }
 
 

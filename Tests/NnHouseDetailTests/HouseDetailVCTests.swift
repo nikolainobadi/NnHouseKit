@@ -8,7 +8,7 @@
 import XCTest
 import NnHouseDetail
 
-final class HouseDetailTests: XCTestCase {
+final class HouseDetailVCTests: XCTestCase {
     
     func testSomething() {
         XCTAssertTrue(true)
@@ -17,7 +17,7 @@ final class HouseDetailTests: XCTestCase {
 
 
 // MARK: - SUT
-extension HouseDetailTests {
+extension HouseDetailVCTests {
     
     func makeSUT(file: StaticString = #filePath, line: UInt = #line) {
         
