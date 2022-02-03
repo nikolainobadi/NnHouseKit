@@ -127,11 +127,11 @@ public final class HouseDetailRootView: NiblessView {
 // MARK: - Interface
 extension HouseDetailRootView: HouseDetailInterface {
     
-    var editHouseBarButton: UIBarButtonItem {
+    public var editHouseBarButton: UIBarButtonItem {
         UIBarButtonItem(customView: editHouseButton)
     }
     
-    func updateList(_ members: [HouseMemberViewModel]) {
+    public func updateList(_ members: [HouseMemberViewModel]) {
 //        dataSource.update(members)
     }
 }

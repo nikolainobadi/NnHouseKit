@@ -13,14 +13,14 @@ import NnHouseDetail_Logic_Presentation
 public final class HouseDetailVC: NiblessViewController {
     
     // MARK: - Properties
-    private let rootView: HouseDetailRootView
+    private let rootView: HouseDetailInterface
     private let presenter: HouseDetailPresenter
     
     private var changes = Set<AnyCancellable>()
     
     
     // MARK: - Init
-    public init(rootView: HouseDetailRootView, presenter: HouseDetailPresenter) {
+    public init(rootView: HouseDetailInterface, presenter: HouseDetailPresenter) {
         self.rootView = rootView
         self.presenter = presenter
         super.init(hasTextFields: false)
@@ -58,7 +58,7 @@ private extension HouseDetailVC {
 
 
 // MARK: - Dependencies
-protocol HouseDetailInterface: UIView {
+public protocol HouseDetailInterface: UIView {
     var editHouseBarButton: UIBarButtonItem { get }
     
     func updateList(_ members: [HouseMemberViewModel])
