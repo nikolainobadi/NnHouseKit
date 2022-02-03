@@ -104,6 +104,62 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "NnHouseDetail_Logic_Presentation"
+               BuildableName = "NnHouseDetail_Logic_Presentation"
+               BlueprintName = "NnHouseDetail_Logic_Presentation"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "NnHouseSelect_Logic_Presentation"
+               BuildableName = "NnHouseSelect_Logic_Presentation"
+               BlueprintName = "NnHouseSelect_Logic_Presentation"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "NnHouseDetail-Logic-Presentation"
+               BuildableName = "NnHouseDetail-Logic-Presentation"
+               BlueprintName = "NnHouseDetail-Logic-Presentation"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "NnHouseSelect-Logic-Presentation"
+               BuildableName = "NnHouseSelect-Logic-Presentation"
+               BlueprintName = "NnHouseSelect-Logic-Presentation"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -149,6 +205,16 @@
                BlueprintIdentifier = "NnHouseDetailLogic_PresentationTests"
                BuildableName = "NnHouseDetailLogic_PresentationTests"
                BlueprintName = "NnHouseDetailLogic_PresentationTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "NnHouseDetail-Logic-PresentationTests"
+               BuildableName = "NnHouseDetail-Logic-PresentationTests"
+               BlueprintName = "NnHouseDetail-Logic-PresentationTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

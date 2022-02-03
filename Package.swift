@@ -12,8 +12,8 @@ let package = Package(
             targets: ["NnHouseKit"]),
         .library(name: "NnHouseDetail",
                  targets: ["NnHouseDetail"]),
-        .library(name: "NnHouseDetail-Logic+Presentation",
-                 targets: ["NnHouseDetail-Logic+Presentation"])
+        .library(name: "NnHouseDetail-Logic-Presentation",
+                 targets: ["NnHouseDetail-Logic-Presentation"])
     ],
     dependencies: [
         .package(name: "NnUIViewKitPackage",
@@ -26,24 +26,21 @@ let package = Package(
             dependencies: ["NnHouseDetail", "NnHouseSelect"]),
         .target(
             name: "NnHouseDetail",
-            dependencies: ["NnHouseDetail-Logic+Presentation", "NnUIViewKitPackage"]),
+            dependencies: ["NnHouseDetail-Logic-Presentation", "NnUIViewKitPackage"]),
         .target(
-            name: "NnHouseDetail-Logic+Presentation",
+            name: "NnHouseDetail-Logic-Presentation",
             dependencies: ["NnHousehold"]),
         .target(
             name: "NnHouseSelect",
-            dependencies: ["NnHouseSelect-Logic+Presentation"]),
+            dependencies: ["NnHouseSelect-Logic-Presentation"]),
         .target(
-            name: "NnHouseSelect-Logic+Presentation",
+            name: "NnHouseSelect-Logic-Presentation",
             dependencies: ["NnHousehold"]),
         .target(
             name: "NnHousehold",
             dependencies: []),
         .testTarget(
-            name: "NnHouseKitTests",
-            dependencies: ["NnHouseKit"]),
-        .testTarget(
-            name: "NnHouseDetailLogic_PresentationTests",
-            dependencies: ["NnHouseDetail-Logic+Presentation"]),
+            name: "NnHouseDetail-Logic-PresentationTests",
+            dependencies: ["NnHouseDetail-Logic-Presentation"]),
     ]
 )
