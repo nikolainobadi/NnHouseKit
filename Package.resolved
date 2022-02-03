@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "NnUIViewKitPackage",
+        "repositoryURL": "https://github.com/nikolainobadi/NnUIViewKitPackage",
+        "state": {
+          "branch": "main",
+          "revision": "f183faf9c5fcb485d4c1f71180d9841a3dd8044e",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
