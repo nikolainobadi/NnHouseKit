@@ -5,15 +5,20 @@ import PackageDescription
 
 let package = Package(
     name: "NnHouseKit",
+    platforms: [.iOS(.v14)],
     products: [
         .library(
             name: "NnHouseKit",
             targets: ["NnHouseKit"]),
         .library(name: "NnHouseDetail",
-                 targets: ["NnHouseDetail"])
+                 targets: ["NnHouseDetail"]),
+        .library(name: "NnHouseDetail-Logic+Presentation",
+                 targets: ["NnHouseDetail-Logic+Presentation"])
     ],
     dependencies: [
-        .package(name: "NnUIViewKitPackage", url: "https://github.com/nikolainobadi/NnUIViewKitPackage", branch: "main")
+        .package(name: "NnUIViewKitPackage",
+                 url: "https://github.com/nikolainobadi/NnUIViewKitPackage",
+                 branch: "main")
     ],
     targets: [
         .target(
@@ -21,7 +26,7 @@ let package = Package(
             dependencies: ["NnHouseDetail", "NnHouseSelect"]),
         .target(
             name: "NnHouseDetail",
-            dependencies: ["NnHouseDetail-Logic+Presentation"]),
+            dependencies: ["NnHouseDetail-Logic+Presentation", "NnUIViewKitPackage"]),
         .target(
             name: "NnHouseDetail-Logic+Presentation",
             dependencies: ["NnHousehold"]),
@@ -37,5 +42,8 @@ let package = Package(
         .testTarget(
             name: "NnHouseKitTests",
             dependencies: ["NnHouseKit"]),
+        .testTarget(
+            name: "NnHouseDetailLogic_PresentationTests",
+            dependencies: ["NnHouseDetail-Logic+Presentation"]),
     ]
 )
