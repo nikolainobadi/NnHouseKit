@@ -12,8 +12,8 @@ import NnHouseDetail_Logic_Presentation
 final class HouseDetailManagerTests: XCTestCase {
     
     // MARK: - Properties
-    private let newName = "new name"
-    private let newPassword = "new password"
+    private lazy var newName = getTestName(.secondName)
+    private lazy var newPassword = getTestName(.thirdName)
 }
  
 
@@ -88,15 +88,96 @@ extension HouseDetailManagerTests {
 
         XCTAssertTrue(alerts.passwordDidChange)
     }
+    
+    func test_deleteMember_uploadError() {
+        let members = makeMemberList()
+        let house = makeTestHouse(members: members)
+        let houseCache = makeHouseCache(house)
+        let (sut, alerts, remote) = makeSUT(houseCache: houseCache)
+        let error = HouseDetailError.uploadFailed
+        
+        guard let firstMember = members.first else {
+            return XCTFail("WTF is the member?")
+        }
+
+        expect(alerts, toShowError: error) {
+            sut.deleteMember(firstMember)
+            remote.complete(with: error)
+        }
+    }
+    
+    func test_deleteMember_uploadSuccess() {
+        let members = makeMemberList()
+        let house = makeTestHouse(members: members)
+        let houseCache = makeHouseCache(house)
+        let (sut, alerts, remote) = makeSUT(houseCache: houseCache)
+        
+        guard let firstMember = members.first else {
+            return XCTFail("WTF is the member?")
+        }
+
+        expect(alerts, toShowError: nil) {
+            sut.deleteMember(firstMember)
+            remote.complete(with: nil)
+            
+            guard let house = remote.house else {
+                return XCTFail("No house...")
+            }
+            
+            XCTAssertFalse(house.members.contains(where: { $0.id == firstMember.id }))
+        }
+    }
+    
+    func test_toggleAdminStatus_uploadError() {
+        let members = makeMemberList()
+        let house = makeTestHouse(members: members)
+        let houseCache = makeHouseCache(house)
+        let (sut, alerts, remote) = makeSUT(houseCache: houseCache)
+        let error = HouseDetailError.uploadFailed
+        
+        guard let firstMember = members.first else {
+            return XCTFail("WTF is the member?")
+        }
+
+        expect(alerts, toShowError: error) {
+            sut.toggleAdminStatus(of: firstMember)
+            remote.complete(with: error)
+        }
+    }
+    
+    func test_toggleAdminStatus_uploadSuccess() {
+        let members = makeMemberList()
+        let house = makeTestHouse(members: members)
+        let houseCache = makeHouseCache(house)
+        let (sut, alerts, remote) = makeSUT(houseCache: houseCache)
+        
+        guard let firstMember = members.first else {
+            return XCTFail("WTF is the member?")
+        }
+
+        expect(alerts, toShowError: nil) {
+            sut.toggleAdminStatus(of: firstMember)
+            remote.complete(with: nil)
+            
+            guard
+                let house = remote.house,
+                let toggledMember = house.members.first(where: { $0.id == firstMember.id })
+            else { return XCTFail("WTF") }
+            
+            XCTAssertFalse(toggledMember.isAdmin)
+        }
+    }
 }
 
 
 // MARK: - SUT
 extension HouseDetailManagerTests {
     
-    func makeSUT(isCreator: Bool = false, file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseDetailManager, alerts: HouseDetailAlertsSpy, remote: HouseholdUploaderSpy) {
+    func makeSUT(isCreator: Bool = false,
+                 houseCache: HouseholdCache? = nil,
+                 file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseDetailManager, alerts: HouseDetailAlertsSpy, remote: HouseholdUploaderSpy) {
 
-        let houseCache = MockHouseholdCache(house: makeTestHouse())
+        let houseCache = houseCache ?? makeHouseCache()
         let alerts = HouseDetailAlertsSpy()
         let remote = HouseholdUploaderSpy()
         let sut = HouseDetailManager(isCreator: isCreator,
@@ -108,14 +189,29 @@ extension HouseDetailManagerTests {
 
         return (sut, alerts, remote)
     }
+    
+    func makeHouseCache(_ house: Household? = nil) -> MockHouseholdCache {
+        MockHouseholdCache(house: house ?? makeTestHouse())
+    }
 
-    func makeTestHouse() -> Household {
-        TestHouse(id: "",
-                  name: "",
-                  creator: "",
-                  password: "testPassword",
-                  members: [],
-                  lastLogin: "")
+    func makeTestHouse(members: [HouseholdMember] = []) -> Household {
+        TestHouse(id: getTestName(.testHouseId),
+                  password: getTestName(.testHouseName),
+                  members: members)
+    }
+    
+    func makeMemberList() -> [HouseholdMember] {
+        [makeMember(isAdmin: true),
+         makeMember(id: getTestName(.secondId), name: getTestName(.secondName))]
+    }
+    
+    func makeMember(id: String? = nil,
+                    name: String? = nil,
+                    isAdmin: Bool = false) -> HouseholdMember {
+        
+        TestHouseMember(id: id ?? getTestName(.testUserId),
+                        name: name ?? getTestName(.testUsername),
+                        isAdmin: isAdmin)
     }
 }
 
@@ -206,7 +302,7 @@ extension HouseDetailManagerTests {
 
     class HouseholdUploaderSpy: HouseholdUploader {
 
-        private var house: Household?
+        var house: Household?
         private var completion: ((Error?) -> Void)?
 
         func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
@@ -237,6 +333,15 @@ extension HouseDetailManagerTests {
 
                 XCTAssertEqual(newPassword, house.password)
             }
+
+            completion(error)
+        }
+        
+        func complete(with error: Error?,
+                      file: StaticString = #filePath, line: UInt = #line) {
+            guard
+                let completion = completion
+            else { return XCTFail("No request made...", file: file, line: line) }
 
             completion(error)
         }
