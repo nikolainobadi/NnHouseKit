@@ -19,6 +19,12 @@ extension XCTestCase {
         var lastLogin: String
     }
     
+    struct TestHouseMember: HouseholdMember {
+        var id: String = ""
+        var name: String = ""
+        var isAdmin: Bool = false
+    }
+    
     func trackForMemoryLeaks(_ instance: AnyObject,
                              file: StaticString = #filePath,
                              line: UInt = #line) {
