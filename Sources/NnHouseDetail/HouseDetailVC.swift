@@ -8,19 +8,23 @@
 import UIKit
 import NnUIViewKitPackage
 
-final class HouseDetailVC: NiblessViewController {
+public final class HouseDetailVC: NiblessViewController {
     
     // MARK: - Properties
     
     
     // MARK: - Init
-    init() {
+    public init() {
         super.init(hasTextFields: false)
     }
     
     
     // MARK: - Life Cycle
-    override func loadView() {
+    public override func loadView() {
         
+    }
+    
+    public func doSomething() {
+        print("Something Happened")
     }
 }
