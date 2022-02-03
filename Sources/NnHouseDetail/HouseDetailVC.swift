@@ -28,3 +28,12 @@ public final class HouseDetailVC: NiblessViewController {
         print("Something Happened")
     }
 }
+
+
+// MARK: - Dependencies
+protocol HouseDetailInterface: UIView {
+    var editHouseBarButton: UIBarButtonItem { get }
+    
+    func updateHouseName(_ name: String)
+//    func updateMembers(_ members: [HouseMemberViewModel])
+}
