@@ -9,6 +9,8 @@ let package = Package(
         .library(
             name: "NnHouseKit",
             targets: ["NnHouseKit"]),
+        .library(name: "NnHouseDetail",
+                 targets: ["NnHouseDetail"])
     ],
     dependencies: [
         .package(name: "NnUIViewKitPackage", url: "https://github.com/nikolainobadi/NnUIViewKitPackage", branch: "main")
