@@ -31,6 +31,7 @@ public final class HouseDetailVC: NiblessViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavBar()
         startObservers()
     }
     
@@ -53,6 +54,10 @@ private extension HouseDetailVC {
     
     func updateList(_ viewModels: [HouseMemberViewModel]) {
         rootView.updateList(viewModels)
+    }
+    
+    func setupNavBar() {
+        navigationItem.rightBarButtonItem = rootView.editHouseBarButton
     }
 }
 
