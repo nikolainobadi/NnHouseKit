@@ -23,7 +23,7 @@ let package = Package(
     targets: [
         .target(
             name: "NnHouseKit",
-            dependencies: []),
+            dependencies: ["NnHouseDetail"]),
         .target(
             name: "NnHouseDetail",
             dependencies: ["NnHouseDetail-Logic-Presentation", "NnUIViewKitPackage"]),
