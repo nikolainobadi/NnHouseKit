@@ -9,6 +9,8 @@ import UIKit
 import NnUIViewKitPackage
 import NnHouseDetail_Logic_Presentation
 
+let CELL_ID = "Cell_ID"
+
 final class HouseDetailMembersDataSource: UITableViewDiffableDataSource<TableSection, HouseMemberCellViewModel> {
     
     // MARK: - Properties
@@ -21,7 +23,7 @@ final class HouseDetailMembersDataSource: UITableViewDiffableDataSource<TableSec
         self.isCreator = isCreator
         super.init(tableView: table) { (table, indexPath, member) -> HouseMemberCell? in
             
-            let cell = table.dequeueReusableCell(withIdentifier: "cellId",
+            let cell = table.dequeueReusableCell(withIdentifier: CELL_ID,
                                                  for: indexPath) as? HouseMemberCell
             cell?.configure(member)
             

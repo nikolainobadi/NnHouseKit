@@ -60,12 +60,12 @@ public final class HouseDetailRootView: NiblessView {
         return table
     }()
     
-    lazy var switchButton: ShadowButton = {
+    lazy var switchButton: UIButton = {
         ShadowButton("Switch Household")
             .addBorder()
             .setFont(.largeDetail)
             .setColor(config.switchButtonTextColor,
-                      backgroundColor: config.passwordButtonBackgroundColor)
+                      backgroundColor: config.switchButtonBackgroundColor)
             .setAction { [weak self] in
                 self?.responder.switchHouse()
             }
@@ -83,6 +83,8 @@ public final class HouseDetailRootView: NiblessView {
         self.config = config
         self.responder = responder
         super.init(frame: .zero)
+        
+        setupTableView()
     }
     
     
@@ -132,7 +134,27 @@ extension HouseDetailRootView: HouseDetailInterface {
     }
     
     public func updateList(_ members: [HouseMemberViewModel]) {
-//        dataSource.update(members)
+        dataSource.update(makeCellModels(members))
+    }
+}
+
+
+// MARK: - Private Methods
+private extension HouseDetailRootView {
+    
+    func setupTableView() {
+        tableView.delegate = dataSource
+        tableView.dataSource = dataSource
+        tableView.register(HouseMemberCell.self,
+                           forCellReuseIdentifier: CELL_ID)
+    }
+    
+    func makeCellModels(_ viewModels: [HouseMemberViewModel]) -> [HouseMemberCellViewModel] {
+        
+        viewModels.map {
+            HouseMemberCellViewModel(config: config.houseMemberCellConfig,
+                                     viewModel: $0)
+        }
     }
 }
 
