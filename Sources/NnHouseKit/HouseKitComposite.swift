@@ -11,15 +11,16 @@ import NnHouseDetail
 import NnHouseDetail_Logic_Presentation
 
 public final class HouseKitComposite {
+    private init() { }
     
-    public func makeHouseDetailVC(isCreator: Bool,
-                                  houseName: String,
-                                  alerts: HouseDetailAlerts,
-                                  remote: HouseholdUploader,
-                                  houseCache: HouseholdCache,
-                                  houseMemberPublisher: HouseholdMemberPublisher,
-                                  config: HouseDetailViewConfig,
-                                  switchHouse: @escaping () -> Void) -> UIViewController {
+    public static func makeHouseDetailVC(isCreator: Bool,
+                                         houseName: String,
+                                         alerts: HouseDetailAlerts,
+                                         remote: HouseholdUploader,
+                                         houseCache: HouseholdCache,
+                                         houseMemberPublisher: HouseholdMemberPublisher,
+                                         config: HouseDetailViewConfig,
+                                         switchHouse: @escaping () -> Void) -> UIViewController {
         
         let manager = HouseDetailManager(isCreator: isCreator,
                                          alerts: alerts,
@@ -48,15 +49,15 @@ public final class HouseKitComposite {
 // MARK: - Private Methods
 private extension HouseKitComposite {
     
-    func makeHouseDetailUIResponder(_ manager: HouseDetailManager,
-                                    switchHouse: @escaping () -> Void) -> HouseDetailUIResponder {
+    static func makeHouseDetailUIResponder(_ manager: HouseDetailManager,
+                                           switchHouse: @escaping () -> Void) -> HouseDetailUIResponder {
         
         return (editHouse: manager.editHouse,
                 switchHouse: switchHouse,
                 showPassword: manager.showPassword)
     }
     
-    func makeHouseMemberViewModelResponder(_ manager: HouseDetailManager) -> HouseMemberViewModelResponder {
+    static func makeHouseMemberViewModelResponder(_ manager: HouseDetailManager) -> HouseMemberViewModelResponder {
         
         return (deleteMember: { member in
             manager.deleteMember(member)
