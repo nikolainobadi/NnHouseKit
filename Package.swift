@@ -13,7 +13,9 @@ let package = Package(
         .library(name: "HouseDetailUI",
                  targets: ["HouseDetailUI"]),
         .library(name: "HouseDetailLogic",
-                 targets: ["HouseDetailLogic"])
+                 targets: ["HouseDetailLogic"]),
+        .library(name: "HouseSelectLogic",
+                 targets: ["HouseSelectLogic"])
     ],
     dependencies: [
         .package(name: "NnUIViewKitPackage",
@@ -25,19 +27,25 @@ let package = Package(
             name: "NnHouseKit",
             dependencies: ["HouseDetailUI"]),
         .target(
+            name: "NnHousehold",
+            dependencies: []),
+        .target(
             name: "HouseDetailUI",
             dependencies: ["HouseDetailLogic", "NnUIViewKitPackage"]),
         .target(
             name: "HouseDetailLogic",
             dependencies: ["NnHousehold"]),
         .target(
-            name: "NnHousehold",
-            dependencies: []),
+            name: "HouseSelectLogic",
+            dependencies: ["NnHousehold"]),
+        .testTarget(
+            name: "HouseDetailUITests",
+            dependencies: ["HouseDetailUI"]),
         .testTarget(
             name: "HouseDetailLogicTests",
             dependencies: ["HouseDetailLogic"]),
         .testTarget(
-            name: "HouseDetailUITests",
-            dependencies: ["HouseDetailUI"]),
+            name: "HouseSelectLogicTests",
+            dependencies: ["HouseSelectLogic"]),
     ]
 )
