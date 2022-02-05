@@ -55,14 +55,9 @@ final class HouseDetailRootViewTests: XCTestCase {
 
         waitForExpectations(timeout: 0.1)
     }
-
-    func test_updateList() {
-//        let sut = makeSUT()
-//
-//        sut.updateList(makeViewModelList())
-//
-//        XCTAssertEqual(sut.tableView.numberOfSections, 1)
-//        XCTAssertEqual(sut.tableView.numberOfRows(inSection: 0), 1)
+    
+    func test_updateList_cellViewModelProperties() {
+        // MARK: - TODO
     }
 }
 
@@ -98,16 +93,4 @@ extension HouseDetailRootViewTests {
                               switchButtonBackgroundColor: .red,
                               houseMemberCellConfig: HouseMemberCellConfig())
     }
-
-//    func makeViewModelList() -> [HouseMemberViewModel] {
-//        [makeSingleViewModel()]
-//    }
-//
-//    func makeSingleViewModel() -> HouseMemberViewModel {
-//        HouseMemberViewModel(TestHouseMember(), responder: makeResponder())
-//    }
-//
-//    func makeResponder() -> HouseMemberViewModelResponder {
-//        return (deleteMember: { _ in }, toggleAdminStatus: { _ in })
-//    }
 }

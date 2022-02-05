@@ -31,19 +31,19 @@ public struct HouseMemberCellViewModel {
 // MARK: - ViewModel
 extension HouseMemberCellViewModel {
     
-    var id: String { info.memberId }
-    var name: String { info.memberName }
-    var adminStatus: String { info.adminStatus }
-    var showButton: Bool { info.showButton }
-    var buttonText: String { info.isAdmin ? "Remove Admin" : "Make Admin" }
-    var statusColor: UIColor? { nil }
-    var buttonBackgroundColor: UIColor? { nil }
+    public var id: String { info.memberId }
+    public var name: String { info.memberName }
+    public var adminStatus: String { info.adminStatus }
+    public var showButton: Bool { info.showButton }
+    public var buttonText: String { info.isAdmin ? "Remove Admin" : "Make Admin" }
+    public var statusColor: UIColor? { nil }
+    public var buttonBackgroundColor: UIColor? { nil }
 
-    func deleteMember() {
+    public func deleteMember() {
         responder.deleteMember(id)
     }
 
-    func toggleAdminStatus() {
+    public func toggleAdminStatus() {
         responder.toggleAdminStatus(id)
     }
 }
