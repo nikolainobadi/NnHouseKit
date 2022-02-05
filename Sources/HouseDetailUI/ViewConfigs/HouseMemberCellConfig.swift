@@ -15,11 +15,11 @@ public struct HouseMemberCellConfig {
     public var buttonNonAdminBackgroundColor: UIColor?
     public var buttonAdminBackgroundColor: UIColor?
     
-    public init(titleLabelColor: UIColor? = nil,
-                statusLabelColor: UIColor? = nil,
-                buttonTextColor: UIColor? = nil,
-                buttonAdminBackgroundColor: UIColor? = nil,
-                buttonNonAdminBackgroundColor: UIColor? = nil) {
+    public init(titleLabelColor: UIColor? = .label,
+                statusLabelColor: UIColor? = .label,
+                buttonTextColor: UIColor? = .systemBackground,
+                buttonAdminBackgroundColor: UIColor? = .label,
+                buttonNonAdminBackgroundColor: UIColor? = .label) {
         
         self.titleLabelColor = titleLabelColor
         self.statusLabelColor = statusLabelColor
