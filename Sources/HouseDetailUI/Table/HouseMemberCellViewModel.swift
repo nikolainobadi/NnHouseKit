@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import NnHouseDetail_Logic_Presentation
+import HouseDetailLogic
 
 struct HouseMemberCellViewModel {
     

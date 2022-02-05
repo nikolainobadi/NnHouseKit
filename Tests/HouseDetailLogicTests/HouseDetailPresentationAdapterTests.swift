@@ -1,6 +1,6 @@
 //
 //  HouseDetailPresentationAdapterTests.swift
-//  
+//
 //
 //  Created by Nikolai Nobadi on 2/3/22.
 //
@@ -8,7 +8,7 @@
 import XCTest
 import Combine
 import NnHousehold
-import NnHouseDetail_Logic_Presentation
+import HouseDetailLogic
 
 final class HouseDetailPresentationAdapterTests: XCTestCase {
     

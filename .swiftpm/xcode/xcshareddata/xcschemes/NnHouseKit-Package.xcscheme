@@ -160,6 +160,34 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseDetailUI"
+               BuildableName = "HouseDetailUI"
+               BlueprintName = "HouseDetailUI"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseDetailLogic"
+               BuildableName = "HouseDetailLogic"
+               BlueprintName = "HouseDetailLogic"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -225,6 +253,26 @@
                BlueprintIdentifier = "NnHouseDetailTests"
                BuildableName = "NnHouseDetailTests"
                BlueprintName = "NnHouseDetailTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseDetailLogicTests"
+               BuildableName = "HouseDetailLogicTests"
+               BlueprintName = "HouseDetailLogicTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseDetailUITests"
+               BuildableName = "HouseDetailUITests"
+               BlueprintName = "HouseDetailUITests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

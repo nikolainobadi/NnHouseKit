@@ -6,8 +6,8 @@
 //
 
 import UIKit
+import HouseDetailLogic
 import NnUIViewKitPackage
-import NnHouseDetail_Logic_Presentation
 
 let CELL_ID = "Cell_ID"
 

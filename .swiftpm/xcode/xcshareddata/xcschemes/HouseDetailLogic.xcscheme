@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NnHouseDetail-Logic-Presentation"
-               BuildableName = "NnHouseDetail-Logic-Presentation"
-               BlueprintName = "NnHouseDetail-Logic-Presentation"
+               BlueprintIdentifier = "HouseDetailLogic"
+               BuildableName = "HouseDetailLogic"
+               BlueprintName = "HouseDetailLogic"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,24 +28,15 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       codeCoverageEnabled = "YES">
-      <CodeCoverageTargets>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NnHouseDetail-Logic-Presentation"
-            BuildableName = "NnHouseDetail-Logic-Presentation"
-            BlueprintName = "NnHouseDetail-Logic-Presentation"
-            ReferencedContainer = "container:">
-         </BuildableReference>
-      </CodeCoverageTargets>
       <Testables>
          <TestableReference
             skipped = "NO"
             testExecutionOrdering = "random">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NnHouseDetail-Logic-PresentationTests"
-               BuildableName = "NnHouseDetail-Logic-PresentationTests"
-               BlueprintName = "NnHouseDetail-Logic-PresentationTests"
+               BlueprintIdentifier = "HouseDetailLogicTests"
+               BuildableName = "HouseDetailLogicTests"
+               BlueprintName = "HouseDetailLogicTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
@@ -71,9 +62,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NnHouseDetail-Logic-Presentation"
-            BuildableName = "NnHouseDetail-Logic-Presentation"
-            BlueprintName = "NnHouseDetail-Logic-Presentation"
+            BlueprintIdentifier = "HouseDetailLogic"
+            BuildableName = "HouseDetailLogic"
+            BlueprintName = "HouseDetailLogic"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

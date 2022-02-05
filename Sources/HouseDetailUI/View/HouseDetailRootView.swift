@@ -6,8 +6,8 @@
 //
 
 import UIKit
+import HouseDetailLogic
 import NnUIViewKitPackage
-import NnHouseDetail_Logic_Presentation
 
 public final class HouseDetailRootView: NiblessView {
     

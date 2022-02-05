@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  HouseDetailVC.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/3/22.
@@ -7,8 +7,8 @@
 
 import UIKit
 import Combine
+import HouseDetailLogic
 import NnUIViewKitPackage
-import NnHouseDetail_Logic_Presentation
 
 public final class HouseDetailVC: NiblessViewController {
     

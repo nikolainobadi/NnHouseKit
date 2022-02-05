@@ -1,12 +1,12 @@
 //
-//  File.swift
+//  HouseMemberCell.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/3/22.
 //
 
 import UIKit
-import NnHouseDetail_Logic_Presentation
+import HouseDetailLogic
 
 final class HouseMemberCell: UITableViewCell {
     

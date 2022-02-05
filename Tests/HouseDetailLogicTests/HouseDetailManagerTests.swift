@@ -7,7 +7,7 @@
 
 import XCTest
 import NnHousehold
-import NnHouseDetail_Logic_Presentation
+import HouseDetailLogic
 
 final class HouseDetailManagerTests: XCTestCase {
     

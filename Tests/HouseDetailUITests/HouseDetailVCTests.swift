@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  HouseDetailVCTests.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/3/22.
@@ -8,22 +8,22 @@
 import UIKit
 import XCTest
 import Combine
-import NnHouseDetail
-import NnHouseDetail_Logic_Presentation
+import HouseDetailUI
+import HouseDetailLogic
 
 final class HouseDetailVCTests: XCTestCase {
     
     func test_init_emptyValues() {
         let (_, view, presenter) = makeSUT()
-        
+
         XCTAssertNil(view.members)
         XCTAssertNil(presenter.viewModels)
     }
-    
+
     func test_viewModelObserver() {
         let (sut, view, presenter) = makeSUT()
         let _ = sut.view
-        
+
         presenter.viewModels = makeViewModels()
         XCTAssertNotNil(view.members)
     }
@@ -34,17 +34,17 @@ final class HouseDetailVCTests: XCTestCase {
 extension HouseDetailVCTests {
     
     func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseDetailVC, view: MockHouseDetailInterface, presenter: MockHouseDetailPresenter) {
-        
+
         let rootView = MockHouseDetailInterface()
         let presenter = MockHouseDetailPresenter()
         let sut = HouseDetailVC(rootView: rootView,
                                 presenter: presenter)
-        
+
         trackForMemoryLeaks(sut, file: file, line: line)
-        
+
         return (sut, rootView, presenter)
     }
-    
+
     func makeViewModels() -> [HouseMemberViewModel] {
        []
     }
