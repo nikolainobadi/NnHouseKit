@@ -47,12 +47,12 @@ private extension HouseDetailVC {
     func startObservers() {
         guard changes.isEmpty else { return }
         
-        presenter.viewModelPublisher
+        presenter.cellModelPublisher
             .sink { [weak self] in self?.updateList($0) }
             .store(in: &changes)
     }
     
-    func updateList(_ viewModels: [HouseMemberViewModel]) {
+    func updateList(_ viewModels: [HouseMemberCellViewModel]) {
         rootView.updateList(viewModels)
     }
     
@@ -63,8 +63,12 @@ private extension HouseDetailVC {
 
 
 // MARK: - Dependencies
+public protocol HouseDetailPresenter {
+    var cellModelPublisher: AnyPublisher<[HouseMemberCellViewModel], Never> { get }
+}
+
 public protocol HouseDetailInterface: UIView {
     var editHouseBarButton: UIBarButtonItem { get }
     
-    func updateList(_ members: [HouseMemberViewModel])
+    func updateList(_ members: [HouseMemberCellViewModel])
 }

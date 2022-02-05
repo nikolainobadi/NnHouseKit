@@ -133,8 +133,8 @@ extension HouseDetailRootView: HouseDetailInterface {
         UIBarButtonItem(customView: editHouseButton)
     }
     
-    public func updateList(_ members: [HouseMemberViewModel]) {
-        dataSource.update(makeCellModels(members))
+    public func updateList(_ members: [HouseMemberCellViewModel]) {
+        dataSource.update(members)
     }
 }
 
@@ -147,14 +147,6 @@ private extension HouseDetailRootView {
         tableView.dataSource = dataSource
         tableView.register(HouseMemberCell.self,
                            forCellReuseIdentifier: CELL_ID)
-    }
-    
-    func makeCellModels(_ viewModels: [HouseMemberViewModel]) -> [HouseMemberCellViewModel] {
-        
-        viewModels.map {
-            HouseMemberCellViewModel(config: config.houseMemberCellConfig,
-                                     viewModel: $0)
-        }
     }
 }
 

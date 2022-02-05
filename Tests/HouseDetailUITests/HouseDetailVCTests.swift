@@ -1,6 +1,6 @@
 //
 //  HouseDetailVCTests.swift
-//  
+//
 //
 //  Created by Nikolai Nobadi on 2/3/22.
 //
@@ -9,7 +9,6 @@ import UIKit
 import XCTest
 import Combine
 import HouseDetailUI
-import HouseDetailLogic
 
 final class HouseDetailVCTests: XCTestCase {
     
@@ -45,7 +44,7 @@ extension HouseDetailVCTests {
         return (sut, rootView, presenter)
     }
 
-    func makeViewModels() -> [HouseMemberViewModel] {
+    func makeViewModels() -> [HouseMemberCellViewModel] {
        []
     }
 }
@@ -56,19 +55,19 @@ extension HouseDetailVCTests {
     
     class MockHouseDetailInterface: UIView, HouseDetailInterface {
         
-        var members: [HouseMemberViewModel]?
+        var members: [HouseMemberCellViewModel]?
         var editHouseBarButton: UIBarButtonItem { UIBarButtonItem() }
         
-        func updateList(_ members: [HouseMemberViewModel]) {
+        func updateList(_ members: [HouseMemberCellViewModel]) {
             self.members = members
         }
     }
     
     class MockHouseDetailPresenter: HouseDetailPresenter {
         
-        @Published var viewModels: [HouseMemberViewModel]?
+        @Published var viewModels: [HouseMemberCellViewModel]?
         
-        var viewModelPublisher: AnyPublisher<[HouseMemberViewModel], Never> {
+        var cellModelPublisher: AnyPublisher<[HouseMemberCellViewModel], Never> {
             $viewModels.compactMap({ $0 }).eraseToAnyPublisher()
         }
     }

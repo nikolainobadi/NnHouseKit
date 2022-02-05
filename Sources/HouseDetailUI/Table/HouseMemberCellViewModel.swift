@@ -8,7 +8,7 @@
 import UIKit
 import HouseDetailLogic
 
-struct HouseMemberCellViewModel {
+public struct HouseMemberCellViewModel {
     
     // MARK: - Properties
     private let config: HouseMemberCellConfig
@@ -49,14 +49,12 @@ extension HouseMemberCellViewModel {
 // MARK: - Hashable
 extension HouseMemberCellViewModel: Hashable {
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         hasher.combine(viewModel)
     }
     
-    static func == (lhs: HouseMemberCellViewModel, rhs: HouseMemberCellViewModel) -> Bool {
+    public static func == (lhs: HouseMemberCellViewModel, rhs: HouseMemberCellViewModel) -> Bool {
         
         lhs.viewModel == rhs.viewModel
     }
-    
-    
 }
