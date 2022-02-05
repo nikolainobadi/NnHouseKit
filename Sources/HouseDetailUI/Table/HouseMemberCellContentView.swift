@@ -29,6 +29,7 @@ final class HouseMemberCellContentView: NiblessView {
     
     lazy var cellButton: ShadowButton = {
         ShadowButton()
+            .setColor(.white, backgroundColor: .black)
             .setFont(.detail)
             .addShadow(color: .label)
             .setAction { [weak self] in

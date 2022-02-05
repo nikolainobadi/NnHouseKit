@@ -29,7 +29,7 @@ final class HouseMemberCell: UITableViewCell {
     // MARK: - Display Setup
     func setupView() {
         contentView.addSubview(rootView)
-//        contentView.backgroundColor = ?
+        contentView.backgroundColor = .clear
 
         rootView.fillSuperview()
     }
@@ -40,14 +40,13 @@ final class HouseMemberCell: UITableViewCell {
 extension HouseMemberCell {
     
     func configure(_ viewModel: HouseMemberCellViewModel) {
-        
-//        rootView.configureLabels(name: viewModel.name,
-//                                 secondary: viewModel.status,
-//                                 secondaryColor: myColor(.cleanRed))
-//        rootView.configureButton(title: viewModel.buttonTitle,
-//                                 color: getColor(viewModel.status != ""),
-//                                 showButton: viewModel.showButton,
-//                                 action: { viewModel.toggleAdminStatus() })
+        rootView.configureLabels(name: viewModel.name,
+                                 secondary: viewModel.adminStatus,
+                                 secondaryColor: viewModel.statusColor)
+        rootView.configureButton(title: viewModel.buttonText,
+                                 color: viewModel.buttonBackgroundColor,
+                                 showButton: viewModel.showButton,
+                                 action: { viewModel.toggleAdminStatus() })
     }
 }
 

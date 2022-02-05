@@ -99,15 +99,15 @@ extension HouseDetailRootViewTests {
                               houseMemberCellConfig: HouseMemberCellConfig())
     }
 
-    func makeViewModelList() -> [HouseMemberViewModel] {
-        [makeSingleViewModel()]
-    }
-
-    func makeSingleViewModel() -> HouseMemberViewModel {
-        HouseMemberViewModel(TestHouseMember(), responder: makeResponder())
-    }
-
-    func makeResponder() -> HouseMemberViewModelResponder {
-        return (deleteMember: { _ in }, toggleAdminStatus: { _ in })
-    }
+//    func makeViewModelList() -> [HouseMemberViewModel] {
+//        [makeSingleViewModel()]
+//    }
+//
+//    func makeSingleViewModel() -> HouseMemberViewModel {
+//        HouseMemberViewModel(TestHouseMember(), responder: makeResponder())
+//    }
+//
+//    func makeResponder() -> HouseMemberViewModelResponder {
+//        return (deleteMember: { _ in }, toggleAdminStatus: { _ in })
+//    }
 }

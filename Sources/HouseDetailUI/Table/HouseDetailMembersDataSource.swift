@@ -49,22 +49,22 @@ final class HouseDetailMembersDataSource: UITableViewDiffableDataSource<TableSec
         "Household Members"
     }
     
-    override func tableView(_ tableView: UITableView,
-                            canEditRowAt indexPath: IndexPath) -> Bool {
-        guard
-            let member = itemIdentifier(for: indexPath), isCreator
-        else { return false }
-
-        // if !showButton, then you shouldn't be able to delete them
-        return member.showButton
-    }
+//    override func tableView(_ tableView: UITableView,
+//                            canEditRowAt indexPath: IndexPath) -> Bool {
+//        guard
+//            let member = itemIdentifier(for: indexPath), isCreator
+//        else { return false }
+//
+//        // if !showButton, then you shouldn't be able to delete them
+//        return member.showButton
+//    }
     
     override func tableView(_ tableView: UITableView,
                             commit editingStyle: UITableViewCell.EditingStyle,
                             forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-            itemIdentifier(for: indexPath)?.deleteMember()
+//            itemIdentifier(for: indexPath)?.deleteMember()
         }
     }
 }

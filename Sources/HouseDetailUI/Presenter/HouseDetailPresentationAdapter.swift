@@ -19,7 +19,6 @@ public final class HouseDetailPresentationAdapter {
 //
 //    // MARK: - Init
     public init(publisher: HouseMemberViewModelPublisher) {
-
         self.publisher = publisher
     }
 //    public init(publisher: HouseholdMemberPublisher,
