@@ -72,7 +72,7 @@ extension HouseSelectManagerTests {
         func complete(error: Error?,
                       file: StaticString = #filePath, line: UInt = #line) {
             guard
-                let completion = completion, house != nil,
+                let completion = completion, house != nil
             else {
                 return XCTFail("no request made...", file: file, line: line)
             }
