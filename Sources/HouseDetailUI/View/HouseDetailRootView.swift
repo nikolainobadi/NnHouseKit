@@ -54,6 +54,7 @@ public final class HouseDetailRootView: NiblessView {
     lazy var tableView: UITableView = {
         let table = UITableView()
         
+        table.separatorColor = .label
         table.backgroundColor = .clear
         
         return table
@@ -79,10 +80,9 @@ public final class HouseDetailRootView: NiblessView {
         self.houseName = houseName
         self.config = config
         self.responder = responder
-        super.init(frame: .zero)
+        super.init(frame: .zero, color: config.viewBackgroundColor)
         
         setupTableView()
-        self.backgroundColor = config.viewBackgroundColor
     }
     
     

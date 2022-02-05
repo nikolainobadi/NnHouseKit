@@ -36,8 +36,10 @@ extension HouseMemberCellViewModel {
     public var adminStatus: String { info.adminStatus }
     public var showButton: Bool { info.showButton }
     public var buttonText: String { info.isAdmin ? "Remove Admin" : "Make Admin" }
-    public var statusColor: UIColor? { nil }
-    public var buttonBackgroundColor: UIColor? { nil }
+    public var statusColor: UIColor? { config.statusLabelColor }
+    public var buttonBackgroundColor: UIColor? {
+        info.isAdmin ? config.buttonAdminBackgroundColor : config.buttonNonAdminBackgroundColor
+    }
 
     public func deleteMember() {
         responder.deleteMember(id)
