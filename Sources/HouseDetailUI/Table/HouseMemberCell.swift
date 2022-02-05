@@ -29,7 +29,7 @@ final class HouseMemberCell: UITableViewCell {
     // MARK: - Display Setup
     func setupView() {
         contentView.addSubview(rootView)
-        contentView.backgroundColor = .clear
+        contentView.backgroundColor = .orange
 
         rootView.fillSuperview()
     }
