@@ -21,6 +21,7 @@ final class HouseDetailRootViewTests: XCTestCase {
     func test_configDetails() {
         let sut = makeSUT()
 
+        XCTAssertEqual(sut.backgroundColor, .systemBackground)
         XCTAssertEqual(sut.editHouseButton.titleLabel?.textColor, .white)
         XCTAssertEqual(sut.titleLabel.textColor, .blue)
         XCTAssertEqual(sut.showPasswordButton.titleLabel?.textColor, .white)
@@ -83,12 +84,12 @@ extension HouseDetailRootViewTests {
     }
 
     func makeConfig() -> HouseDetailViewConfig {
-        HouseDetailViewConfig(editButtonColor: .white,
+        HouseDetailViewConfig(viewBackgroundColor: .systemBackground,
+                              editButtonColor: .white,
                               titleColor: .blue,
                               passwordButtonTextColor: .white,
                               passwordButtonBackgroundColor: .blue,
                               switchButtonTextColor: .white,
-                              switchButtonBackgroundColor: .red,
-                              houseMemberCellConfig: HouseMemberCellConfig())
+                              switchButtonBackgroundColor: .red)
     }
 }

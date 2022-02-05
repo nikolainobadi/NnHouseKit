@@ -9,6 +9,7 @@ import UIKit
 
 public struct HouseDetailViewConfig {
     
+    public var viewBackgroundColor: UIColor?
     public var editButtonColor: UIColor?
     public var titleColor: UIColor?
     public var passwordButtonTextColor: UIColor?
@@ -17,13 +18,15 @@ public struct HouseDetailViewConfig {
     public var switchButtonBackgroundColor: UIColor?
     
     
-    public init(editButtonColor: UIColor? = nil,
-                titleColor: UIColor? = nil,
-                passwordButtonTextColor: UIColor? = nil,
-                passwordButtonBackgroundColor: UIColor? = nil,
-                switchButtonTextColor: UIColor? = nil,
-                switchButtonBackgroundColor: UIColor? = nil) {
+    public init(viewBackgroundColor: UIColor? = .systemBackground,
+                editButtonColor: UIColor? = .white,
+                titleColor: UIColor? = .label,
+                passwordButtonTextColor: UIColor? = .white,
+                passwordButtonBackgroundColor: UIColor? = .black,
+                switchButtonTextColor: UIColor? = .white,
+                switchButtonBackgroundColor: UIColor? = .black) {
         
+        self.viewBackgroundColor = viewBackgroundColor
         self.editButtonColor = editButtonColor
         self.titleColor = titleColor
         self.passwordButtonTextColor = passwordButtonTextColor

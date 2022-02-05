@@ -82,6 +82,7 @@ public final class HouseDetailRootView: NiblessView {
         super.init(frame: .zero)
         
         setupTableView()
+        self.backgroundColor = config.viewBackgroundColor
     }
     
     
