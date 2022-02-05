@@ -89,19 +89,35 @@ extension HouseDetailManagerTests {
         XCTAssertTrue(alerts.passwordDidChange)
     }
     
-    func test_deleteMember_uploadError() {
+    func test_deleteMember_notCreatorError() {
         let members = makeMemberList()
         let house = makeTestHouse(members: members)
         let houseCache = makeHouseCache(house)
-        let (sut, alerts, remote) = makeSUT(houseCache: houseCache)
-        let error = HouseDetailError.uploadFailed
+        let (sut, alerts, _) = makeSUT(houseCache: houseCache)
+        let error = HouseDetailError.deleteMember
         
-        guard let firstMember = members.first else {
+        guard let id = members.first?.id else {
             return XCTFail("WTF is the member?")
         }
 
         expect(alerts, toShowError: error) {
-            sut.deleteMember(firstMember)
+            sut.deleteMember(memberId: id)
+        }
+    }
+    
+    func test_deleteMember_uploadError() {
+        let members = makeMemberList()
+        let house = makeTestHouse(members: members)
+        let houseCache = makeHouseCache(house)
+        let (sut, alerts, remote) = makeSUT(isCreator: true, houseCache: houseCache)
+        let error = HouseDetailError.uploadFailed
+        
+        guard let id = members.first?.id else {
+            return XCTFail("WTF is the member?")
+        }
+
+        expect(alerts, toShowError: error) {
+            sut.deleteMember(memberId: id)
             remote.complete(with: error)
         }
     }
@@ -110,21 +126,21 @@ extension HouseDetailManagerTests {
         let members = makeMemberList()
         let house = makeTestHouse(members: members)
         let houseCache = makeHouseCache(house)
-        let (sut, alerts, remote) = makeSUT(houseCache: houseCache)
+        let (sut, alerts, remote) = makeSUT(isCreator: true, houseCache: houseCache)
         
-        guard let firstMember = members.first else {
+        guard let id = members.first?.id else {
             return XCTFail("WTF is the member?")
         }
 
         expect(alerts, toShowError: nil) {
-            sut.deleteMember(firstMember)
+            sut.deleteMember(memberId: id)
             remote.complete(with: nil)
             
             guard let house = remote.house else {
                 return XCTFail("No house...")
             }
             
-            XCTAssertFalse(house.members.contains(where: { $0.id == firstMember.id }))
+            XCTAssertFalse(house.members.contains(where: { $0.id == id }))
         }
     }
     
@@ -135,12 +151,12 @@ extension HouseDetailManagerTests {
         let (sut, alerts, remote) = makeSUT(houseCache: houseCache)
         let error = HouseDetailError.uploadFailed
         
-        guard let firstMember = members.first else {
+        guard let id = members.first?.id else {
             return XCTFail("WTF is the member?")
         }
 
         expect(alerts, toShowError: error) {
-            sut.toggleAdminStatus(of: firstMember)
+            sut.toggleAdminStatus(memberId: id)
             remote.complete(with: error)
         }
     }
@@ -151,17 +167,17 @@ extension HouseDetailManagerTests {
         let houseCache = makeHouseCache(house)
         let (sut, alerts, remote) = makeSUT(houseCache: houseCache)
         
-        guard let firstMember = members.first else {
+        guard let id = members.first?.id else {
             return XCTFail("WTF is the member?")
         }
 
         expect(alerts, toShowError: nil) {
-            sut.toggleAdminStatus(of: firstMember)
+            sut.toggleAdminStatus(memberId: id)
             remote.complete(with: nil)
             
             guard
                 let house = remote.house,
-                let toggledMember = house.members.first(where: { $0.id == firstMember.id })
+                let toggledMember = house.members.first(where: { $0.id == id })
             else { return XCTFail("WTF") }
             
             XCTAssertFalse(toggledMember.isAdmin)

@@ -14,13 +14,11 @@ let CELL_ID = "Cell_ID"
 final class HouseDetailMembersDataSource: UITableViewDiffableDataSource<TableSection, HouseMemberCellViewModel> {
     
     // MARK: - Properties
-    private let isCreator: Bool
     typealias Snapshot = NSDiffableDataSourceSnapshot<TableSection, HouseMemberCellViewModel>
     
     
     // MARK: - Init
-    init(_ table: UITableView, isCreator: Bool) {
-        self.isCreator = isCreator
+    init(_ table: UITableView) {
         super.init(tableView: table) { (table, indexPath, member) -> HouseMemberCell? in
             
             let cell = table.dequeueReusableCell(withIdentifier: CELL_ID,
@@ -49,22 +47,17 @@ final class HouseDetailMembersDataSource: UITableViewDiffableDataSource<TableSec
         "Household Members"
     }
     
-//    override func tableView(_ tableView: UITableView,
-//                            canEditRowAt indexPath: IndexPath) -> Bool {
-//        guard
-//            let member = itemIdentifier(for: indexPath), isCreator
-//        else { return false }
-//
-//        // if !showButton, then you shouldn't be able to delete them
-//        return member.showButton
-//    }
+    override func tableView(_ tableView: UITableView,
+                            canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
     
     override func tableView(_ tableView: UITableView,
                             commit editingStyle: UITableViewCell.EditingStyle,
                             forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-//            itemIdentifier(for: indexPath)?.deleteMember()
+            itemIdentifier(for: indexPath)?.deleteMember()
         }
     }
 }

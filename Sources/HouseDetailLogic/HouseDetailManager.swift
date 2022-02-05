@@ -53,17 +53,19 @@ extension HouseDetailManager {
 // MARK: - ViewModelResponder
 extension HouseDetailManager {
     
-    public func deleteMember(_ member: HouseholdMember) {
+    public func deleteMember(memberId: String) {
+        guard isCreator else { return showError(HouseDetailError.deleteMember) }
+        
         var updatedHouse = house
         
-        updatedHouse.members = updatedHouse.members.filter { $0.id != member.id }
+        updatedHouse.members = updatedHouse.members.filter { $0.id != memberId }
         
         uploadHouse(updatedHouse)
     }
     
-    public func toggleAdminStatus(of member: HouseholdMember) {
+    public func toggleAdminStatus(memberId: String) {
         guard
-            let index = house.members.firstIndex(where: { $0.id == member.id })
+            let index = house.members.firstIndex(where: { $0.id == memberId })
         else { fatalError("No Member found") }
 
         var updatedHouse = house

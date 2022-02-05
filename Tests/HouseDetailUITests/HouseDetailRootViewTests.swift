@@ -65,8 +65,7 @@ final class HouseDetailRootViewTests: XCTestCase {
 // MARK: - SUT
 extension HouseDetailRootViewTests {
     
-    func makeSUT(isCreator: Bool = false,
-                 houseName: String? = nil,
+    func makeSUT(houseName: String? = nil,
                  config: HouseDetailViewConfig? = nil,
                  editHouse: @escaping () -> Void = { },
                  switchHouse: @escaping () -> Void = { },
@@ -74,8 +73,7 @@ extension HouseDetailRootViewTests {
                  file: StaticString = #filePath, line: UInt = #line) -> HouseDetailRootView {
 
 
-        let sut = HouseDetailRootView(isCreator: isCreator,
-                                      houseName: houseName ?? getTestName(.testHouseName),
+        let sut = HouseDetailRootView(houseName: houseName ?? getTestName(.testHouseName),
                                       config: config ?? makeConfig(),
                                       responder: (editHouse, switchHouse, showPassword))
 

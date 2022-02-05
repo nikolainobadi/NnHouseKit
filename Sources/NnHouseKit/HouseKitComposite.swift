@@ -7,8 +7,8 @@
 
 import UIKit
 import NnHousehold
-import NnHouseDetail
-import NnHouseDetail_Logic_Presentation
+import HouseDetailUI
+import HouseDetailLogic
 
 public final class HouseKitComposite {
     private init() { }
@@ -18,7 +18,7 @@ public final class HouseKitComposite {
                                          alerts: HouseDetailAlerts,
                                          remote: HouseholdUploader,
                                          houseCache: HouseholdCache,
-                                         houseMemberPublisher: HouseholdMemberPublisher,
+                                         memberInfoPublisher: HouseMemberViewInfoPublisher,
                                          config: HouseDetailViewConfig,
                                          switchHouse: @escaping () -> Void) -> UIViewController {
         
@@ -30,18 +30,16 @@ public final class HouseKitComposite {
         let uiResponder = makeHouseDetailUIResponder(manager,
                                                      switchHouse: switchHouse)
     
-        let rootView = HouseDetailRootView(isCreator: isCreator,
-                                           houseName: houseName,
+        let rootView = HouseDetailRootView(houseName: houseName,
                                            config: config,
                                            responder: uiResponder)
         
-        let vmResponder = makeHouseMemberViewModelResponder(manager)
         let presenter = HouseDetailPresentationAdapter(
-            publisher: houseMemberPublisher,
-            viewModelResponder: vmResponder)
+            config: config.houseMemberCellConfig,
+            publisher: memberInfoPublisher,
+            responder: makeHouseMemberCellResponder(manager))
         
-        return HouseDetailVC(rootView: rootView,
-                             presenter: presenter)
+        return HouseDetailVC(rootView: rootView, presenter: presenter)
     }
 }
 
@@ -57,12 +55,12 @@ private extension HouseKitComposite {
                 showPassword: manager.showPassword)
     }
     
-    static func makeHouseMemberViewModelResponder(_ manager: HouseDetailManager) -> HouseMemberViewModelResponder {
+    static func makeHouseMemberCellResponder(_ manager: HouseDetailManager) -> HouseMemberCellResponder {
         
-        return (deleteMember: { member in
-            manager.deleteMember(member)
-        },toggleAdminStatus: { member in
-            manager.toggleAdminStatus(of: member)
+        return (deleteMember: { id in
+            manager.deleteMember(memberId: id)
+        },toggleAdminStatus: { id in
+            manager.toggleAdminStatus(memberId: id)
         })
     }
 }

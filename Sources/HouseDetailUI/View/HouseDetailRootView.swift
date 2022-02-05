@@ -12,13 +12,12 @@ import NnUIViewKitPackage
 public final class HouseDetailRootView: NiblessView {
     
     // MARK: - Properties
-    private let isCreator: Bool
     private let houseName: String
     private let config: HouseDetailViewConfig
     private let responder: HouseDetailUIResponder
     
     private lazy var dataSource: HouseDetailMembersDataSource = {
-        HouseDetailMembersDataSource(tableView, isCreator: isCreator)
+        HouseDetailMembersDataSource(tableView)
     }()
     
     
@@ -73,12 +72,10 @@ public final class HouseDetailRootView: NiblessView {
     
     
     // MARK: - Init
-    public init(isCreator: Bool,
-                houseName: String,
+    public init(houseName: String,
                 config: HouseDetailViewConfig,
                 responder: HouseDetailUIResponder) {
         
-        self.isCreator = isCreator
         self.houseName = houseName
         self.config = config
         self.responder = responder
