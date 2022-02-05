@@ -15,7 +15,6 @@ public struct HouseDetailViewConfig {
     public var passwordButtonBackgroundColor: UIColor?
     public var switchButtonTextColor: UIColor?
     public var switchButtonBackgroundColor: UIColor?
-    public var houseMemberCellConfig: HouseMemberCellConfig
     
     
     public init(editButtonColor: UIColor? = nil,
@@ -23,8 +22,7 @@ public struct HouseDetailViewConfig {
                 passwordButtonTextColor: UIColor? = nil,
                 passwordButtonBackgroundColor: UIColor? = nil,
                 switchButtonTextColor: UIColor? = nil,
-                switchButtonBackgroundColor: UIColor? = nil,
-                houseMemberCellConfig: HouseMemberCellConfig) {
+                switchButtonBackgroundColor: UIColor? = nil) {
         
         self.editButtonColor = editButtonColor
         self.titleColor = titleColor
@@ -32,6 +30,5 @@ public struct HouseDetailViewConfig {
         self.passwordButtonBackgroundColor = passwordButtonBackgroundColor
         self.switchButtonTextColor = switchButtonTextColor
         self.switchButtonBackgroundColor = switchButtonBackgroundColor
-        self.houseMemberCellConfig = houseMemberCellConfig
     }
 }

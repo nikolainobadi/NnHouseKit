@@ -19,7 +19,8 @@ public final class HouseKitComposite {
                                          remote: HouseholdUploader,
                                          houseCache: HouseholdCache,
                                          memberInfoPublisher: HouseMemberViewInfoPublisher,
-                                         config: HouseDetailViewConfig,
+                                         viewConfig: HouseDetailViewConfig,
+                                         cellViewConfig: HouseMemberCellConfig,
                                          switchHouse: @escaping () -> Void) -> UIViewController {
         
         let manager = HouseDetailManager(isCreator: isCreator,
@@ -31,11 +32,11 @@ public final class HouseKitComposite {
                                                      switchHouse: switchHouse)
     
         let rootView = HouseDetailRootView(houseName: houseName,
-                                           config: config,
+                                           config: viewConfig,
                                            responder: uiResponder)
         
         let presenter = HouseDetailPresentationAdapter(
-            config: config.houseMemberCellConfig,
+            config: cellViewConfig,
             publisher: memberInfoPublisher,
             responder: makeHouseMemberCellResponder(manager))
         
