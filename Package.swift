@@ -10,14 +10,19 @@ let package = Package(
         .library(
             name: "NnHouseKit",
             targets: ["NnHouseKit"]),
+        // MARK: HouseDetail
         .library(name: "HouseDetailUI",
                  targets: ["HouseDetailUI"]),
         .library(name: "HouseDetailLogic",
                  targets: ["HouseDetailLogic"]),
+        // MARK: HouseSelect
         .library(name: "HouseSelectUI",
                  targets: ["HouseSelectUI"]),
         .library(name: "HouseSelectLogic",
                  targets: ["HouseSelectLogic"]),
+        // MARK: HouseSearch
+        .library(name: "HouseSearchUI",
+                 targets: ["HouseSearchUI"]),
         .library(name: "HouseSearchLogic",
                  targets: ["HouseSearchLogic"]),
     ],
@@ -62,11 +67,17 @@ let package = Package(
             dependencies: ["HouseSelectLogic", "TestHelpers"]),
         // MARK: HouseSearch
         .target(
+            name: "HouseSearchUI",
+            dependencies: ["HouseSearchLogic", "NnUIViewKitPackage"]),
+        .target(
             name: "HouseSearchLogic",
             dependencies: ["NnHousehold"]),
         .testTarget(
             name: "HouseSearchLogicTests",
             dependencies: ["HouseSearchLogic", "TestHelpers"]),
+        .testTarget(
+            name: "HouseSearchUITests",
+            dependencies: ["HouseSearchUI", "TestHelpers"]),
         // MARK: - TestHelpers
         .target(
             name: "TestHelpers",

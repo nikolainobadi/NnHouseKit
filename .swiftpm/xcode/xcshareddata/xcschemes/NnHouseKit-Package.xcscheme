@@ -244,6 +244,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseSearchUI"
+               BuildableName = "HouseSearchUI"
+               BlueprintName = "HouseSearchUI"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -359,6 +373,16 @@
                BlueprintIdentifier = "HouseSearchLogicTests"
                BuildableName = "HouseSearchLogicTests"
                BlueprintName = "HouseSearchLogicTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseSearchUITests"
+               BuildableName = "HouseSearchUITests"
+               BlueprintName = "HouseSearchUITests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
