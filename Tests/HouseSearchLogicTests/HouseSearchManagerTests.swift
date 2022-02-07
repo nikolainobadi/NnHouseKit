@@ -20,8 +20,9 @@ final class HouseSearchManagerTests: XCTestCase {
     
     func test_toggleSearchBy() {
         let (sut, _, remote) = makeSUT()
+        let byHouseName = false
        
-        sut.toggleSearchBy()
+        sut.changeSearchParameter(byHouseName)
         sut.searchForHouse("")
         
         remote.checkByHouseName(isByHouse: false)

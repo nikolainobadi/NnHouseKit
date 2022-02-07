@@ -27,8 +27,8 @@ public final class HouseSearchManager {
 // MARK: - SearchViewResponder
 extension HouseSearchManager {
     
-    public func toggleSearchBy() {
-        searchByHouse.toggle()
+    public func changeSearchParameter(_ byHouseName: Bool) {
+        searchByHouse = byHouseName
     }
     
     public func searchForHouse(_ text: String) {
