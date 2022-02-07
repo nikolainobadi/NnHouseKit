@@ -13,12 +13,17 @@ public final class HouseSearchVC: NiblessViewController {
     // MARK: - Properties
     private let searchView: UIView
     private let tableVC: UIViewController
+    private let backgroundColor: UIColor?
     
     
     // MARK: - Init
-    public init(searchView: UIView, tableVC: UIViewController) {
+    public init(searchView: UIView,
+                tableVC: UIViewController,
+                backgroundColor: UIColor? = .systemBackground) {
+        
         self.searchView = searchView
         self.tableVC = tableVC
+        self.backgroundColor = backgroundColor
         super.init(hasTextFields: true)
     }
     
@@ -40,8 +45,7 @@ private extension HouseSearchVC {
         view.addSubview(searchView)
         view.addSubview(tableVC.view)
         navigationItem.title = "House Search"
-        // MARK: - TODO
-        // set view.backgroundColor
+        view.backgroundColor = backgroundColor
         
         searchView.anchor(view.safeTopAnchor,
                           left: view.leftAnchor,

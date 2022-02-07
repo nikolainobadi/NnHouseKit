@@ -11,11 +11,12 @@ import HouseSearchUI
 final class HouseSearchVCTests: XCTestCase {
     
     func test_viewDidLoad() {
-        let sut = makeSUT()
+        let sut = makeSUT(.orange)
         
         XCTAssertEqual(sut.children.count, 1)
         XCTAssertEqual(sut.view.subviews.count, 2)
         XCTAssertEqual(sut.navigationItem.title, "House Search")
+        XCTAssertEqual(sut.view.backgroundColor, .orange)
     }
 }
 
@@ -23,7 +24,9 @@ final class HouseSearchVCTests: XCTestCase {
 // MARK: - SUT
 extension HouseSearchVCTests {
     
-    func makeSUT() -> HouseSearchVC {
-        HouseSearchVC(searchView: UIView(), tableVC: UIViewController())
+    func makeSUT(backgroundColor: UIColor?) -> HouseSearchVC {
+        HouseSearchVC(searchView: UIView(),
+                      tableVC: UIViewController(),
+                      backgroundColor: backgroundColor)
     }
 }
