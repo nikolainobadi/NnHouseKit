@@ -40,6 +40,8 @@ private extension HouseSearchVC {
         view.addSubview(searchView)
         view.addSubview(tableVC.view)
         navigationItem.title = "House Search"
+        // MARK: - TODO
+        // set view.backgroundColor
         
         searchView.anchor(view.safeTopAnchor,
                           left: view.leftAnchor,
