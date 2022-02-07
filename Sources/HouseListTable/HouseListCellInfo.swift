@@ -8,6 +8,7 @@
 import UIKit
 
 public protocol HouseListCellInfo {
+    var id: String { get }
     var name: String { get }
     var details: String { get }
     var detailsColor: UIColor? { get }

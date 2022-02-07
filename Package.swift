@@ -52,7 +52,7 @@ let package = Package(
         // MARK: HouseDetail
         .target(
             name: "HouseDetailUI",
-            dependencies: ["HouseDetailLogic", "NnUIViewKitPackage"]),
+            dependencies: ["HouseDetailLogic", "NnUIViewKitPackage", "HouseListTable"]),
         .target(
             name: "HouseDetailLogic",
             dependencies: ["NnHousehold"]),

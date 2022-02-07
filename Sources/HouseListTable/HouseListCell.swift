@@ -40,7 +40,7 @@ extension HouseListCell {
         rootView.configureButton(title: viewModel.buttonText,
                                  color: viewModel.buttonColor,
                                  showButton: viewModel.showButton,
-                                 action: { viewModel.buttonAction() })
+                                 action: { viewModel.buttonAction()  })
     }
 }
 

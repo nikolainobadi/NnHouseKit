@@ -11,36 +11,35 @@ import NnHousehold
 public struct HouseListCellViewModel {
     
     // MARK: - Properties
-    public let name: String
-    
-    public let details: String
-    public let detailsColor: UIColor?
-
-    public let buttonText: String
-    public let buttonColor: UIColor?
-    public let showButton: Bool
-    public let canDelete: Bool
+    private let info: HouseListCellInfo
+    private let responder: HouseListCellResponder
     
     
     // MARK: - Init
-//    public init(name: String, details: String, showButton: Bool, canDelete: Bool) {
-//        self.name = name
-//        self.details = details
-//        self.showButton = showButton
-//        self.canDelete = canDelete
-//    }
+    public init(info: HouseListCellInfo, responder: HouseListCellResponder) {
+        self.info = info
+        self.responder = responder
+    }
 }
 
 
-// MARK: - Helper Methods
+// MARK: - View Model
 public extension HouseListCellViewModel {
     
+    var name: String { info.name }
+    var details: String { info.details }
+    var detailsColor: UIColor? { info.detailsColor }
+    var buttonText: String { info.buttonText }
+    var buttonColor: UIColor? { info.buttonColor }
+    var showButton: Bool { info.showButton }
+    var canDelete: Bool { info.canDelete }
+    
     func delete() {
-        
+        responder.delete(info.id)
     }
     
     func buttonAction() {
-        
+        responder.buttonAction(info.id)
     }
 }
 
@@ -48,4 +47,19 @@ public extension HouseListCellViewModel {
 // MARK: - Hashable
 extension HouseListCellViewModel: Hashable {
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(info.id)
+    }
+    
+    public static func == (lhs: HouseListCellViewModel, rhs: HouseListCellViewModel) -> Bool {
+        
+        lhs.info.id == rhs.info.id
+    }
 }
+
+
+// MARK: - Dependencies
+public typealias HouseListCellResponder = (
+    delete: (String) -> Void,
+    buttonAction: (String) -> Void
+)

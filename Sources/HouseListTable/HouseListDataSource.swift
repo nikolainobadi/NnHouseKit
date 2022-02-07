@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Nikolai Nobadi on 2/7/22.
 //
@@ -76,6 +76,3 @@ extension HouseListDataSource: UITableViewDelegate {
         tableView.getSize(xs: 65, xl: 75, xxl: 80)
     }
 }
-
-
-
