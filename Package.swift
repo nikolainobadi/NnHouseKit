@@ -10,6 +10,9 @@ let package = Package(
         .library(
             name: "NnHouseKit",
             targets: ["NnHouseKit"]),
+        .library(
+            name: "HouseListTable",
+            targets: ["HouseListTable"]),
         // MARK: HouseDetail
         .library(name: "HouseDetailUI",
                  targets: ["HouseDetailUI"]),
@@ -39,6 +42,13 @@ let package = Package(
         .target(
             name: "NnHousehold",
             dependencies: []),
+        // MARK: HouseListTable
+        .target(
+            name: "HouseListTable",
+            dependencies: ["NnHousehold"]),
+        .testTarget(
+            name: "HouseListTableTests",
+            dependencies: ["HouseListTable", "TestHelpers"]),
         // MARK: HouseDetail
         .target(
             name: "HouseDetailUI",
