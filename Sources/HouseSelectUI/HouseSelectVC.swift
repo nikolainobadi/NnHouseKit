@@ -24,6 +24,12 @@ final class HouseSelectVC: NiblessViewController {
     
     
     // MARK: - Life Cycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        navigationItem.title = "House Select"
+    }
+    
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
