@@ -6,8 +6,8 @@
 //
 
 import XCTest
+import TestHelpers
 @testable import HouseSelectUI
-
 
 final class HouseSelectRootViewTests: XCTestCase {
     

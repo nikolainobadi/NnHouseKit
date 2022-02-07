@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import TestHelpers
 import NnHousehold
 import HouseSelectLogic
 

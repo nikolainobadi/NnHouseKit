@@ -63,16 +63,16 @@ extension HouseDetailPresentationAdapterTests {
                                   expectedStatus: "",
                                   expectedShowButton: true,
                                   expectedButtonText: "Make Admin",
-                                  exectedStatusColor: nil,
-                                  expectedButtonBackgroundColor: nil)
+                                  exectedStatusColor: .label,
+                                  expectedButtonBackgroundColor: .label)
                 
                 self?.verifyModel(third,
                                   expectedName: .thirdName,
                                   expectedStatus: "Admin",
                                   expectedShowButton: true,
                                   expectedButtonText: "Remove Admin",
-                                  exectedStatusColor: nil,
-                                  expectedButtonBackgroundColor: nil)
+                                  exectedStatusColor: .label,
+                                  expectedButtonBackgroundColor: .label)
                 exp.fulfill()
             }
             .store(in: &changes)

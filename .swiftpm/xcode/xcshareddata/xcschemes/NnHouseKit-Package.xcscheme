@@ -216,6 +216,34 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseSearchLogic"
+               BuildableName = "HouseSearchLogic"
+               BlueprintName = "HouseSearchLogic"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "TestHelpers"
+               BuildableName = "TestHelpers"
+               BlueprintName = "TestHelpers"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -321,6 +349,16 @@
                BlueprintIdentifier = "HouseSelectUITests"
                BuildableName = "HouseSelectUITests"
                BlueprintName = "HouseSelectUITests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseSearchLogicTests"
+               BuildableName = "HouseSearchLogicTests"
+               BlueprintName = "HouseSearchLogicTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>

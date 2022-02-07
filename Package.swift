@@ -14,10 +14,12 @@ let package = Package(
                  targets: ["HouseDetailUI"]),
         .library(name: "HouseDetailLogic",
                  targets: ["HouseDetailLogic"]),
-        .library(name: "HouseSelectLogic",
-                 targets: ["HouseSelectLogic"]),
         .library(name: "HouseSelectUI",
                  targets: ["HouseSelectUI"]),
+        .library(name: "HouseSelectLogic",
+                 targets: ["HouseSelectLogic"]),
+        .library(name: "HouseSearchLogic",
+                 targets: ["HouseSearchLogic"]),
     ],
     dependencies: [
         .package(name: "NnUIViewKitPackage",
@@ -25,18 +27,27 @@ let package = Package(
                  branch: "main")
     ],
     targets: [
+        // MARK: HouseKit
         .target(
             name: "NnHouseKit",
             dependencies: ["HouseDetailUI"]),
         .target(
             name: "NnHousehold",
             dependencies: []),
+        // MARK: HouseDetail
         .target(
             name: "HouseDetailUI",
             dependencies: ["HouseDetailLogic", "NnUIViewKitPackage"]),
         .target(
             name: "HouseDetailLogic",
             dependencies: ["NnHousehold"]),
+        .testTarget(
+            name: "HouseDetailUITests",
+            dependencies: ["HouseDetailUI", "TestHelpers"]),
+        .testTarget(
+            name: "HouseDetailLogicTests",
+            dependencies: ["HouseDetailLogic", "TestHelpers"]),
+        // MARK: HouseSelect
         .target(
             name: "HouseSelectUI",
             dependencies: ["HouseSelectLogic", "NnUIViewKitPackage"]),
@@ -44,16 +55,21 @@ let package = Package(
             name: "HouseSelectLogic",
             dependencies: ["NnHousehold"]),
         .testTarget(
-            name: "HouseDetailUITests",
-            dependencies: ["HouseDetailUI"]),
-        .testTarget(
-            name: "HouseDetailLogicTests",
-            dependencies: ["HouseDetailLogic"]),
-        .testTarget(
             name: "HouseSelectUITests",
-            dependencies: ["HouseSelectUI"]),
+            dependencies: ["HouseSelectUI", "TestHelpers"]),
         .testTarget(
             name: "HouseSelectLogicTests",
-            dependencies: ["HouseSelectLogic"]),
+            dependencies: ["HouseSelectLogic", "TestHelpers"]),
+        // MARK: HouseSearch
+        .target(
+            name: "HouseSearchLogic",
+            dependencies: ["NnHousehold"]),
+        .testTarget(
+            name: "HouseSearchLogicTests",
+            dependencies: ["HouseSearchLogic", "TestHelpers"]),
+        // MARK: - TestHelpers
+        .target(
+            name: "TestHelpers",
+            dependencies: ["NnHousehold"]),
     ]
 )
