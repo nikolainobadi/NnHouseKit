@@ -45,7 +45,7 @@ let package = Package(
         // MARK: HouseListTable
         .target(
             name: "HouseListTable",
-            dependencies: ["NnHousehold"]),
+            dependencies: ["NnHousehold", "NnUIViewKitPackage"]),
         .testTarget(
             name: "HouseListTableTests",
             dependencies: ["HouseListTable", "TestHelpers"]),

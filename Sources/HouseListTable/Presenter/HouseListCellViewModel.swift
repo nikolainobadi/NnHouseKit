@@ -56,10 +56,3 @@ extension HouseListCellViewModel: Hashable {
         lhs.info.id == rhs.info.id
     }
 }
-
-
-// MARK: - Dependencies
-public typealias HouseListCellResponder = (
-    delete: (String) -> Void,
-    buttonAction: (String) -> Void
-)

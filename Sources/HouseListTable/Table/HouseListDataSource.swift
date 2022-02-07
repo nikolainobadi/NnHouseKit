@@ -34,11 +34,11 @@ final class HouseListDataSource: UITableViewDiffableDataSource<TableSection, Hou
     
     
     // MARK: - Update
-    func update(_ members: [HouseListCellViewModel]) {
+    func update(_ list: [HouseListCellViewModel]) {
         var snapshot = Snapshot()
 
         snapshot.appendSections([.main])
-        snapshot.appendItems(members)
+        snapshot.appendItems(list)
 
         apply(snapshot)
     }
