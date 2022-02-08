@@ -12,15 +12,15 @@ public final class HouseDetailVC: NiblessViewController {
     
     // MARK: - Properties
     private let tableVC: UIViewController
-    private let presenter: HouseDetailPresenter
+    private let houseName: String
+    private let config: HouseDetailViewConfig
     private let responder: HouseDetailUIResponder
-    
     
     
     // MARK: - Views
     lazy var editHouseButton: UIButton = {
         ShadowButton("Edit", buttonType: .naked)
-            .setColor(presenter.config.editButtonColor,
+            .setColor(config.editButtonColor,
                       backgroundColor: .clear)
             .setFont(.smallDetail, fontName: .markerThin)
             .setAction { [weak self] in
@@ -29,11 +29,11 @@ public final class HouseDetailVC: NiblessViewController {
     }()
     
     lazy var titleLabel: UILabel = {
-        UILabel(presenter.houseName)
+        UILabel(houseName)
             .autoSize()
             .addShadow()
             .setAlignment(.center)
-            .setColor(presenter.config.titleColor)
+            .setColor(config.titleColor)
             .setFontByStyle(.largeTitle)
     }()
     
@@ -41,8 +41,8 @@ public final class HouseDetailVC: NiblessViewController {
         ShadowButton("Show Household Password")
             .padding()
             .setFont(.detail)
-            .setColor(presenter.config.passwordButtonTextColor,
-                      backgroundColor: presenter.config.passwordButtonBackgroundColor)
+            .setColor(config.passwordButtonTextColor,
+                      backgroundColor: config.passwordButtonBackgroundColor)
             .setAction { [weak self] in
                 self?.responder.showPassword()
             }
@@ -52,8 +52,8 @@ public final class HouseDetailVC: NiblessViewController {
         ShadowButton("Switch Household")
             .addBorder()
             .setFont(.largeDetail)
-            .setColor(presenter.config.switchButtonTextColor,
-                      backgroundColor: presenter.config.switchButtonBackgroundColor)
+            .setColor(config.switchButtonTextColor,
+                      backgroundColor: config.switchButtonBackgroundColor)
             .setAction { [weak self] in
                 self?.responder.switchHouse()
             }
@@ -62,11 +62,13 @@ public final class HouseDetailVC: NiblessViewController {
     
     // MARK: - Init
     public init(tableVC: UIViewController,
-                presenter: HouseDetailPresenter,
+                houseName: String,
+                config: HouseDetailViewConfig,
                 responder: HouseDetailUIResponder) {
         
         self.tableVC = tableVC
-        self.presenter = presenter
+        self.houseName = houseName
+        self.config = config
         self.responder = responder
         super.init(hasTextFields: false)
     }
@@ -91,7 +93,7 @@ private extension HouseDetailVC {
         view.addSubview(showPasswordButton)
         view.addSubview(switchButton)
         view.addSubview(tableVC.view)
-        view.backgroundColor = presenter.config.viewBackgroundColor
+        view.backgroundColor = config.viewBackgroundColor
         
         titleLabel.anchor(view.safeTopAnchor,
                           left: view.leftAnchor,
@@ -130,7 +132,3 @@ private extension HouseDetailVC {
 public typealias HouseDetailUIResponder = (editHouse: () -> Void,
                                            switchHouse: () -> Void,
                                            showPassword: () -> Void)
-public protocol HouseDetailPresenter {
-    var houseName: String { get }
-    var config: HouseDetailViewConfig { get }
-}

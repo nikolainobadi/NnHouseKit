@@ -8,12 +8,13 @@
 import UIKit
 import XCTest
 import Combine
+import TestHelpers
 @testable import HouseDetailUI
 
 final class HouseDetailVCTests: XCTestCase {
     
     func test_configDetails() {
-        let (sut, _) = makeSUT()
+        let sut = makeSUT()
 
         XCTAssertEqual(sut.view.backgroundColor, .systemBackground)
         XCTAssertEqual(sut.editHouseButton.titleLabel?.textColor, .white)
@@ -26,7 +27,7 @@ final class HouseDetailVCTests: XCTestCase {
 
     func test_editHouseButton() {
         let exp = expectation(description: "waiting for action...")
-        let (sut, _) = makeSUT(editHouse: { exp.fulfill() })
+        let sut = makeSUT(editHouse: { exp.fulfill() })
 
         sut.editHouseButton.sendActions(for: [.touchUpInside])
 
@@ -35,7 +36,7 @@ final class HouseDetailVCTests: XCTestCase {
 
     func test_showPasswordButton() {
         let exp = expectation(description: "waiting for action...")
-        let (sut, _) = makeSUT(showPassword: { exp.fulfill() })
+        let sut = makeSUT(showPassword: { exp.fulfill() })
 
         sut.showPasswordButton.sendActions(for: [.touchUpInside])
 
@@ -44,7 +45,7 @@ final class HouseDetailVCTests: XCTestCase {
 
     func test_switchButton() {
         let exp = expectation(description: "waiting for action...")
-        let (sut, _) = makeSUT(switchHouse: { exp.fulfill() })
+        let sut = makeSUT(switchHouse: { exp.fulfill() })
 
         sut.switchButton.sendActions(for: [.touchUpInside])
 
@@ -59,16 +60,16 @@ extension HouseDetailVCTests {
     func makeSUT(editHouse: @escaping () -> Void = { },
                  switchHouse: @escaping () -> Void = { },
                  showPassword: @escaping () -> Void = { },
-                 file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseDetailVC, presenter: MockHouseDetailPresenter) {
-
-        let presenter = MockHouseDetailPresenter(config: makeConfig())
+                 file: StaticString = #filePath, line: UInt = #line) -> HouseDetailVC {
+        
         let sut = HouseDetailVC(tableVC: UIViewController(),
-                                presenter: presenter,
+                                houseName: getTestName(.testHouseName),
+                                config: makeConfig(),
                                 responder: (editHouse, switchHouse, showPassword))
 
         trackForMemoryLeaks(sut, file: file, line: line)
 
-        return (sut, presenter)
+        return sut
     }
     
     func makeConfig() -> HouseDetailViewConfig {
@@ -81,19 +82,3 @@ extension HouseDetailVCTests {
                               switchButtonBackgroundColor: .red)
     }
 }
-
-
-// MARK: - Helper Classes
-extension HouseDetailVCTests {
-    
-    class MockHouseDetailPresenter: HouseDetailPresenter {
-        var houseName: String = "testName"
-        var config: HouseDetailViewConfig
-        
-        init(config: HouseDetailViewConfig) {
-            self.config = config
-        }
-    }
-}
-
-
