@@ -11,7 +11,7 @@ import HouseSearchUI
 final class HouseSearchVCTests: XCTestCase {
     
     func test_viewDidLoad() {
-        let sut = makeSUT(.orange)
+        let sut = makeSUT(backgroundColor: .orange)
         
         XCTAssertEqual(sut.children.count, 1)
         XCTAssertEqual(sut.view.subviews.count, 2)

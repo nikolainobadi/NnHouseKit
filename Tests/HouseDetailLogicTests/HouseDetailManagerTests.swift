@@ -51,14 +51,26 @@ extension HouseDetailManagerTests {
             alerts.completeWithDetails(name: "", password: "")
         }
     }
+    
+    func test_editHouse_nameTakenError() {
+        let newName = newName
+        let (sut, alerts, remote) = makeSUT(isCreator: true)
 
-    func test_editHouse_uploadError() {
+        expect(alerts, toShowError: .houseNameTaken) {
+            sut.editHouse()
+            alerts.completeWithDetails(name: newName, password: "")
+            remote.dupeComplete(with: .houseNameTaken)
+        }
+    }
+
+    func test_editHouse_networkError() {
         let newName = newName
         let (sut, alerts, remote) = makeSUT(isCreator: true)
 
         expect(alerts, toShowError: .uploadFailed) {
             sut.editHouse()
             alerts.completeWithDetails(name: newName, password: "")
+            remote.dupeComplete(with: nil)
             remote.complete(with: HouseDetailError.uploadFailed)
         }
     }
@@ -70,6 +82,7 @@ extension HouseDetailManagerTests {
         expect(alerts, toShowError: nil) {
             sut.editHouse()
             alerts.completeWithDetails(name: newName, password: "")
+            remote.dupeComplete(with: nil)
             remote.complete(with: nil, newName: newName)
         }
 
@@ -84,6 +97,7 @@ extension HouseDetailManagerTests {
         expect(alerts, toShowError: nil) {
             sut.editHouse()
             alerts.completeWithDetails(name: newName, password: newPassword)
+            remote.dupeComplete(with: nil)
             remote.complete(with: nil, newName: newName, newPassword: newPassword)
         }
 
@@ -318,13 +332,20 @@ extension HouseDetailManagerTests {
     }
 
     class HouseholdUploaderSpy: HouseholdUploader {
-
+    
         var house: Household?
-        private var completion: ((Error?) -> Void)?
+        private var dupeCompletion: ((HouseDetailError?) -> Void)?
+        private var uploadCompletion: ((Error?) -> Void)?
+        
+        func checkForDuplicates(name: String,
+                                completion: @escaping (HouseDetailError?) -> Void) {
+            
+            self.dupeCompletion = completion
+        }
 
         func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
             self.house = house
-            self.completion = completion
+            self.uploadCompletion = completion
         }
 
         func complete(with error: Error?,
@@ -332,7 +353,7 @@ extension HouseDetailManagerTests {
                       newPassword: String? = nil,
                       file: StaticString = #filePath, line: UInt = #line) {
             guard
-                let completion = completion
+                let completion = uploadCompletion
             else { return XCTFail("No request made...", file: file, line: line) }
 
             if let newName = newName {
@@ -356,10 +377,21 @@ extension HouseDetailManagerTests {
         
         func complete(with error: Error?,
                       file: StaticString = #filePath, line: UInt = #line) {
+            
             guard
-                let completion = completion
+                let completion = uploadCompletion
             else { return XCTFail("No request made...", file: file, line: line) }
-
+            
+            completion(error)
+        }
+        
+        func dupeComplete(with error: HouseDetailError?,
+                          file: StaticString = #filePath,
+                          line: UInt = #line) {
+            guard
+                let completion = dupeCompletion
+            else { return XCTFail("No request made...", file: file, line: line) }
+            
             completion(error)
         }
     }

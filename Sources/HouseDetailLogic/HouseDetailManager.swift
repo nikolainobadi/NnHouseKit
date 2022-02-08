@@ -84,7 +84,13 @@ private extension HouseDetailManager {
             let updatedHouse = makeUpdatedHouse(name: name, password: password)
         else { return showError(HouseDetailError.noChange) }
         
-        uploadHouse(updatedHouse)
+        checkForDuplicates(newName: name) { [weak self] error in
+            if let error = error {
+                self?.showError(error)
+            } else {
+                self?.uploadHouse(updatedHouse)
+            }
+        }
     }
     
     func makeUpdatedHouse(name: String, password: String) -> Household? {
@@ -108,6 +114,7 @@ private extension HouseDetailManager {
     func uploadHouse(_ updatedHouse: Household) {
         let passwordChanged = house.password != updatedHouse.password
         
+        
         remote.uploadHouse(updatedHouse) { [weak self] error in
             if let error = error {
                 self?.showError(error)
@@ -115,6 +122,14 @@ private extension HouseDetailManager {
                 self?.showPasswordChangedAlert(passwordChanged)
             }
         }
+    }
+    
+    func checkForDuplicates(newName: String,
+                            completion: @escaping (HouseDetailError?) -> Void) {
+        
+        if newName != house.name {
+            remote.checkForDuplicates(name: newName, completion: completion)
+        } else { return completion(nil) }
     }
     
     func showPasswordChangedAlert(_ passwordChanged: Bool) {
@@ -133,6 +148,7 @@ public protocol HouseholdCache {
 }
 
 public protocol HouseholdUploader {
+    func checkForDuplicates(name: String, completion: @escaping (HouseDetailError?) -> Void)
     func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void)
 }
 

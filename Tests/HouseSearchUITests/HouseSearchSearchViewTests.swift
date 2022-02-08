@@ -9,7 +9,6 @@ import XCTest
 import TestHelpers
 @testable import HouseSearchUI
 
-
 final class HouseSearchSearchViewTests: XCTestCase {
     
     // MARK: - Properties
@@ -23,6 +22,8 @@ extension HouseSearchSearchViewTests {
 
     func test_init_startingValues() {
         let sut = makeSUT()
+        sut.layoutSubviews() // to run code for setupContraints
+        
         
         XCTAssertEqual(sut.searchField.placeholder, byHouseName)
         XCTAssertEqual(sut.searchControl.selectedSegmentIndex, 0)

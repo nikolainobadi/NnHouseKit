@@ -41,14 +41,6 @@ extension HouseSearchManager {
     }
 }
 
-// MARK: - UIResponder
-extension HouseSearchManager {
-    
-    func joinHouse() {
-        
-    }
-}
-
 
 // MARK: - Dependencies
 public protocol HouseSearchAlerts {
