@@ -28,6 +28,11 @@ let package = Package(
                  targets: ["HouseSearchUI"]),
         .library(name: "HouseSearchLogic",
                  targets: ["HouseSearchLogic"]),
+        // MARK: JoinHouse
+//        .library(name: "JoinHouseUI",
+//                 targets: ["JoinHouseUI"]),
+        .library(name: "JoinHouseLogic",
+                 targets: ["JoinHouseLogic"]),
     ],
     dependencies: [
         .package(name: "NnUIViewKitPackage",
@@ -90,6 +95,19 @@ let package = Package(
         .testTarget(
             name: "HouseSearchUITests",
             dependencies: ["HouseSearchUI", "TestHelpers"]),
+        // MARK: JoinHouse
+//        .target(
+//            name: "HouseSearchUI",
+//            dependencies: ["HouseSearchLogic", "NnUIViewKitPackage"]),
+        .target(
+            name: "JoinHouseLogic",
+            dependencies: ["NnHousehold"]),
+        .testTarget(
+            name: "JoinHouseLogicTests",
+            dependencies: ["JoinHouseLogic", "TestHelpers"]),
+//        .testTarget(
+//            name: "HouseSearchUITests",
+//            dependencies: ["HouseSearchUI", "TestHelpers"]),
         // MARK: - TestHelpers
         .target(
             name: "TestHelpers",

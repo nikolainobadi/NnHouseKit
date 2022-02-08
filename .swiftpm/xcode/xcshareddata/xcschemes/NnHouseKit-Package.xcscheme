@@ -272,6 +272,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "JoinHouseLogic"
+               BuildableName = "JoinHouseLogic"
+               BlueprintName = "JoinHouseLogic"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -407,6 +421,16 @@
                BlueprintIdentifier = "HouseListTableTests"
                BuildableName = "HouseListTableTests"
                BlueprintName = "HouseListTableTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "JoinHouseLogicTests"
+               BuildableName = "JoinHouseLogicTests"
+               BlueprintName = "JoinHouseLogicTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
