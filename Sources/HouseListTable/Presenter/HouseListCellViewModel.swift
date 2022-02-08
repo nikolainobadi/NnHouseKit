@@ -35,7 +35,7 @@ public extension HouseListCellViewModel {
     var canDelete: Bool { info.canDelete }
     
     func delete() {
-        responder.delete(info.id)
+        responder.delete?(info.id)
     }
     
     func buttonAction() {

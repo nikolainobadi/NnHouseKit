@@ -55,7 +55,7 @@ private extension HouseListPresentationAdapter {
 
 // MARK: - Dependencies
 public typealias HouseListCellResponder = (
-    delete: (String) -> Void,
+    delete: ((String) -> Void)?,
     buttonAction: (String) -> Void
 )
 

@@ -84,27 +84,31 @@ public final class HouseKitComposite {
     
     
     // MARK: HouseSeearch
-    public static func makeHouseSarchVC(config: SearchViewConfig,
+    public static func makeHouseSearchVC(config: SearchViewConfig,
                                         backgroundColor: UIColor?,
                                         policy: HouseSelectPolicy,
                                         alerts: HouseSearchAlerts,
                                         remote: HouseSearchRemoteAPI,
                                         cellInfoPublisher: HouseListCellInfoPublisher,
-                                        showJoinHouse: @escaping () -> Void) -> UIViewController {
+                                        showJoinHouse: @escaping (String) -> Void) -> UIViewController {
         
-//        let manager = HouseSearchManager(alerts: alerts,
-//                                         remote: remote)
-//        let searchView = HouseSearchSearchView(
-//            config: config,
-//            responder: (changeSearchParameter: manager.changeSearchParameter(_:),
-//                        searchForHouse: manager.searchForHouse(_:)))
-//
-//
-//        return HouseSearchVC(searchView: searchView,
-//                             tableVC: tableVC,
-//                             backgroundColor: backgroundColor)
+        let manager = HouseSearchManager(alerts: alerts,
+                                         remote: remote)
+        let searchView = HouseSearchSearchView(
+            config: config,
+            responder: (changeSearchParameter: manager.changeSearchParameter(_:),
+                        searchForHouse: manager.searchForHouse(_:)))
         
-        return UIViewController()
+        let presenter = HouseListPresentationAdapter(
+            title: "",
+            publisher: cellInfoPublisher,
+            responder: (delete: nil, buttonAction: showJoinHouse))
+        
+        let tableVC = HouseListTableVC(presenter: presenter)
+        
+        return HouseSearchVC(searchView: searchView,
+                             tableVC: tableVC,
+                             backgroundColor: backgroundColor)
     }
 }
 
