@@ -215,17 +215,6 @@ extension HouseListPresentationAdapterTests {
 // MARK: - Helper Structs & Classes
 extension HouseListPresentationAdapterTests {
     
-    struct TestHouseListCellInfo: HouseListCellInfo {
-        var id: String = ""
-        var name: String = ""
-        var details: String = ""
-        var detailsColor: UIColor? = .label
-        var buttonText: String = ""
-        var buttonColor: UIColor? = nil
-        var showButton: Bool = false
-        var canDelete: Bool = false
-    }
-    
     class MockHouseListCellInfoPublisher: HouseListCellInfoPublisher {
         
         @Published var infoList = [HouseListCellInfo]()

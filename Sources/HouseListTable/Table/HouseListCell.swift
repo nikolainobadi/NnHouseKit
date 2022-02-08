@@ -10,7 +10,7 @@ import UIKit
 final class HouseListCell: UITableViewCell {
     
     // MARK: - Views
-    private let rootView = HouseListCellContentView()
+    let rootView = HouseListCellContentView()
     
     
     // MARK: - Init

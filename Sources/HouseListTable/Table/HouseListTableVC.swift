@@ -21,7 +21,7 @@ public final class HouseListTableVC: NiblessViewController {
     
     
     // MARK: - Views
-    lazy var table: UITableView = {
+    public lazy var table: UITableView = {
         let table = UITableView()
         
         table.separatorColor = .label
@@ -33,7 +33,7 @@ public final class HouseListTableVC: NiblessViewController {
     
     
     // MARK: - Init
-    init(presenter: HouseListPresenter) {
+    public init(presenter: HouseListPresenter) {
         self.presenter = presenter
         super.init(hasTextFields: false)
     }
@@ -44,6 +44,7 @@ public final class HouseListTableVC: NiblessViewController {
         super.viewDidLoad()
         
         setupView()
+        setupTable()
         startObservers()
     }
 }
