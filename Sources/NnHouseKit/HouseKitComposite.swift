@@ -21,7 +21,6 @@ public final class HouseKitComposite {
                                          houseCache: HouseholdCache,
                                          cellInfoPublisher: HouseListCellInfoPublisher,
                                          viewConfig: HouseDetailViewConfig,
-                                         cellViewConfig: HouseMemberCellConfig,
                                          switchHouse: @escaping () -> Void) -> UIViewController {
         
         let manager = HouseDetailManager(isCreator: isCreator,
