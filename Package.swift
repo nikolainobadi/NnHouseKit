@@ -38,7 +38,7 @@ let package = Package(
         // MARK: HouseKit
         .target(
             name: "NnHouseKit",
-            dependencies: ["HouseDetailUI"]),
+            dependencies: ["HouseDetailUI", "HouseSelectUI"]),
         .target(
             name: "NnHousehold",
             dependencies: []),

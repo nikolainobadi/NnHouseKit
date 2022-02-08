@@ -34,7 +34,7 @@ public struct HouseSelectViewModel {
     
     
     // MARK: - Init
-    init(selectType: HouseSelectType,
+    public init(selectType: HouseSelectType,
          createHouse: @escaping () -> Void,
          showJoinHouse: @escaping () -> Void) {
         

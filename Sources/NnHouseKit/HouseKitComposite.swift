@@ -5,15 +5,21 @@
 //  Created by Nikolai Nobadi on 2/4/22.
 //
 
+// MARK: - Imports
 import UIKit
 import NnHousehold
-import HouseDetailUI
 import HouseListTable
+
+import HouseDetailUI
 import HouseDetailLogic
+
+import HouseSelectUI
+import HouseSelectLogic
 
 public final class HouseKitComposite {
     private init() { }
     
+    // MARK: HouseDetail
     public static func makeHouseDetailVC(isCreator: Bool,
                                          houseName: String,
                                          alerts: HouseDetailAlerts,
@@ -42,6 +48,35 @@ public final class HouseKitComposite {
                              houseName: houseName,
                              config: viewConfig,
                              responder: uiResponder)
+    }
+    
+    
+    // MARK: HouseSelect
+    public static func makeHouseSelectVC(selectType: HouseSelectType,
+                                         config: HouseSelectViewConfig,
+                                         policy: HouseSelectPolicy,
+                                         alerts: HouseSelectAlerts,
+                                         remote: HouseSelectRemoteAPI,
+                                         factory: HouseholdFactory,
+                                         showJoinHouse: @escaping () -> Void,
+                                         showDeleteHouse: @escaping () -> Void,
+                                         finished: @escaping () -> Void) -> UIViewController {
+        
+        let manager = HouseSelectManager(policy: policy,
+                                         alerts: alerts,
+                                         remote: remote,
+                                         factory: factory,
+                                         finished: finished,
+                                         showDeleteHouse: showDeleteHouse)
+        
+        let viewModel = HouseSelectViewModel(selectType: selectType,
+                                             createHouse: manager.createNewHouse,
+                                             showJoinHouse: showJoinHouse)
+        
+        let rootView = HouseSelectRootView(config: config,
+                                           viewModel: viewModel)
+        
+        return HouseSelectVC(rootView: rootView, finished: finished)
     }
 }
 

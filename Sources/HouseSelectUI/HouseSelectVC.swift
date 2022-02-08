@@ -8,7 +8,7 @@
 import UIKit
 import NnUIViewKitPackage
 
-final class HouseSelectVC: NiblessViewController {
+public final class HouseSelectVC: NiblessViewController {
     
     // MARK: - Properties
     private let rootView: UIView
@@ -16,7 +16,7 @@ final class HouseSelectVC: NiblessViewController {
     
     
     // MARK: - Init
-    init(rootView: UIView, finished: @escaping () -> Void) {
+    public init(rootView: UIView, finished: @escaping () -> Void) {
         self.rootView = rootView
         self.finished = finished
         super.init(hasTextFields: false)
@@ -24,13 +24,13 @@ final class HouseSelectVC: NiblessViewController {
     
     
     // MARK: - Life Cycle
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         navigationItem.title = "House Select"
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    public override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
         if isMovingFromParent {
@@ -38,7 +38,7 @@ final class HouseSelectVC: NiblessViewController {
         }
     }
     
-    override func loadView() {
+    public override func loadView() {
         view = rootView
     }
 }
