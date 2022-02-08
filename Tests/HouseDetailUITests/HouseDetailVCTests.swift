@@ -8,23 +8,47 @@
 import UIKit
 import XCTest
 import Combine
-import HouseDetailUI
+@testable import HouseDetailUI
 
 final class HouseDetailVCTests: XCTestCase {
     
-    func test_init_emptyValues() {
-        let (_, view, presenter) = makeSUT()
+    func test_configDetails() {
+        let (sut, _) = makeSUT()
 
-        XCTAssertNil(view.members)
-        XCTAssertNil(presenter.viewModels)
+        XCTAssertEqual(sut.view.backgroundColor, .systemBackground)
+        XCTAssertEqual(sut.editHouseButton.titleLabel?.textColor, .white)
+        XCTAssertEqual(sut.titleLabel.textColor, .blue)
+        XCTAssertEqual(sut.showPasswordButton.titleLabel?.textColor, .white)
+        XCTAssertEqual(sut.showPasswordButton.backgroundColor, .blue)
+        XCTAssertEqual(sut.switchButton.titleLabel?.textColor, .white)
+        XCTAssertEqual(sut.switchButton.backgroundColor, .red)
     }
 
-    func test_viewModelObserver() {
-        let (sut, view, presenter) = makeSUT()
-        let _ = sut.view
+    func test_editHouseButton() {
+        let exp = expectation(description: "waiting for action...")
+        let (sut, _) = makeSUT(editHouse: { exp.fulfill() })
 
-        presenter.viewModels = makeViewModels()
-        XCTAssertNotNil(view.members)
+        sut.editHouseButton.sendActions(for: [.touchUpInside])
+
+        waitForExpectations(timeout: 0.1)
+    }
+
+    func test_showPasswordButton() {
+        let exp = expectation(description: "waiting for action...")
+        let (sut, _) = makeSUT(showPassword: { exp.fulfill() })
+
+        sut.showPasswordButton.sendActions(for: [.touchUpInside])
+
+        waitForExpectations(timeout: 0.1)
+    }
+
+    func test_switchButton() {
+        let exp = expectation(description: "waiting for action...")
+        let (sut, _) = makeSUT(switchHouse: { exp.fulfill() })
+
+        sut.switchButton.sendActions(for: [.touchUpInside])
+
+        waitForExpectations(timeout: 0.1)
     }
 }
 
@@ -32,20 +56,29 @@ final class HouseDetailVCTests: XCTestCase {
 // MARK: - SUT
 extension HouseDetailVCTests {
     
-    func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseDetailVC, view: MockHouseDetailInterface, presenter: MockHouseDetailPresenter) {
+    func makeSUT(editHouse: @escaping () -> Void = { },
+                 switchHouse: @escaping () -> Void = { },
+                 showPassword: @escaping () -> Void = { },
+                 file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseDetailVC, presenter: MockHouseDetailPresenter) {
 
-        let rootView = MockHouseDetailInterface()
-        let presenter = MockHouseDetailPresenter()
-        let sut = HouseDetailVC(rootView: rootView,
-                                presenter: presenter)
+        let presenter = MockHouseDetailPresenter(config: makeConfig())
+        let sut = HouseDetailVC(tableVC: UIViewController(),
+                                presenter: presenter,
+                                responder: (editHouse, switchHouse, showPassword))
 
         trackForMemoryLeaks(sut, file: file, line: line)
 
-        return (sut, rootView, presenter)
+        return (sut, presenter)
     }
-
-    func makeViewModels() -> [HouseMemberCellViewModel] {
-       []
+    
+    func makeConfig() -> HouseDetailViewConfig {
+        HouseDetailViewConfig(viewBackgroundColor: .systemBackground,
+                              editButtonColor: .white,
+                              titleColor: .blue,
+                              passwordButtonTextColor: .white,
+                              passwordButtonBackgroundColor: .blue,
+                              switchButtonTextColor: .white,
+                              switchButtonBackgroundColor: .red)
     }
 }
 
@@ -53,22 +86,14 @@ extension HouseDetailVCTests {
 // MARK: - Helper Classes
 extension HouseDetailVCTests {
     
-    class MockHouseDetailInterface: UIView, HouseDetailInterface {
-        
-        var members: [HouseMemberCellViewModel]?
-        var editHouseBarButton: UIBarButtonItem { UIBarButtonItem() }
-        
-        func updateList(_ members: [HouseMemberCellViewModel]) {
-            self.members = members
-        }
-    }
-    
     class MockHouseDetailPresenter: HouseDetailPresenter {
+        var houseName: String = "testName"
+        var config: HouseDetailViewConfig
         
-        @Published var viewModels: [HouseMemberCellViewModel]?
-        
-        var cellModelPublisher: AnyPublisher<[HouseMemberCellViewModel], Never> {
-            $viewModels.compactMap({ $0 }).eraseToAnyPublisher()
+        init(config: HouseDetailViewConfig) {
+            self.config = config
         }
     }
 }
+
+

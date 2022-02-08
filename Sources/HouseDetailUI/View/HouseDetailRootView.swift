@@ -125,7 +125,7 @@ public final class HouseDetailRootView: NiblessView {
 
 
 // MARK: - Interface
-extension HouseDetailRootView: HouseDetailInterface {
+extension HouseDetailRootView {
     
     public var editHouseBarButton: UIBarButtonItem {
         UIBarButtonItem(customView: editHouseButton)
@@ -147,9 +147,3 @@ private extension HouseDetailRootView {
                            forCellReuseIdentifier: CELL_ID)
     }
 }
-
-
-// MARK: - Dependencies
-public typealias HouseDetailUIResponder = (editHouse: () -> Void,
-                                           switchHouse: () -> Void,
-                                           showPassword: () -> Void)

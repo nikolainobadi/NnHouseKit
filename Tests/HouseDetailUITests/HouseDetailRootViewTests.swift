@@ -12,13 +12,6 @@ import HouseDetailLogic
 
 final class HouseDetailRootViewTests: XCTestCase {
     
-    func test_init_tableEmpty() {
-        let sut = makeSUT()
-        let table = sut.tableView
-
-        XCTAssertEqual(table.numberOfSections, 0)
-    }
-
     func test_configDetails() {
         let sut = makeSUT()
 

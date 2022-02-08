@@ -29,7 +29,7 @@ public final class HouseDetailPresentationAdapter {
 
 
 // MARK: - Presenter
-extension HouseDetailPresentationAdapter: HouseDetailPresenter {
+extension HouseDetailPresentationAdapter {
     
     public var cellModelPublisher: AnyPublisher<[HouseMemberCellViewModel], Never> {
         publisher.viewModelPublisher
