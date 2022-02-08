@@ -11,14 +11,17 @@ import NnHousehold
 public final class HouseListPresentationAdapter {
     
     // MARK: - Properties
+    private let title: String
     private let responder: HouseListCellResponder
     private let publisher: HouseListCellInfoPublisher
     
 
     // MARK: - Init
-    public init(responder: HouseListCellResponder,
-                publisher: HouseListCellInfoPublisher) {
+    public init(title: String,
+                publisher: HouseListCellInfoPublisher,
+                responder: HouseListCellResponder) {
         
+        self.title = title
         self.responder = responder
         self.publisher = publisher
     }
@@ -26,8 +29,9 @@ public final class HouseListPresentationAdapter {
 
 
 // MARK: - Presenter
-extension HouseListPresentationAdapter {
+extension HouseListPresentationAdapter: HouseListPresenter {
     
+    public var sectionTitle: String { title }
     public var cellModelPublisher: AnyPublisher<[HouseListCellViewModel], Never> {
         
         publisher.viewModelPublisher

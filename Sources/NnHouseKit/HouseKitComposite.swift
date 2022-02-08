@@ -8,6 +8,7 @@
 import UIKit
 import NnHousehold
 import HouseDetailUI
+import HouseListTable
 import HouseDetailLogic
 
 public final class HouseKitComposite {
@@ -18,7 +19,7 @@ public final class HouseKitComposite {
                                          alerts: HouseDetailAlerts,
                                          remote: HouseholdUploader,
                                          houseCache: HouseholdCache,
-                                         memberInfoPublisher: HouseMemberViewInfoPublisher,
+                                         cellInfoPublisher: HouseListCellInfoPublisher,
                                          viewConfig: HouseDetailViewConfig,
                                          cellViewConfig: HouseMemberCellConfig,
                                          switchHouse: @escaping () -> Void) -> UIViewController {
@@ -30,17 +31,18 @@ public final class HouseKitComposite {
         
         let uiResponder = makeHouseDetailUIResponder(manager,
                                                      switchHouse: switchHouse)
+        let presenter = HouseListPresentationAdapter(
+            title: "Household Members",
+            publisher: cellInfoPublisher,
+            responder: (delete: manager.deleteMember(memberId:),
+                        buttonAction: manager.toggleAdminStatus(memberId:)))
+        
+        let tableVC = HouseListTableVC(presenter: presenter)
     
-        let rootView = HouseDetailRootView(houseName: houseName,
-                                           config: viewConfig,
-                                           responder: uiResponder)
-        
-        let presenter = HouseDetailPresentationAdapter(
-            config: cellViewConfig,
-            publisher: memberInfoPublisher,
-            responder: makeHouseMemberCellResponder(manager))
-        
-        return HouseDetailVC(rootView: rootView, presenter: presenter)
+        return HouseDetailVC(tableVC: tableVC,
+                             houseName: houseName,
+                             config: viewConfig,
+                             responder: uiResponder)
     }
 }
 
@@ -50,18 +52,8 @@ private extension HouseKitComposite {
     
     static func makeHouseDetailUIResponder(_ manager: HouseDetailManager,
                                            switchHouse: @escaping () -> Void) -> HouseDetailUIResponder {
-        
         return (editHouse: manager.editHouse,
                 switchHouse: switchHouse,
                 showPassword: manager.showPassword)
-    }
-    
-    static func makeHouseMemberCellResponder(_ manager: HouseDetailManager) -> HouseMemberCellResponder {
-        
-        return (deleteMember: { id in
-            manager.deleteMember(memberId: id)
-        },toggleAdminStatus: { id in
-            manager.toggleAdminStatus(memberId: id)
-        })
     }
 }
