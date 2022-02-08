@@ -57,7 +57,7 @@ public final class HouseSelectRootView: NiblessView {
             .setColor(config.joinButtonTextColor,
                       backgroundColor: config.joinButtonBackgroundColor)
             .setAction { [weak self] in
-                self?.viewModel.showJoinHouse()
+                self?.viewModel.joinHouse()
             }
     }()
     

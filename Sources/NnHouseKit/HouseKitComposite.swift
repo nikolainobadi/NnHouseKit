@@ -16,6 +16,9 @@ import HouseDetailLogic
 import HouseSelectUI
 import HouseSelectLogic
 
+import HouseSearchUI
+import HouseSearchLogic
+
 public final class HouseKitComposite {
     private init() { }
     
@@ -58,7 +61,7 @@ public final class HouseKitComposite {
                                          alerts: HouseSelectAlerts,
                                          remote: HouseSelectRemoteAPI,
                                          factory: HouseholdFactory,
-                                         showJoinHouse: @escaping () -> Void,
+                                         joinHouse: @escaping () -> Void,
                                          showDeleteHouse: @escaping () -> Void,
                                          finished: @escaping () -> Void) -> UIViewController {
         
@@ -71,12 +74,37 @@ public final class HouseKitComposite {
         
         let viewModel = HouseSelectViewModel(selectType: selectType,
                                              createHouse: manager.createNewHouse,
-                                             showJoinHouse: showJoinHouse)
+                                             joinHouse: joinHouse)
         
         let rootView = HouseSelectRootView(config: config,
                                            viewModel: viewModel)
         
         return HouseSelectVC(rootView: rootView, finished: finished)
+    }
+    
+    
+    // MARK: HouseSeearch
+    public static func makeHouseSarchVC(config: SearchViewConfig,
+                                        backgroundColor: UIColor?,
+                                        policy: HouseSelectPolicy,
+                                        alerts: HouseSearchAlerts,
+                                        remote: HouseSearchRemoteAPI,
+                                        cellInfoPublisher: HouseListCellInfoPublisher,
+                                        showJoinHouse: @escaping () -> Void) -> UIViewController {
+        
+//        let manager = HouseSearchManager(alerts: alerts,
+//                                         remote: remote)
+//        let searchView = HouseSearchSearchView(
+//            config: config,
+//            responder: (changeSearchParameter: manager.changeSearchParameter(_:),
+//                        searchForHouse: manager.searchForHouse(_:)))
+//
+//
+//        return HouseSearchVC(searchView: searchView,
+//                             tableVC: tableVC,
+//                             backgroundColor: backgroundColor)
+        
+        return UIViewController()
     }
 }
 

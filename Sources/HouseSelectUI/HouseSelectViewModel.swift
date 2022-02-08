@@ -10,7 +10,7 @@ public struct HouseSelectViewModel {
     // MARK: - Properties
     let selectType: HouseSelectType
     let createHouse: () -> Void
-    let showJoinHouse: () -> Void
+    let joinHouse: () -> Void
     
     var title: String {
         switch selectType {
@@ -35,12 +35,12 @@ public struct HouseSelectViewModel {
     
     // MARK: - Init
     public init(selectType: HouseSelectType,
-         createHouse: @escaping () -> Void,
-         showJoinHouse: @escaping () -> Void) {
+                createHouse: @escaping () -> Void,
+                joinHouse: @escaping () -> Void) {
         
         self.selectType = selectType
         self.createHouse = createHouse
-        self.showJoinHouse = showJoinHouse
+        self.joinHouse = joinHouse
     }
 }
 
