@@ -41,6 +41,7 @@ extension JoinHouseViewModel: JoinHousePresenter {
     public var showButton: Bool { false }
     public var buttonTextColor: UIColor? { nil }
     public var buttonBackgroundColor: UIColor? { nil }
+    public var viewBackgroundColor: UIColor? { nil }
     
     public func verifyPassword() {
         joinHouse(password)

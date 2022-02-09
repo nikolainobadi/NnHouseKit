@@ -62,7 +62,7 @@ public final class JoinHouseRootView: NiblessView {
     // MARK: - Init
     public init(presenter: JoinHousePresenter) {
         self.presenter = presenter
-        super.init(frame: .zero)
+        super.init(frame: .zero, color: presenter.viewBackgroundColor)
     }
     
     
@@ -133,6 +133,7 @@ public protocol JoinHousePresenter {
     var showButton: Bool { get }
     var buttonTextColor: UIColor? { get }
     var buttonBackgroundColor: UIColor? { get }
+    var viewBackgroundColor: UIColor? { get }
     
     func verifyPassword()
 }
