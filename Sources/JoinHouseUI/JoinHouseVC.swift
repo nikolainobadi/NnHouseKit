@@ -27,6 +27,12 @@ public final class JoinHouseVC: NiblessViewController {
     
     
     // MARK: - Life Cycle
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        startObservers()
+    }
+    
     public override func loadView() {
         view = rootView
     }
