@@ -33,6 +33,11 @@ let package = Package(
                  targets: ["JoinHouseUI"]),
         .library(name: "JoinHouseLogic",
                  targets: ["JoinHouseLogic"]),
+        // MARK: DeleteHouse
+        .library(name: "DeleteHouseUI",
+                 targets: ["DeleteHouseUI"]),
+        .library(name: "DeleteHouseLogic",
+                 targets: ["DeleteHouseLogic"]),
     ],
     dependencies: [
         .package(name: "NnUIViewKitPackage",
@@ -91,11 +96,11 @@ let package = Package(
             name: "HouseSearchLogic",
             dependencies: ["NnHousehold"]),
         .testTarget(
-            name: "HouseSearchLogicTests",
-            dependencies: ["HouseSearchLogic", "TestHelpers"]),
-        .testTarget(
             name: "HouseSearchUITests",
             dependencies: ["HouseSearchUI", "TestHelpers"]),
+        .testTarget(
+            name: "HouseSearchLogicTests",
+            dependencies: ["HouseSearchLogic", "TestHelpers"]),
         // MARK: JoinHouse
         .target(
             name: "JoinHouseUI",
@@ -104,11 +109,24 @@ let package = Package(
             name: "JoinHouseLogic",
             dependencies: ["NnHousehold"]),
         .testTarget(
-            name: "JoinHouseLogicTests",
-            dependencies: ["JoinHouseLogic", "TestHelpers"]),
-        .testTarget(
             name: "JoinHouseUITests",
             dependencies: ["JoinHouseUI", "TestHelpers"]),
+        .testTarget(
+            name: "JoinHouseLogicTests",
+            dependencies: ["JoinHouseLogic", "TestHelpers"]),
+        // MARK: DeleteHouse
+        .target(
+            name: "DeleteHouseUI",
+            dependencies: ["DeleteHouseLogic", "NnUIViewKitPackage"]),
+        .target(
+            name: "DeleteHouseLogic",
+            dependencies: ["NnHousehold"]),
+        .testTarget(
+            name: "DeleteHouseUITests",
+            dependencies: ["DeleteHouseUI", "TestHelpers"]),
+        .testTarget(
+            name: "DeleteHouseLogicTests",
+            dependencies: ["DeleteHouseLogic", "TestHelpers"]),
         // MARK: - TestHelpers
         .target(
             name: "TestHelpers",
