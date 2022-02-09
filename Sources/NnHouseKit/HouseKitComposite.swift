@@ -19,6 +19,9 @@ import HouseSelectLogic
 import HouseSearchUI
 import HouseSearchLogic
 
+import JoinHouseUI
+import JoinHouseLogic
+
 public final class HouseKitComposite {
     private init() { }
     
@@ -109,6 +112,30 @@ public final class HouseKitComposite {
         return HouseSearchVC(searchView: searchView,
                              tableVC: tableVC,
                              backgroundColor: backgroundColor)
+    }
+    
+    
+    // MARK: JoinHouse
+    static func makeJoinHouseVC(user: HouseholdUser,
+                                houseToJoin: Household,
+                                alerts: JoinHouseAlerts,
+                                remote: JoinHouseRemoteAPI,
+                                factory: HouseholdMemberFactory,
+                                finished: @escaping () -> Void) -> UIViewController {
+        
+        let manager = JoinHouseManager(user: user,
+                                       houseToJoin: houseToJoin,
+                                       alerts: alerts,
+                                       remote: remote,
+                                       factory: factory,
+                                       finished: finished)
+        
+        let viewModel = JoinHouseViewModel(
+            joinHouse: manager.joinHouse(password:))
+        
+        let rootView = JoinHouseRootView(presenter: viewModel)
+        
+        return JoinHouseVC(store: viewModel, rootView: rootView)
     }
 }
 

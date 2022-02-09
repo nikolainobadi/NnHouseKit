@@ -45,7 +45,8 @@ let package = Package(
             name: "NnHouseKit",
             dependencies: ["HouseDetailUI",
                            "HouseSelectUI",
-                           "HouseSearchUI"]),
+                           "HouseSearchUI",
+                           "JoinHouseUI"]),
         .target(
             name: "NnHousehold",
             dependencies: []),

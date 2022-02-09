@@ -16,7 +16,7 @@ public final class JoinHouseViewModel {
     
     
     // MARK: - Init
-    init(joinHouse: @escaping (String) -> Void) {
+    public init(joinHouse: @escaping (String) -> Void) {
         self.joinHouse = joinHouse
     }
 }
