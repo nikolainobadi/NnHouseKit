@@ -1,11 +1,9 @@
 //
-//  File.swift
+//  HouseholdUser.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/8/22.
 //
-
-import NnHousehold
 
 public protocol HouseholdUser {
     var id: String { get }
