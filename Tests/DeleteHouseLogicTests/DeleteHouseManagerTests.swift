@@ -18,7 +18,22 @@ final class DeleteHouseManagerTests: XCTestCase {
 // MARK: - SUT
 extension DeleteHouseManagerTests {
     
-    func makeSUT(file: StaticString = #filePath, line: UInt = #line) {
+    func makeSUT(file: StaticString = #filePath, line: UInt = #line) -> (sut: DeleteHouseManager, remote: DeleteHouseRemoteAPISpy) {
+        
+        let remote = DeleteHouseRemoteAPISpy()
+        let sut = DeleteHouseManager(remote: remote)
+        
+        trackForMemoryLeaks(sut, file: file, line: line)
+        
+        return (sut, remote)
+    }
+}
+
+
+// MARK: - Helper Classes
+extension DeleteHouseManagerTests {
+    
+    class DeleteHouseRemoteAPISpy: DeleteHouseRemoteAPI {
         
     }
 }

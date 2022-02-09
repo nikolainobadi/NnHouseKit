@@ -8,13 +8,28 @@
 public final class DeleteHouseManager {
     
     // MARK: - Properies
+    private let remote: DeleteHouseRemoteAPI
     
     
     // MARK: - Init
-    init() {
+    public init(remote: DeleteHouseRemoteAPI) {
+        self.remote = remote
+    }
+}
+
+
+// MARK: - Loader
+extension DeleteHouseManager: DeleteHouseLoader {
+    
+    func loadData(completion: @escaping (Result<String, DeleteHouseError>) -> Void) {
+        
         
     }
 }
 
 
 // MARK: - Dependencies
+public protocol DeleteHouseRemoteAPI {
+    
+}
+

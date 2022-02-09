@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import DeleteHouseLogic
 import NnUIViewKitPackage
 
 public final class DeleteHouseVC: NiblessViewController {
@@ -99,10 +100,6 @@ private extension DeleteHouseVC {
 
 
 // MARK: - Dependencies
-public protocol DeleteHouseLoader {
-    func loadData(completion: @escaping (Result<String, DeleteHouseError>) -> Void)
-}
-
 public protocol DeleteHouseAlerts {
     func showError(_ error: Error, completion: (() -> Void)?)
 }

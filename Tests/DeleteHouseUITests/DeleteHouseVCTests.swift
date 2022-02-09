@@ -8,6 +8,7 @@
 import XCTest
 import TestHelpers
 import DeleteHouseUI
+import DeleteHouseLogic
 
 final class DeleteHouseVCTests: XCTestCase {
     
