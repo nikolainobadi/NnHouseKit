@@ -21,7 +21,7 @@ public final class DeleteHouseManager {
 // MARK: - Loader
 extension DeleteHouseManager: DeleteHouseLoader {
     
-    func loadData(completion: @escaping (Result<String, DeleteHouseError>) -> Void) {
+    public func loadData(completion: @escaping (Result<String, DeleteHouseError>) -> Void) {
         
         
     }

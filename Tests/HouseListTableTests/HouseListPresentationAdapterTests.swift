@@ -170,9 +170,9 @@ extension HouseListPresentationAdapterTests {
 
         let publisher = MockHouseListCellInfoPublisher()
         let sut = HouseListPresentationAdapter(
-            responder: (delete, buttonAction),
-            publisher: publisher)
-        
+            title: "",
+            publisher: publisher,
+            responder: (delete, buttonAction))
         
         trackForMemoryLeaks(sut, file: file, line: line)
 

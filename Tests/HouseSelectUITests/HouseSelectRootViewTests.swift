@@ -33,7 +33,7 @@ final class HouseSelectRootViewTests: XCTestCase {
     
     func test_joinHouse() {
         let exp = expectation(description: "waiting for join...")
-        let sut = makeSUT(showJoinHouse: { exp.fulfill() })
+        let sut = makeSUT(joinHouse: { exp.fulfill() })
         
         sut.joinButton.sendActions(for: [.touchUpInside])
         
@@ -47,12 +47,12 @@ extension HouseSelectRootViewTests {
     
     func makeSUT(selectType: HouseSelectType = .noHouse,
                  createHouse: @escaping () -> Void = { },
-                 showJoinHouse: @escaping () -> Void = { },
+                 joinHouse: @escaping () -> Void = { },
                  file: StaticString = #filePath, line: UInt = #line) -> HouseSelectRootView {
         
         let viewModel = HouseSelectViewModel(selectType: .noHouse,
                                              createHouse: createHouse,
-                                             showJoinHouse: showJoinHouse)
+                                             joinHouse: joinHouse)
         let sut = HouseSelectRootView(config: HouseSelectViewConfig(),
                                       viewModel: viewModel)
         
