@@ -58,7 +58,7 @@ public final class HouseKitComposite {
     
     
     // MARK: HouseSelect
-    public static func makeHouseSelectVC(selectType: HouseSelectType,
+    public static func makeHouseSelectVC(selectType: HouseholdSelectType,
                                          config: HouseSelectViewConfig,
                                          policy: HouseSelectPolicy,
                                          alerts: HouseSelectAlerts,

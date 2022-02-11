@@ -8,7 +8,7 @@
 public struct HouseSelectViewModel {
     
     // MARK: - Properties
-    let selectType: HouseSelectType
+    let selectType: HouseholdSelectType
     let createHouse: () -> Void
     let joinHouse: () -> Void
     
@@ -34,7 +34,7 @@ public struct HouseSelectViewModel {
     
     
     // MARK: - Init
-    public init(selectType: HouseSelectType,
+    public init(selectType: HouseholdSelectType,
                 createHouse: @escaping () -> Void,
                 joinHouse: @escaping () -> Void) {
         

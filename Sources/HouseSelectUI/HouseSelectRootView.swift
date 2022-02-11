@@ -14,7 +14,7 @@ public final class HouseSelectRootView: NnView {
     private let config: HouseSelectViewConfig
     private let viewModel: HouseSelectViewModel
     
-    private var selectType: HouseSelectType { viewModel.selectType }
+    private var selectType: HouseholdSelectType { viewModel.selectType }
     
     
     // MARK: - Views

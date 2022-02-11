@@ -45,7 +45,7 @@ final class HouseSelectRootViewTests: XCTestCase {
 // MARK: - SUT
 extension HouseSelectRootViewTests {
     
-    func makeSUT(selectType: HouseSelectType = .noHouse,
+    func makeSUT(selectType: HouseholdSelectType = .noHouse,
                  createHouse: @escaping () -> Void = { },
                  joinHouse: @escaping () -> Void = { },
                  file: StaticString = #filePath, line: UInt = #line) -> HouseSelectRootView {
