@@ -12,13 +12,11 @@ public final class HouseSelectVC: NnViewController {
     
     // MARK: - Properties
     private let rootView: UIView
-    private let finished: () -> Void
-    
+
     
     // MARK: - Init
-    public init(rootView: UIView, finished: @escaping () -> Void) {
+    public init(rootView: UIView) {
         self.rootView = rootView
-        self.finished = finished
         super.init(hasTextFields: false)
     }
     
@@ -28,14 +26,6 @@ public final class HouseSelectVC: NnViewController {
         super.viewDidLoad()
         
         navigationItem.title = "House Select"
-    }
-    
-    public override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        if isMovingFromParent {
-            finished()
-        }
     }
     
     public override func loadView() {

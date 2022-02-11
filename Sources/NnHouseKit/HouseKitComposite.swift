@@ -66,13 +66,13 @@ public final class HouseKitComposite {
                                          factory: HouseholdFactory,
                                          joinHouse: @escaping () -> Void,
                                          showDeleteHouse: @escaping () -> Void,
-                                         finished: @escaping () -> Void) -> UIViewController {
+                                         reloadData: @escaping () -> Void) -> UIViewController {
         
         let manager = HouseSelectManager(policy: policy,
                                          alerts: alerts,
                                          remote: remote,
                                          factory: factory,
-                                         finished: finished,
+                                         finished: reloadData,
                                          showDeleteHouse: showDeleteHouse)
         
         let viewModel = HouseSelectViewModel(selectType: selectType,
@@ -82,7 +82,7 @@ public final class HouseKitComposite {
         let rootView = HouseSelectRootView(config: config,
                                            viewModel: viewModel)
         
-        return HouseSelectVC(rootView: rootView, finished: finished)
+        return HouseSelectVC(rootView: rootView)
     }
     
     
