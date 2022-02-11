@@ -33,15 +33,10 @@ let package = Package(
                  targets: ["JoinHouseUI"]),
         .library(name: "JoinHouseLogic",
                  targets: ["JoinHouseLogic"]),
-        // MARK: DeleteHouse
-        .library(name: "DeleteHouseUI",
-                 targets: ["DeleteHouseUI"]),
-        .library(name: "DeleteHouseLogic",
-                 targets: ["DeleteHouseLogic"]),
     ],
     dependencies: [
-        .package(name: "NnUIViewKitPackage",
-                 url: "https://github.com/nikolainobadi/NnUIViewKitPackage",
+        .package(name: "NnUIKitHelpers",
+                 url: "https://github.com/nikolainobadi/NnUIKitHelpers.git",
                  branch: "main")
     ],
     targets: [
@@ -58,14 +53,14 @@ let package = Package(
         // MARK: HouseListTable
         .target(
             name: "HouseListTable",
-            dependencies: ["NnHousehold", "NnUIViewKitPackage"]),
+            dependencies: ["NnHousehold", "NnUIKitHelpers"]),
         .testTarget(
             name: "HouseListTableTests",
             dependencies: ["HouseListTable", "TestHelpers"]),
         // MARK: HouseDetail
         .target(
             name: "HouseDetailUI",
-            dependencies: ["HouseDetailLogic", "NnUIViewKitPackage", "HouseListTable"]),
+            dependencies: ["HouseDetailLogic", "NnUIKitHelpers", "HouseListTable"]),
         .target(
             name: "HouseDetailLogic",
             dependencies: ["NnHousehold"]),
@@ -78,7 +73,7 @@ let package = Package(
         // MARK: HouseSelect
         .target(
             name: "HouseSelectUI",
-            dependencies: ["HouseSelectLogic", "NnUIViewKitPackage"]),
+            dependencies: ["HouseSelectLogic", "NnUIKitHelpers"]),
         .target(
             name: "HouseSelectLogic",
             dependencies: ["NnHousehold"]),
@@ -91,7 +86,7 @@ let package = Package(
         // MARK: HouseSearch
         .target(
             name: "HouseSearchUI",
-            dependencies: ["HouseSearchLogic", "NnUIViewKitPackage"]),
+            dependencies: ["HouseSearchLogic", "NnUIKitHelpers"]),
         .target(
             name: "HouseSearchLogic",
             dependencies: ["NnHousehold"]),
@@ -104,7 +99,7 @@ let package = Package(
         // MARK: JoinHouse
         .target(
             name: "JoinHouseUI",
-            dependencies: ["JoinHouseLogic", "NnUIViewKitPackage"]),
+            dependencies: ["JoinHouseLogic", "NnUIKitHelpers"]),
         .target(
             name: "JoinHouseLogic",
             dependencies: ["NnHousehold"]),
@@ -114,20 +109,7 @@ let package = Package(
         .testTarget(
             name: "JoinHouseLogicTests",
             dependencies: ["JoinHouseLogic", "TestHelpers"]),
-        // MARK: DeleteHouse
-        .target(
-            name: "DeleteHouseUI",
-            dependencies: ["DeleteHouseLogic", "NnUIViewKitPackage"]),
-        .target(
-            name: "DeleteHouseLogic",
-            dependencies: ["NnHousehold"]),
-        .testTarget(
-            name: "DeleteHouseUITests",
-            dependencies: ["DeleteHouseUI", "TestHelpers"]),
-        .testTarget(
-            name: "DeleteHouseLogicTests",
-            dependencies: ["DeleteHouseLogic", "TestHelpers"]),
-        // MARK: - TestHelpers
+        // MARK: TestHelpers
         .target(
             name: "TestHelpers",
             dependencies: ["NnHousehold"]),

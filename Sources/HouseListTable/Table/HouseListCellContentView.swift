@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import NnUIViewKitPackage
+import NnUIKitHelpers
 
-final class HouseListCellContentView: NiblessView {
+final class HouseListCellContentView: NnView {
     
     // MARK: - Properties
     private var buttonAction: (() -> Void)?
@@ -27,7 +27,7 @@ final class HouseListCellContentView: NiblessView {
             .setFontByStyle(.smallDetail)
     }()
     
-    lazy var cellButton: ShadowButton = {
+    lazy var cellButton: UIButton = {
         ShadowButton()
             .setColor(.white, backgroundColor: .black)
             .setFont(.detail)

@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "NnUIViewKitPackage",
-        "repositoryURL": "https://github.com/nikolainobadi/NnUIViewKitPackage",
+        "package": "NnUIKitHelpers",
+        "repositoryURL": "https://github.com/nikolainobadi/NnUIKitHelpers.git",
         "state": {
           "branch": "main",
-          "revision": "c4d4c39558a8d6956753a696bf89c747f1f838b6",
+          "revision": "0697de3bc466fb989ad069122ddb75034e1c5485",
           "version": null
         }
       }

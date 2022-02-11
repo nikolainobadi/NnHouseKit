@@ -7,9 +7,9 @@
 
 import UIKit
 import Combine
-import NnUIViewKitPackage
+import NnUIKitHelpers
 
-public final class HouseListTableVC: NiblessViewController {
+public final class HouseListTableVC: NnViewController {
     
     // MARK: - Properties
     private let presenter: HouseListPresenter

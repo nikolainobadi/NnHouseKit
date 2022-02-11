@@ -1,13 +1,14 @@
 //
-//  File.swift
+//  HouseListDataSource.swift
 //
 //
 //  Created by Nikolai Nobadi on 2/7/22.
 //
 
 import UIKit
+import NnUIKitHelpers
 import HouseDetailLogic
-import NnUIViewKitPackage
+
 
 let CELL_ID = "Cell_ID"
 enum TableSection { case main }

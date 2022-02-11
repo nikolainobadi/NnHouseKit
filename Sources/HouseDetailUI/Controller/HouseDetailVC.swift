@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import NnUIViewKitPackage
+import NnUIKitHelpers
 
-public final class HouseDetailVC: NiblessViewController {
+public final class HouseDetailVC: NnViewController {
     
     // MARK: - Properties
     private let tableVC: UIViewController

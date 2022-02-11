@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  HouseDetailError.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/3/22.
