@@ -1,14 +1,14 @@
 //
-//  File.swift
+//  HouseSearchVC.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/7/22.
 //
 
 import UIKit
-import NnUIViewKitPackage
+import NnUIKitHelpers
 
-public final class HouseSearchVC: NiblessViewController {
+public final class HouseSearchVC: NnViewController {
     
     // MARK: - Properties
     private let searchView: UIView

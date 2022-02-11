@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  SearchViewConfig.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/7/22.
