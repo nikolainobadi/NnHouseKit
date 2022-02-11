@@ -19,10 +19,13 @@ public final class JoinHouseVC: NnViewController {
     
     
     // MARK: - Init
-    public init(store: HousePasswordStore, rootView: JoinHouseInterface) {
+    public init(store: HousePasswordStore,
+                rootView: JoinHouseInterface,
+                fieldsToObserve: [UITextField]) {
+        
         self.store = store
         self.rootView = rootView
-        super.init(hasTextFields: true)
+        super.init(hasTextFields: true, fieldsToObserve: fieldsToObserve)
     }
     
     

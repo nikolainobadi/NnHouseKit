@@ -34,7 +34,9 @@ extension JoinHouseVCTests {
         
         let store = MockHousePasswordStore()
         let rootView = MockJoinHouseInterface()
-        let sut = JoinHouseVC(store: store, rootView: rootView)
+        let sut = JoinHouseVC(store: store,
+                              rootView: rootView,
+                              fieldsToObserve: [])
         
         trackForMemoryLeaks(sut, file: file, line: line)
         

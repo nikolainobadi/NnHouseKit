@@ -43,7 +43,7 @@ public final class JoinHouseRootView: NnView {
             .setFontByStyle(.detail, fontName: .thonburi)
     }()
     
-    lazy var passwordField: ShadowField = {
+    public lazy var passwordField: ShadowField = {
         ShadowField("Enter password...")
     }()
     

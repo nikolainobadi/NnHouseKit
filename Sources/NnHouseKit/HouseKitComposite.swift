@@ -135,7 +135,9 @@ public final class HouseKitComposite {
         
         let rootView = JoinHouseRootView(presenter: viewModel)
         
-        return JoinHouseVC(store: viewModel, rootView: rootView)
+        return JoinHouseVC(store: viewModel,
+                           rootView: rootView,
+                           fieldsToObserve: [rootView.passwordField])
     }
 }
 
