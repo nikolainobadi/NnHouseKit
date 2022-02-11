@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import NnUIViewKitPackage
+import NnUIKitHelpers
 
-public final class HouseSelectVC: NiblessViewController {
+public final class HouseSelectVC: NnViewController {
     
     // MARK: - Properties
     private let rootView: UIView

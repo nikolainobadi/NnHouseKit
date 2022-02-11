@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import NnUIViewKitPackage
+import NnUIKitHelpers
 
-public final class HouseSelectRootView: NiblessView {
+public final class HouseSelectRootView: NnView {
     
     // MARK: - Properties
     private let config: HouseSelectViewConfig
@@ -41,7 +41,7 @@ public final class HouseSelectRootView: NiblessView {
             .setFontByStyle(.detail, fontName: .thonburi)
     }()
     
-    lazy var createButton: ShadowButton = {
+    lazy var createButton: UIButton = {
         ShadowButton("Create")
             .addBorder()
             .setColor(config.createButtonTextColor,
@@ -51,7 +51,7 @@ public final class HouseSelectRootView: NiblessView {
             }
     }()
     
-    lazy var joinButton: ShadowButton = {
+    lazy var joinButton: UIButton = {
         ShadowButton("Join")
             .addBorder()
             .setColor(config.joinButtonTextColor,
