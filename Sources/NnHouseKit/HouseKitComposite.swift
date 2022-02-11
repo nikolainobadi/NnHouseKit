@@ -89,7 +89,6 @@ public final class HouseKitComposite {
     // MARK: HouseSeearch
     public static func makeHouseSearchVC(config: SearchViewConfig,
                                         backgroundColor: UIColor?,
-                                        policy: HouseSelectPolicy,
                                         alerts: HouseSearchAlerts,
                                         remote: HouseSearchRemoteAPI,
                                         cellInfoPublisher: HouseListCellInfoPublisher,
@@ -116,12 +115,12 @@ public final class HouseKitComposite {
     
     
     // MARK: JoinHouse
-    static func makeJoinHouseVC(user: HouseholdUser,
-                                houseToJoin: Household,
-                                alerts: JoinHouseAlerts,
-                                remote: JoinHouseRemoteAPI,
-                                factory: HouseholdMemberFactory,
-                                finished: @escaping () -> Void) -> UIViewController {
+    public static func makeJoinHouseVC(user: HouseholdUser,
+                                       houseToJoin: Household,
+                                       alerts: JoinHouseAlerts,
+                                       remote: JoinHouseRemoteAPI,
+                                       factory: HouseholdMemberFactory,
+                                       finished: @escaping () -> Void) -> UIViewController {
         
         let manager = JoinHouseManager(user: user,
                                        houseToJoin: houseToJoin,

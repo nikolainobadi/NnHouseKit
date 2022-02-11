@@ -62,7 +62,7 @@ public final class HouseSearchSearchView: NnView {
         
         findButton.anchor(searchControl.bottomAnchor,
                           right: rightAnchor,
-                          topConstant: heightPercent(2),
+                          topConstant: heightPercent(6),
                           rightConstant: widthPercent(1),
                           widthConstant: widthPercent(30),
                           heightConstant: buttonHeight)
@@ -70,7 +70,7 @@ public final class HouseSearchSearchView: NnView {
         searchField.anchor(searchControl.bottomAnchor,
                            left: leftAnchor,
                            right: findButton.leftAnchor,
-                           topConstant: heightPercent(2),
+                           topConstant: heightPercent(6),
                            leftConstant: widthPercent(1),
                            rightConstant: widthPercent(2),
                            heightConstant: buttonHeight)
