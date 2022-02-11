@@ -7,9 +7,9 @@
 
 import UIKit
 import Combine
-import NnUIViewKitPackage
+import NnUIKitHelpers
 
-public final class JoinHouseVC: NiblessViewController {
+public final class JoinHouseVC: NnViewController {
     
     // MARK: - Properties
     private let store: HousePasswordStore

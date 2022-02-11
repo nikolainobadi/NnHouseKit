@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  JoinHouseRootView.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/8/22.
@@ -7,9 +7,9 @@
 
 import UIKit
 import Combine
-import NnUIViewKitPackage
+import NnUIKitHelpers
 
-public final class JoinHouseRootView: NiblessView {
+public final class JoinHouseRootView: NnView {
     
     // MARK: - Properties
     private let presenter: JoinHousePresenter
@@ -47,7 +47,7 @@ public final class JoinHouseRootView: NiblessView {
         ShadowField("Enter password...")
     }()
     
-    lazy var joinButton: ShadowButton = {
+    lazy var joinButton: UIButton = {
         ShadowButton("Join")
             .setAlpha(buttonAlpha)
             .setEnabled(false)
