@@ -62,7 +62,7 @@ public final class HouseKitComposite {
                                          config: HouseSelectViewConfig,
                                          policy: HouseSelectPolicy,
                                          alerts: HouseSelectAlerts,
-                                         remote: HouseSelectRemoteAPI,
+                                         remote: HouseholdUploader,
                                          factory: HouseholdFactory,
                                          joinHouse: @escaping () -> Void,
                                          showDeleteHouse: @escaping () -> Void,
