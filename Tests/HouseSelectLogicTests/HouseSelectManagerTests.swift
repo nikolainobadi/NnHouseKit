@@ -9,6 +9,7 @@ import XCTest
 import TestHelpers
 import NnHousehold
 import HouseSelectLogic
+import HouseDetailLogic
 
 final class HouseSelectManagerTests: XCTestCase {
     
@@ -59,21 +60,20 @@ final class HouseSelectManagerTests: XCTestCase {
     
     func test_createHouse_nameTakenError() {
         let (sut, alerts, remote) = makeSUT(canCreate: true)
-        let error = HouseSelectError.houseNameTaken
         
         sut.createNewHouse()
         
         alerts.complete(name: getTestName(.testHouseName),
                         pwd: getTestName(.testHouseName))
         
-        remote.dupeComplete(error: error)
+        remote.dupeComplete(error: .houseNameTaken)
         
         alerts.verifyError(expectedError: .houseNameTaken)
     }
     
     func test_createHouse_uploadError() {
         let (sut, alerts, remote) = makeSUT(canCreate: true)
-        let error = HouseSelectError.uploadFailed
+        let error = HouseDetailError.uploadFailed
         
         sut.createNewHouse()
         
@@ -167,13 +167,13 @@ extension HouseSelectManagerTests {
             completion(name, pwd)
         }
         
-        func verifyError(expectedError: HouseSelectError,
+        func verifyError(expectedError: HouseDetailError,
                          file: StaticString = #filePath, line: UInt = #line) {
             guard
                 let error = error
             else { return XCTFail("no error", file: file, line: line) }
             
-            guard let recievedError = error as? HouseSelectError else {
+            guard let recievedError = error as? HouseDetailError else {
                 return XCTFail("unexpected error", file: file, line: line)
             }
             
@@ -188,26 +188,25 @@ extension HouseSelectManagerTests {
         }
     }
     
-    class HouseSelectRemoteAPISpy: HouseSelectRemoteAPI {
+    class HouseSelectRemoteAPISpy: HouseholdUploader {
         
         private var house: Household?
-        private var dupeCompletion: ((Error?) -> Void)?
+        private var dupeCompletion: ((HouseDetailError?) -> Void)?
         private var uploadCompletion: ((Error?) -> Void)?
         
         func checkForDuplicates(name: String,
-                                completion: @escaping (Error?) -> Void) {
+                                completion: @escaping (HouseDetailError?) -> Void) {
             
             self.dupeCompletion = completion
         }
         
-        func uploadNewHouse(_ house: Household,
-                            completion: @escaping (Error?) -> Void) {
+        func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
             
             self.house = house
             self.uploadCompletion = completion
         }
         
-        func dupeComplete(error: Error?,
+        func dupeComplete(error: HouseDetailError?,
                           file: StaticString = #filePath, line: UInt = #line) {
             guard
                 let completion = dupeCompletion

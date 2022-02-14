@@ -76,7 +76,7 @@ let package = Package(
             dependencies: ["HouseSelectLogic", "NnUIKitHelpers"]),
         .target(
             name: "HouseSelectLogic",
-            dependencies: ["NnHousehold"]),
+            dependencies: ["NnHousehold", "HouseDetailLogic"]),
         .testTarget(
             name: "HouseSelectUITests",
             dependencies: ["HouseSelectUI", "TestHelpers"]),
