@@ -67,10 +67,15 @@ private extension JoinHouseManager {
     }
     
     func makeUpdatedHouseList() -> [Household] {
-        HouseholdAndUserModifier.makeUpdatedHouseList(
-            oldHouse: user.currentHouse,
-            newHouse: houseToJoin,
-            newMember: factory.makeMember())
+        var list = [Household]()
+        
+        if let oldHouse = user.currentHouse {
+            list.append(HouseholdAndUserModifier.removeUser(user, from: oldHouse))
+        }
+        
+        list.append(HouseholdAndUserModifier.addMember(factory.makeMember(), to: houseToJoin))
+        
+        return list
     }
 }
 

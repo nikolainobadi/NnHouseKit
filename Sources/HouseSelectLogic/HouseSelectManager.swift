@@ -13,7 +13,7 @@ public final class HouseSelectManager {
     // MARK: - Properties
     private let policy: HouseSelectPolicy
     private let alerts: HouseSelectAlerts
-    private let remote: HouseholdUploader
+    private let remote: HouseholdAndUserRemoteAPI
     private let factory: HouseholdFactory
     private let finished: () -> Void
     private let showDeleteHouse: () -> Void
@@ -22,7 +22,7 @@ public final class HouseSelectManager {
     // MARK: - Init
     public init(policy: HouseSelectPolicy,
                 alerts: HouseSelectAlerts,
-                remote: HouseholdUploader,
+                remote: HouseholdAndUserRemoteAPI,
                 factory: HouseholdFactory,
                 finished: @escaping () -> Void,
                 showDeleteHouse: @escaping () -> Void) {
@@ -78,13 +78,15 @@ private extension HouseSelectManager {
     func uploadNewHouse(name: String, password: String) {
         let newHouse = factory.makeNewHouse(name: name, password: password)
         
-        remote.uploadHouse(newHouse) { [weak self] error in
-            if let error = error {
-                self?.alerts.showError(error)
-            } else {
-                self?.finished()
-            }
-        }
+//        remote.upload(user: <#T##HouseholdUser#>,
+//                      houses: <#T##[Household]#>) { [weak self] error in
+//
+//            if let error = error {
+//                self?.alerts.showError(error)
+//            } else {
+//                self?.finished()
+//            }
+//        }
     }
 }
 

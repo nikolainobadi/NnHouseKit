@@ -12,15 +12,16 @@ public final class HouseDetailManager {
     // MARK: - Properties
     private let isCreator: Bool
     private let alerts: HouseDetailAlerts
-    private let remote: HouseholdUploader
+    private let remote: HouseDetailRemoteAPI
     private let houseCache: HouseholdCache
     
     private var house: Household { houseCache.house }
     
+    
     // MARK: - Init
     public init(isCreator: Bool,
                 alerts: HouseDetailAlerts,
-                remote: HouseholdUploader,
+                remote: HouseDetailRemoteAPI,
                 houseCache: HouseholdCache) {
         
         self.isCreator = isCreator
@@ -114,7 +115,6 @@ private extension HouseDetailManager {
     func uploadHouse(_ updatedHouse: Household) {
         let passwordChanged = house.password != updatedHouse.password
         
-        
         remote.uploadHouse(updatedHouse) { [weak self] error in
             if let error = error {
                 self?.showError(error)
@@ -126,10 +126,19 @@ private extension HouseDetailManager {
     
     func checkForDuplicates(newName: String,
                             completion: @escaping (HouseDetailError?) -> Void) {
+        guard
+            newName != house.name
+        else { return completion(nil) }
         
-        if newName != house.name {
-            remote.checkForDuplicates(name: newName, completion: completion)
-        } else { return completion(nil) }
+        remote.checkForDuplicates(name: newName) { error in
+            guard let error = error else { return completion(nil) }
+            
+            if error == .nameTaken {
+                completion(.houseNameTaken)
+            } else {
+                completion(.uploadFailed)
+            }
+        }
     }
     
     func showPasswordChangedAlert(_ passwordChanged: Bool) {
@@ -147,8 +156,7 @@ public protocol HouseholdCache {
     var house: Household { get }
 }
 
-public protocol HouseholdUploader {
-    func checkForDuplicates(name: String, completion: @escaping (HouseDetailError?) -> Void)
+public protocol HouseDetailRemoteAPI: DuplcatesRemoteAPI {
     func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void)
 }
 

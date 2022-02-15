@@ -52,17 +52,6 @@ extension HouseDetailManagerTests {
         }
     }
     
-    func test_editHouse_nameTakenError() {
-        let newName = newName
-        let (sut, alerts, remote) = makeSUT(isCreator: true)
-
-        expect(alerts, toShowError: .houseNameTaken) {
-            sut.editHouse()
-            alerts.completeWithDetails(name: newName, password: "")
-            remote.dupeComplete(with: .houseNameTaken)
-        }
-    }
-
     func test_editHouse_networkError() {
         let newName = newName
         let (sut, alerts, remote) = makeSUT(isCreator: true)
@@ -72,6 +61,17 @@ extension HouseDetailManagerTests {
             alerts.completeWithDetails(name: newName, password: "")
             remote.dupeComplete(with: nil)
             remote.complete(with: HouseDetailError.uploadFailed)
+        }
+    }
+
+    func test_editHouse_nameTakenError() {
+        let newName = newName
+        let (sut, alerts, remote) = makeSUT(isCreator: true)
+
+        expect(alerts, toShowError: .houseNameTaken) {
+            sut.editHouse()
+            alerts.completeWithDetails(name: newName, password: "")
+            remote.dupeComplete(with: .nameTaken)
         }
     }
 
@@ -219,11 +219,11 @@ extension HouseDetailManagerTests {
     
     func makeSUT(isCreator: Bool = false,
                  houseCache: HouseholdCache? = nil,
-                 file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseDetailManager, alerts: HouseDetailAlertsSpy, remote: HouseholdUploaderSpy) {
+                 file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseDetailManager, alerts: HouseDetailAlertsSpy, remote: HouseDetailRemoteAPISpy) {
 
         let houseCache = houseCache ?? makeHouseCache()
         let alerts = HouseDetailAlertsSpy()
-        let remote = HouseholdUploaderSpy()
+        let remote = HouseDetailRemoteAPISpy()
         let sut = HouseDetailManager(isCreator: isCreator,
                                      alerts: alerts,
                                      remote: remote,
@@ -344,14 +344,14 @@ extension HouseDetailManagerTests {
         }
     }
 
-    class HouseholdUploaderSpy: HouseholdUploader {
-    
+    class HouseDetailRemoteAPISpy: HouseDetailRemoteAPI {
+        
         var house: Household?
-        private var dupeCompletion: ((HouseDetailError?) -> Void)?
+        private var dupeCompletion: ((DuplicateError?) -> Void)?
         private var uploadCompletion: ((Error?) -> Void)?
         
         func checkForDuplicates(name: String,
-                                completion: @escaping (HouseDetailError?) -> Void) {
+                                completion: @escaping (DuplicateError?) -> Void) {
             
             self.dupeCompletion = completion
         }
@@ -398,7 +398,7 @@ extension HouseDetailManagerTests {
             completion(error)
         }
         
-        func dupeComplete(with error: HouseDetailError?,
+        func dupeComplete(with error: DuplicateError?,
                           file: StaticString = #filePath,
                           line: UInt = #line) {
             guard

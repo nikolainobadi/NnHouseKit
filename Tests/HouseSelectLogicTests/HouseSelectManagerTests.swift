@@ -188,7 +188,7 @@ extension HouseSelectManagerTests {
         }
     }
     
-    class HouseSelectRemoteAPISpy: HouseholdUploader {
+    class HouseSelectRemoteAPISpy: HouseDetailRemoteAPI {
         
         private var house: Household?
         private var dupeCompletion: ((HouseDetailError?) -> Void)?

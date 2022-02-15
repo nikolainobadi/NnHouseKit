@@ -17,22 +17,21 @@ public final class HouseholdAndUserModifier {
         return updatedUser
     }
     
-    public static func makeUpdatedHouseList(oldHouse: Household?,
-                                            newHouse: Household,
-                                            newMember: HouseholdMember) -> [Household] {
-        var list = [Household]()
+    public static func removeUser(_ user: HouseholdUser,
+                                  from house: Household) -> Household {
+        var updatedHouse = house
         
-        if var updatedOldHouse = oldHouse {
-            updatedOldHouse.members = updatedOldHouse.members.filter { $0.id != newMember.id }
-            
-            list.append(updatedOldHouse)
-        }
+        updatedHouse.members = updatedHouse.members.filter { $0.id != user.id }
         
-        var updatedNewHouse = newHouse
+        return updatedHouse
+    }
+    
+    public static func addMember(_ member: HouseholdMember,
+                                 to house: Household) -> Household {
+        var updatedHouse = house
         
-        updatedNewHouse.members.append(newMember)
-        list.append(updatedNewHouse)
+        updatedHouse.members.append(member)
         
-        return list
+        return updatedHouse
     }
 }
