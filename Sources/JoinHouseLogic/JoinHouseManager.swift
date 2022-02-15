@@ -13,7 +13,7 @@ public final class JoinHouseManager {
     private let user: HouseholdUser
     private let houseToJoin: Household
     private let alerts: JoinHouseAlerts
-    private let remote: JoinHouseRemoteAPI
+    private let remote: HouseholdAndUserRemoteAPI
     private let factory: HouseholdMemberFactory
     private let finished: () -> Void
     
@@ -24,7 +24,7 @@ public final class JoinHouseManager {
     public init(user: HouseholdUser,
                 houseToJoin: Household,
                 alerts: JoinHouseAlerts,
-                remote: JoinHouseRemoteAPI,
+                remote: HouseholdAndUserRemoteAPI,
                 factory: HouseholdMemberFactory,
                 finished: @escaping () -> Void) {
         
@@ -82,10 +82,4 @@ public protocol JoinHouseAlerts {
 
 public protocol HouseholdMemberFactory {
     func makeMember() -> HouseholdMember
-}
-
-public protocol JoinHouseRemoteAPI {
-    func upload(user: HouseholdUser,
-                houses: [Household],
-                completion: @escaping (Error?) -> Void)
 }

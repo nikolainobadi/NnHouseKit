@@ -138,10 +138,10 @@ extension JoinHouseManagerTests {
     func makeSUT(user: HouseholdUser? = nil,
                  house: Household? = nil,
                  finished: @escaping () -> Void = { },
-                 file: StaticString = #filePath, line: UInt = #line) -> (sut: JoinHouseManager, alerts: MockJoinHouseAlerts, remote: JoinHouseRemoteAPISpy) {
+                 file: StaticString = #filePath, line: UInt = #line) -> (sut: JoinHouseManager, alerts: MockJoinHouseAlerts, remote: HouseholdAndUserRemoteAPISpy) {
         
         let alerts = MockJoinHouseAlerts()
-        let remote = JoinHouseRemoteAPISpy()
+        let remote = HouseholdAndUserRemoteAPISpy()
         let factory = MockHouseholdMemberFactory(makeMember())
         let sut = JoinHouseManager(user: user ?? makeUser(),
                                    houseToJoin: house ?? makeHouse(),
@@ -200,33 +200,6 @@ extension JoinHouseManagerTests {
         
         func showError(_ error: Error) {
             self.error = error
-        }
-    }
-    
-    class JoinHouseRemoteAPISpy: JoinHouseRemoteAPI {
-        
-        var user: HouseholdUser?
-        var houses: [Household]?
-        private var completion: ((Error?) -> Void)?
-        
-        func upload(user: HouseholdUser,
-                    houses: [Household],
-                    completion: @escaping (Error?) -> Void) {
-            
-            self.user = user
-            self.houses = houses
-            self.completion = completion
-        }
-        
-        func complete(with error: Error?,
-                      file: StaticString = #filePath, line: UInt = #line) {
-            guard
-                let completion = completion
-            else {
-                return XCTFail("no request made", file: file, line: line)
-            }
-            
-            completion(error)
         }
     }
     
