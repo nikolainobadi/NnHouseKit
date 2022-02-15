@@ -5,12 +5,10 @@
 //  Created by Nikolai Nobadi on 2/8/22.
 //
 
-import NnHousehold
-
-final class JoinHouseModifier {
+public final class HouseholdAndUserModifier {
     private init() { }
     
-    static func makeUpdatedUser(_ user: HouseholdUser, houseId: String) -> HouseholdUser {
+    public static func makeUpdatedUser(_ user: HouseholdUser, houseId: String) -> HouseholdUser {
         
         var updatedUser = user
         
@@ -19,9 +17,9 @@ final class JoinHouseModifier {
         return updatedUser
     }
     
-    static func makeUpdatedHouseList(oldHouse: Household?,
-                                     newHouse: Household,
-                                     newMember: HouseholdMember) -> [Household] {
+    public static func makeUpdatedHouseList(oldHouse: Household?,
+                                            newHouse: Household,
+                                            newMember: HouseholdMember) -> [Household] {
         var list = [Household]()
         
         if var updatedOldHouse = oldHouse {

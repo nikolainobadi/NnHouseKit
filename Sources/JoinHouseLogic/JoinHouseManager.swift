@@ -63,11 +63,11 @@ extension JoinHouseManager {
 private extension JoinHouseManager {
     
     func makeUpdatedUser() -> HouseholdUser {
-        JoinHouseModifier.makeUpdatedUser(user, houseId: houseToJoin.id)
+        HouseholdAndUserModifier.makeUpdatedUser(user, houseId: houseToJoin.id)
     }
     
     func makeUpdatedHouseList() -> [Household] {
-        JoinHouseModifier.makeUpdatedHouseList(
+        HouseholdAndUserModifier.makeUpdatedHouseList(
             oldHouse: user.currentHouse,
             newHouse: houseToJoin,
             newMember: factory.makeMember())
