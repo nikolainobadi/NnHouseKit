@@ -10,6 +10,24 @@ import NnHousehold
 
 public extension XCTestCase {
     
+    struct TestHouseholdUser: HouseholdUser {
+        public var id: String
+        public var name: String
+        public var houseId: String
+        public var currentHouse: Household?
+        
+        public init(id: String = "",
+                    name: String = "",
+                    houseId: String = "",
+                    currentHouse: Household? = nil) {
+            
+            self.id = id
+            self.name = name
+            self.houseId = houseId
+            self.currentHouse = currentHouse
+        }
+    }
+    
     struct TestHouse: Household {
         public var id: String
         public var name: String

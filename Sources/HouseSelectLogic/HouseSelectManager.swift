@@ -11,22 +11,25 @@ import HouseDetailLogic
 public final class HouseSelectManager {
     
     // MARK: - Properties
+    private let user: HouseholdUser
     private let policy: HouseSelectPolicy
     private let alerts: HouseSelectAlerts
-    private let remote: HouseholdAndUserRemoteAPI
+    private let remote: HouseSelectRemoteAPI
     private let factory: HouseholdFactory
     private let finished: () -> Void
     private let showDeleteHouse: () -> Void
 
     
     // MARK: - Init
-    public init(policy: HouseSelectPolicy,
+    public init(user: HouseholdUser,
+                policy: HouseSelectPolicy,
                 alerts: HouseSelectAlerts,
-                remote: HouseholdAndUserRemoteAPI,
+                remote: HouseSelectRemoteAPI,
                 factory: HouseholdFactory,
                 finished: @escaping () -> Void,
                 showDeleteHouse: @escaping () -> Void) {
         
+        self.user = user
         self.policy = policy
         self.alerts = alerts
         self.remote = remote
@@ -64,7 +67,8 @@ private extension HouseSelectManager {
         
         remote.checkForDuplicates(name: name) { [weak self] error in
             if let error = error {
-                self?.alerts.showError(error)
+                let errorToShow: HouseDetailError = error == .nameTaken ? .houseNameTaken : .uploadFailed
+                self?.alerts.showError(errorToShow)
             } else {
                 self?.uploadNewHouse(name: name, password: password)
             }
@@ -76,22 +80,32 @@ private extension HouseSelectManager {
     }
     
     func uploadNewHouse(name: String, password: String) {
-        let newHouse = factory.makeNewHouse(name: name, password: password)
+        var houseList = [Household]()
         
-//        remote.upload(user: <#T##HouseholdUser#>,
-//                      houses: <#T##[Household]#>) { [weak self] error in
-//
-//            if let error = error {
-//                self?.alerts.showError(error)
-//            } else {
-//                self?.finished()
-//            }
-//        }
+        if let oldHouse = user.currentHouse {
+            houseList.append(HouseholdAndUserModifier.removeUser(user, from: oldHouse))
+        }
+        
+        let newHouse = factory.makeNewHouse(name: name, password: password)
+        let updatedUser = HouseholdAndUserModifier.makeUpdatedUser(user, houseId: newHouse.id)
+        
+        houseList.append(newHouse)
+        
+        remote.upload(user: updatedUser, houses: houseList) { [weak self] error in
+
+            if let error = error {
+                self?.alerts.showError(error)
+            } else {
+                self?.finished()
+            }
+        }
     }
 }
 
 
 // MARK: - Dependencies
+public typealias HouseSelectRemoteAPI = HouseholdAndUserRemoteAPI & DuplcatesRemoteAPI
+
 public protocol HouseholdFactory {
     func makeNewHouse(name: String, password: String) -> Household
 }

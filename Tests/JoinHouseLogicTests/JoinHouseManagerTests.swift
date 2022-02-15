@@ -187,13 +187,6 @@ extension JoinHouseManagerTests {
 // MARK: - Helper Classes
 extension JoinHouseManagerTests {
     
-    struct TestHouseholdUser: HouseholdUser {
-        var id: String = ""
-        var name: String = ""
-        var houseId: String = ""
-        var currentHouse: Household? = nil
-    }
-    
     class MockJoinHouseAlerts: JoinHouseAlerts {
         
         var error: Error?

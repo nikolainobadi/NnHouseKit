@@ -66,8 +66,7 @@ final class HouseSelectManagerTests: XCTestCase {
         alerts.complete(name: getTestName(.testHouseName),
                         pwd: getTestName(.testHouseName))
         
-        remote.dupeComplete(error: .houseNameTaken)
-        
+        remote.dupeComplete(with: .nameTaken)
         alerts.verifyError(expectedError: .houseNameTaken)
     }
     
@@ -80,28 +79,68 @@ final class HouseSelectManagerTests: XCTestCase {
         alerts.complete(name: getTestName(.testHouseName),
                         pwd: getTestName(.testHouseName))
         
-        remote.dupeComplete(error: nil)
-        remote.uploadComplete(error: error)
+        remote.dupeComplete(with: nil)
+        remote.complete(with: error)
         alerts.verifyError(expectedError: .uploadFailed)
     }
     
-    func test_createHouse_uploadSuccess() {
+    func test_createHouse_uploadSuccess_finished() {
         let exp = expectation(description: "waiting for finished...")
         let (sut, alerts, remote) = makeSUT(canCreate: true, finished: {
             exp.fulfill()
         })
         
-        
         sut.createNewHouse()
-        
         alerts.complete(name: getTestName(.testHouseName),
                         pwd: getTestName(.testHouseName))
         
-        remote.dupeComplete(error: nil)
-        remote.uploadComplete(error: nil)
-        
+        remote.dupeComplete(with: nil)
+        remote.complete(with: nil)
         
         waitForExpectations(timeout: 0.1)
+    }
+    
+    func test_createHouse_uploadSuccess_noOldHouse_uploadedDataVerified() {
+        let (sut, alerts, remote) = makeSUT(canCreate: true)
+        
+        sut.createNewHouse()
+        alerts.complete(name: getTestName(.testHouseName),
+                        pwd: getTestName(.testHouseName))
+        
+        remote.dupeComplete(with: nil)
+        remote.complete(with: nil)
+        
+        guard
+            let user = remote.user,
+            let houses = remote.houses
+        else { return XCTFail() }
+        
+        XCTAssertEqual(houses.count, 1)
+        XCTAssertEqual(user.houseId, houses[0].id)
+    }
+    
+    func test_createHouse_uploadSuccess_withOldHouse_uploadedDataVerified() {
+        let member = makeMember()
+        let house = makeHouse([member])
+        let user = makeUser(house)
+        let (sut, alerts, remote) = makeSUT(user: user, canCreate: true)
+        
+        sut.createNewHouse()
+        alerts.complete(name: getTestName(.testHouseName),
+                        pwd: getTestName(.testHouseName))
+        
+        remote.dupeComplete(with: nil)
+        remote.complete(with: nil)
+        
+        guard
+            let user = remote.user,
+            let houses = remote.houses,
+            let oldHouse = houses.first(where: { $0.id == house.id })
+        else { return XCTFail() }
+        
+        XCTAssertEqual(houses.count, 2)
+        XCTAssertTrue(oldHouse.members.isEmpty)
+        XCTAssertEqual(user.houseId, houses[1].id)
     }
 }
 
@@ -109,15 +148,17 @@ final class HouseSelectManagerTests: XCTestCase {
 // MARK: - SUT
 extension HouseSelectManagerTests {
     
-    func makeSUT(canCreate: Bool = false,
+    func makeSUT(user: HouseholdUser? = nil,
+                 canCreate: Bool = false,
                  finished: @escaping () -> Void = { },
                  showDeleteHouse: @escaping () -> Void = { },
-                 file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseSelectManager, alerts: HouseSelectAlertsSpy, remote: HouseSelectRemoteAPISpy) {
+                 file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseSelectManager, alerts: HouseSelectAlertsSpy, remote: HouseholdAndUserRemoteAPISpy) {
         
         let policy = MockHouseSelectPolicy(canCreate: canCreate)
         let alerts = HouseSelectAlertsSpy()
-        let remote = HouseSelectRemoteAPISpy()
-        let sut = HouseSelectManager(policy: policy,
+        let remote = HouseholdAndUserRemoteAPISpy()
+        let sut = HouseSelectManager(user: user ?? makeUser(),
+                                     policy: policy,
                                      alerts: alerts,
                                      remote: remote,
                                      factory: MockHouseholdFactory(),
@@ -127,6 +168,25 @@ extension HouseSelectManagerTests {
         trackForMemoryLeaks(sut, file: file, line: line)
         
         return (sut, alerts, remote)
+    }
+    
+    func makeUser(_ house: Household? = nil) -> HouseholdUser {
+        TestHouseholdUser(id: getTestName(.testUserId),
+                          name: getTestName(.testUsername),
+                          houseId: house?.id ?? "",
+                          currentHouse: house)
+    }
+    
+    func makeHouse(_ members: [HouseholdMember] = []) -> Household {
+        TestHouse(id: getTestName(.testHouseId),
+                  name: getTestName(.testHouseName),
+                  members: members)
+    }
+    
+    func makeMember() -> HouseholdMember {
+        TestHouseMember(id: getTestName(.testUserId),
+                        name: getTestName(.testUsername),
+                        isAdmin: true)
     }
 }
 
@@ -184,48 +244,7 @@ extension HouseSelectManagerTests {
     class MockHouseholdFactory: HouseholdFactory {
         
         func makeNewHouse(name: String, password: String) -> Household {
-            TestHouse(name: name, password: password)
-        }
-    }
-    
-    class HouseSelectRemoteAPISpy: HouseDetailRemoteAPI {
-        
-        private var house: Household?
-        private var dupeCompletion: ((HouseDetailError?) -> Void)?
-        private var uploadCompletion: ((Error?) -> Void)?
-        
-        func checkForDuplicates(name: String,
-                                completion: @escaping (HouseDetailError?) -> Void) {
-            
-            self.dupeCompletion = completion
-        }
-        
-        func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
-            
-            self.house = house
-            self.uploadCompletion = completion
-        }
-        
-        func dupeComplete(error: HouseDetailError?,
-                          file: StaticString = #filePath, line: UInt = #line) {
-            guard
-                let completion = dupeCompletion
-            else {
-                return XCTFail("no request made...", file: file, line: line)
-            }
-
-            completion(error)
-        }
-        
-        func uploadComplete(error: Error?,
-                      file: StaticString = #filePath, line: UInt = #line) {
-            guard
-                let completion = uploadCompletion, house != nil
-            else {
-                return XCTFail("no request made...", file: file, line: line)
-            }
-
-            completion(error)
+            TestHouse(id: "new", name: name, password: password)
         }
     }
 }

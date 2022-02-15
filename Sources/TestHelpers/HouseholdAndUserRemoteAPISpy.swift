@@ -13,6 +13,7 @@ public final class HouseholdAndUserRemoteAPISpy {
     public var user: HouseholdUser?
     public var houses: [Household]?
     
+    private var dupeCompletion: ((DuplicateError?) -> Void)?
     private var completion: ((Error?) -> Void)?
     
     public init() { }
@@ -38,6 +39,26 @@ extension HouseholdAndUserRemoteAPISpy: HouseholdAndUserRemoteAPI {
         else {
             return XCTFail("no request made", file: file, line: line)
         }
+        
+        completion(error)
+    }
+}
+
+
+extension HouseholdAndUserRemoteAPISpy: DuplcatesRemoteAPI {
+    
+    public func checkForDuplicates(name: String,
+                                   completion: @escaping (DuplicateError?) -> Void) {
+        
+        self.dupeCompletion = completion
+    }
+    
+    public func dupeComplete(with error: DuplicateError?,
+                             file: StaticString = #filePath,
+                             line: UInt = #line) {
+        guard
+            let completion = dupeCompletion
+        else { return XCTFail("No request made...", file: file, line: line) }
         
         completion(error)
     }

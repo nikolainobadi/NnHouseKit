@@ -58,17 +58,19 @@ public final class HouseKitComposite {
     
     
     // MARK: HouseSelect
-    public static func makeHouseSelectVC(selectType: HouseholdSelectType,
+    public static func makeHouseSelectVC(user: HouseholdUser,
+                                         selectType: HouseholdSelectType,
                                          config: HouseSelectViewConfig,
                                          policy: HouseSelectPolicy,
                                          alerts: HouseSelectAlerts,
-                                         remote: HouseDetailRemoteAPI,
+                                         remote: HouseSelectRemoteAPI,
                                          factory: HouseholdFactory,
                                          joinHouse: @escaping () -> Void,
                                          showDeleteHouse: @escaping () -> Void,
                                          reloadData: @escaping () -> Void) -> UIViewController {
         
-        let manager = HouseSelectManager(policy: policy,
+        let manager = HouseSelectManager(user: user,
+                                         policy: policy,
                                          alerts: alerts,
                                          remote: remote,
                                          factory: factory,
@@ -118,7 +120,7 @@ public final class HouseKitComposite {
     public static func makeJoinHouseVC(user: HouseholdUser,
                                        houseToJoin: Household,
                                        alerts: JoinHouseAlerts,
-                                       remote: JoinHouseRemoteAPI,
+                                       remote: HouseholdAndUserRemoteAPI,
                                        factory: HouseholdMemberFactory,
                                        finished: @escaping () -> Void) -> UIViewController {
         
