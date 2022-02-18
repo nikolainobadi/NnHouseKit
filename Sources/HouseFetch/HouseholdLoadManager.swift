@@ -10,7 +10,7 @@ import NnHousehold
 public final class HouseholdLoadManager {
     
     // MARK: - Properties
-    private let user: HouseholdUser
+    private let houseId: String
     private let store: HouseholdStore
     private let policy: HouseholdLoadPolicy
     private let remote: HouseholdLoadRemoteAPI
@@ -19,14 +19,14 @@ public final class HouseholdLoadManager {
     
     
     // MARK: - Init
-    public init(user: HouseholdUser,
+    public init(houseId: String,
                 store: HouseholdStore,
                 policy: HouseholdLoadPolicy,
                 remote: HouseholdLoadRemoteAPI,
                 memberLoader: HouseholdMemberLoader,
                 modifier: ConvertedHouseholdModifier) {
 
-        self.user = user
+        self.houseId = houseId
         self.store = store
         self.policy = policy
         self.remote = remote
@@ -39,11 +39,11 @@ public final class HouseholdLoadManager {
 extension HouseholdLoadManager: HouseholdLoader {
     
     public func loadHouse(completion: @escaping (Error?) -> Void) {
-        // MARK: - TODO
-        // complete with .noHouse error
-        guard user.houseId != "" else { return }
+        guard houseId != "" else {
+            return completion(HouseFetchError.noHouse)
+        }
         
-        remote.fetchHouse(user.houseId) { [weak self] result in
+        remote.fetchHouse(houseId) { [weak self] result in
             switch result {
             case .success(let house):
                 self?.handleRecievedHouse(house, completion: completion)
@@ -65,18 +65,15 @@ private extension HouseholdLoadManager {
         } else if policy.isConverting(house) {
             convertHouse(house, completion: completion)
         } else {
-            // MARK: - TODO
-            // complete with .noAccess error
+            completion(HouseFetchError.noAccess)
         }
     }
     
     func saveHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
         
         memberLoader.loadMembers(for: house) { [weak self] updatedHouse in
-            
             guard let updatedHouse = updatedHouse else {
-                // MARK: - TODO -> complete with error
-                return
+                return completion(HouseFetchError.fetchError)
             }
             
             self?.store.setHouse(updatedHouse)
@@ -86,34 +83,33 @@ private extension HouseholdLoadManager {
     
     func convertHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
         
-        // MARK: - TODO
+        remote.uploadHouse(modifier.convertHouse(house),
+                           completion: completion)
     }
 }
 
 
 // MARK: - Dependencies
+public protocol HouseholdStore {
+    func setHouse(_ house: Household)
+}
+
 public protocol HouseholdLoadPolicy {
     func isMember(of house: Household) -> Bool
     func isConverting(_ house: Household) -> Bool
 }
 
-public protocol HouseholdStore {
-    func setHouse(_ house: Household)
-}
-
 public protocol HouseholdLoadRemoteAPI {
     func fetchHouse(_ id: String, completion: @escaping (Result<Household, Error>) -> Void)
-}
-
-public protocol ConvertedHouseholdModifier {
-    func convertHouse(_ house: Household) -> Household
-}
-
-public protocol HouseholdLoader {
-    func loadHouse(completion: @escaping (Error?) -> Void)
+    
+    func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void)
 }
 
 public protocol HouseholdMemberLoader {
     func loadMembers(for house: Household,
                      completion: @escaping (Household?) -> Void)
+}
+
+public protocol ConvertedHouseholdModifier {
+    func convertHouse(_ house: Household) -> Household
 }
