@@ -33,6 +33,9 @@ let package = Package(
                  targets: ["JoinHouseUI"]),
         .library(name: "JoinHouseLogic",
                  targets: ["JoinHouseLogic"]),
+        // MARK: JoinHouse
+        .library(name: "HouseFetch",
+                 targets: ["HouseFetch"]),
     ],
     dependencies: [
         .package(name: "NnUIKitHelpers",
@@ -109,6 +112,13 @@ let package = Package(
         .testTarget(
             name: "JoinHouseLogicTests",
             dependencies: ["JoinHouseLogic", "TestHelpers"]),
+        // MARK: JoinHouse
+        .target(
+            name: "HouseFetch",
+            dependencies: ["NnHousehold"]),
+        .testTarget(
+            name: "HouseFetchTests",
+            dependencies: ["HouseFetch", "TestHelpers"]),
         // MARK: TestHelpers
         .target(
             name: "TestHelpers",
