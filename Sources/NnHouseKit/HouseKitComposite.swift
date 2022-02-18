@@ -36,7 +36,6 @@ public final class HouseKitComposite {
         store: HouseholdStore,
         policy: HouseholdLoadPolicy,
         remote: HouseFetchRemoteAPI,
-        memberLoader: HouseholdMemberLoader,
         modifier: ConvertedHouseholdModifier,
         currentMemberList: [HouseholdMember]) -> HouseholdLoader {
             

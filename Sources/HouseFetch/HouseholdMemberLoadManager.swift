@@ -85,9 +85,14 @@ private extension HouseholdMemberLoadManager {
         }
 
         // save current info
-        storedMemberList = currentMemberList
-
-        // return current members
+        storedMemberList = currentMemberList.compactMap { member in
+            guard var updatedMember = houseMembers.first(where: {$0.id == member.id }) else { return nil }
+            
+            updatedMember.isAdmin = member.isAdmin // mainly for currentUser
+            
+            return updatedMember
+        }
+        
         return storedMemberList
     }
 }

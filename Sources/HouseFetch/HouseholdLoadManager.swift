@@ -76,22 +76,25 @@ private extension HouseholdLoadManager {
                 return completion(HouseFetchError.fetchError)
             }
             
-            self?.store.setHouse(updatedHouse)
-            completion(nil)
+            self?.store.setHouse(updatedHouse, completion: completion)
         }
     }
     
     func convertHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
-        
-        remote.uploadHouse(modifier.convertHouse(house),
-                           completion: completion)
+        do {
+            let updatedHouse = try modifier.convertHouse(house)
+            
+            remote.uploadHouse(updatedHouse, completion: completion)
+        } catch {
+            completion(error)
+        }
     }
 }
 
 
 // MARK: - Dependencies
 public protocol HouseholdStore {
-    func setHouse(_ house: Household)
+    func setHouse(_ house: Household, completion: @escaping (Error?) -> Void)
 }
 
 public protocol HouseholdLoadPolicy {
@@ -111,5 +114,5 @@ public protocol HouseholdMemberLoader {
 }
 
 public protocol ConvertedHouseholdModifier {
-    func convertHouse(_ house: Household) -> Household
+    func convertHouse(_ house: Household) throws -> Household
 }
