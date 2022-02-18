@@ -7,6 +7,8 @@
 
 // MARK: - Imports
 import UIKit
+
+import HouseFetch
 import NnHousehold
 import HouseListTable
 
@@ -22,8 +24,33 @@ import HouseSearchLogic
 import JoinHouseUI
 import JoinHouseLogic
 
+
 public final class HouseKitComposite {
     private init() { }
+    
+    // MARK: HouseFetch
+    public typealias HouseFetchRemoteAPI = HouseholdLoadRemoteAPI & HouseholdMemberRemoteAPI
+    
+    public static func makeHouseholdLoader(
+        houseId: String,
+        store: HouseholdStore,
+        policy: HouseholdLoadPolicy,
+        remote: HouseFetchRemoteAPI,
+        memberLoader: HouseholdMemberLoader,
+        modifier: ConvertedHouseholdModifier,
+        currentMemberList: [HouseholdMember]) -> HouseholdLoader {
+            
+            let memberLoader = makeMemberLoader(remote: remote,
+                                            memberList: [])
+        
+            return HouseholdLoadManager(houseId: houseId,
+                                        store: store,
+                                        policy: policy,
+                                        remote: remote,
+                                        memberLoader: memberLoader,
+                                        modifier: modifier)
+    }
+    
     
     // MARK: HouseDetail
     public static func makeHouseDetailVC(isCreator: Bool,
@@ -145,6 +172,13 @@ public final class HouseKitComposite {
 
 // MARK: - Private Methods
 private extension HouseKitComposite {
+    
+    static func makeMemberLoader(remote: HouseholdMemberRemoteAPI,
+                                 memberList: [HouseholdMember]) -> HouseholdMemberLoader {
+        
+        HouseholdMemberLoadManager(remote: remote,
+                                   memberList: memberList)
+    }
     
     static func makeHouseDetailUIResponder(_ manager: HouseDetailManager,
                                            switchHouse: @escaping () -> Void) -> HouseDetailUIResponder {
