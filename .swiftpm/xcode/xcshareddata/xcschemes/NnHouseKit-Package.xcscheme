@@ -328,6 +328,20 @@
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseFetch"
+               BuildableName = "HouseFetch"
+               BlueprintName = "HouseFetch"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -503,6 +517,16 @@
                BlueprintIdentifier = "DeleteHouseLogicTests"
                BuildableName = "DeleteHouseLogicTests"
                BlueprintName = "DeleteHouseLogicTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "HouseFetchTests"
+               BuildableName = "HouseFetchTests"
+               BlueprintName = "HouseFetchTests"
                ReferencedContainer = "container:">
             </BuildableReference>
          </TestableReference>
