@@ -108,7 +108,7 @@ private extension HouseDetailVC {
         
         switchButton.anchorCenterXToSuperview()
         switchButton.anchor(bottom: view.safeBottomAnchor,
-                            bottomConstant: view.heightPercent(2),
+                            bottomConstant: view.heightPercent(4),
                             widthConstant: view.widthPercent(80),
                             heightConstant: view.heightPercent(5))
         

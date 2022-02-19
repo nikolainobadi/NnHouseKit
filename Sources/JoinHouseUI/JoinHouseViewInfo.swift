@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  JoinHouseViewConfig.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/19/22.

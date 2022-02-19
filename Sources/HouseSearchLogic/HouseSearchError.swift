@@ -8,7 +8,7 @@
 import NnHousehold
 
 public enum HouseSearchError: Error {
-    case networkError, emptyListError
+    case networkError, emptyListError, emptySearch
 }
 
 extension HouseSearchError: ErrorWithMessage {
@@ -19,6 +19,8 @@ extension HouseSearchError: ErrorWithMessage {
             return "Looks like your internet connection is a little weak. Please try again."
         case .emptyListError:
             return emptyListMessage
+        case .emptySearch:
+            return "You have to type something in order to search."
         }
     }
     

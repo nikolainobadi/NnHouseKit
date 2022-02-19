@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 import NnUIKitHelpers
 
 public final class JoinHouseRootView: NnView {
@@ -18,7 +17,7 @@ public final class JoinHouseRootView: NnView {
     
     // MARK: - Views
     lazy var titleLabel: UILabel = {
-        UILabel()
+        UILabel(viewModel.title)
             .autoSize()
             .addShadow()
             .setAlignment(.center)
@@ -47,8 +46,7 @@ public final class JoinHouseRootView: NnView {
     
     lazy var joinButton: UIButton = {
         ShadowButton("Join")
-            .setAlpha(viewModel.showButton ? 0.5 : 0)
-            .setEnabled(false)
+            .setAlpha(viewModel.showButton ? 1 : 0)
             .setColor(config.buttonTextColor,
                       backgroundColor: config.buttonBackgroundColor)
             .setAction { [weak self] in
@@ -62,6 +60,8 @@ public final class JoinHouseRootView: NnView {
         self.config = config
         self.viewModel = viewModel
         super.init(frame: .zero, color: config.viewBackgroundColor)
+        
+        passwordField.alpha = viewModel.showField ? 1 : 0
     }
     
     
@@ -92,7 +92,7 @@ public final class JoinHouseRootView: NnView {
         detailLabel.anchor(creatorLabel.bottomAnchor,
                            left: leftAnchor,
                            right: rightAnchor,
-                           topConstant: heightPercent(2),
+                           topConstant: heightPercent(5),
                            leftConstant: widthPercent(10),
                            rightConstant: widthPercent(10))
         

@@ -55,6 +55,7 @@ final class HouseListCellContentView: NnView {
         nameLabel.anchor(topAnchor,
                          left: leftAnchor,
                          bottom: centerYAnchor,
+                         right: cellButton.leftAnchor,
                          topConstant: heightPercent(1),
                          leftConstant: widthPercent(2))
         
@@ -68,7 +69,7 @@ final class HouseListCellContentView: NnView {
         cellButton.anchorCenterYToSuperview()
         cellButton.anchor(right: rightAnchor,
                           rightConstant: widthPercent(1),
-                          widthConstant: widthPercent(32))
+                          widthConstant: widthPercent(20))
     }
     
     
