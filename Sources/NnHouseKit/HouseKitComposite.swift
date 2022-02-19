@@ -148,6 +148,8 @@ public final class HouseKitComposite {
                                        alerts: JoinHouseAlerts,
                                        remote: HouseholdAndUserRemoteAPI,
                                        factory: HouseholdMemberFactory,
+                                       config: JoinHouseViewConfig,
+                                       viewModelInfo: JoinHouseViewModelInfo,
                                        finished: @escaping () -> Void) -> UIViewController {
         
         let manager = JoinHouseManager(user: user,
@@ -158,12 +160,13 @@ public final class HouseKitComposite {
                                        finished: finished)
         
         let viewModel = JoinHouseViewModel(
+            info: viewModelInfo,
             joinHouse: manager.joinHouse(password:))
         
-        let rootView = JoinHouseRootView(presenter: viewModel)
+        let rootView = JoinHouseRootView(config: config,
+                                         viewModel: viewModel)
         
-        return JoinHouseVC(store: viewModel,
-                           rootView: rootView,
+        return JoinHouseVC(rootView: rootView,
                            fieldsToObserve: [rootView.passwordField])
     }
 }

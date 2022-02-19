@@ -6,44 +6,44 @@
 //
 
 import UIKit
+import NnHousehold
 
 public final class JoinHouseViewModel {
     
     // MARK: - Properties
+    private let info: JoinHouseViewModelInfo
     private let joinHouse: (String) -> Void
-    
-    private var password = ""
     
     
     // MARK: - Init
-    public init(joinHouse: @escaping (String) -> Void) {
+    public init(info: JoinHouseViewModelInfo,
+                joinHouse: @escaping (String) -> Void) {
+        
+        self.info = info
         self.joinHouse = joinHouse
     }
 }
 
-
-// MARK: - PasswordStore
-extension JoinHouseViewModel: HousePasswordStore {
+// MARK: - View Model
+extension JoinHouseViewModel {
     
-    public func updatePassword(_ password: String) {
-        self.password = password
+    public var title: String { info.title}
+    public var subtitle: String { "Creator: \(info.creator)"}
+    public var details: String { info.details }
+    public var showField: Bool { info.showField }
+    public var showButton: Bool { info.showButton }
+    
+    public func verifyPassword(_ password: String) {
+        joinHouse(password)
     }
 }
 
 
-// MARK: - Presenter
-extension JoinHouseViewModel: JoinHousePresenter {
-    
-    public var titleColor: UIColor? { nil }
-    public var houseCreator: String { "" }
-    public var details: String { "" }
-    public var showField: Bool { false }
-    public var showButton: Bool { false }
-    public var buttonTextColor: UIColor? { nil }
-    public var buttonBackgroundColor: UIColor? { nil }
-    public var viewBackgroundColor: UIColor? { nil }
-    
-    public func verifyPassword() {
-        joinHouse(password)
-    }
+// MARK: - Dependencies
+public protocol JoinHouseViewModelInfo {
+    var title: String { get }
+    var creator: String { get }
+    var details: String { get }
+    var showField: Bool { get }
+    var showButton: Bool { get }
 }

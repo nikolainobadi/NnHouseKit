@@ -12,11 +12,8 @@ import NnUIKitHelpers
 public final class JoinHouseRootView: NnView {
     
     // MARK: - Properties
-    private let presenter: JoinHousePresenter
-    
-    private var buttonAlpha: CGFloat {
-        presenter.showButton ? 0.5 : 0
-    }
+    private let config: JoinHouseViewConfig
+    private let viewModel: JoinHouseViewModel
     
     
     // MARK: - Views
@@ -25,19 +22,20 @@ public final class JoinHouseRootView: NnView {
             .autoSize()
             .addShadow()
             .setAlignment(.center)
-            .setColor(presenter.titleColor)
+            .setColor(config.titleColor)
             .setFontByStyle(.largeTitle)
     }()
     
     lazy var creatorLabel: UILabel = {
-        UILabel("Creator: \(presenter.houseCreator)")
+        UILabel(viewModel.subtitle)
             .autoSize()
             .setAlignment(.center)
             .setFontByStyle(.smallTitle)
+            .setColor(config.subTitleColor)
     }()
     
     lazy var detailLabel: UILabel = {
-        UILabel(presenter.details)
+        UILabel(viewModel.details)
             .multipleLines()
             .setAlignment(.center)
             .setFontByStyle(.detail, fontName: .thonburi)
@@ -49,20 +47,21 @@ public final class JoinHouseRootView: NnView {
     
     lazy var joinButton: UIButton = {
         ShadowButton("Join")
-            .setAlpha(buttonAlpha)
+            .setAlpha(viewModel.showButton ? 0.5 : 0)
             .setEnabled(false)
-            .setColor(presenter.buttonTextColor,
-                      backgroundColor: presenter.buttonBackgroundColor)
+            .setColor(config.buttonTextColor,
+                      backgroundColor: config.buttonBackgroundColor)
             .setAction { [weak self] in
-                self?.presenter.verifyPassword()
+                self?.verifyPassword()
             }
     }()
     
     
     // MARK: - Init
-    public init(presenter: JoinHousePresenter) {
-        self.presenter = presenter
-        super.init(frame: .zero, color: presenter.viewBackgroundColor)
+    public init(config: JoinHouseViewConfig, viewModel: JoinHouseViewModel) {
+        self.config = config
+        self.viewModel = viewModel
+        super.init(frame: .zero, color: config.viewBackgroundColor)
     }
     
     
@@ -110,30 +109,10 @@ public final class JoinHouseRootView: NnView {
 }
 
 
-// MARK: - Interface
-extension JoinHouseRootView: JoinHouseInterface {
+// MARK: - Private Methods
+private extension JoinHouseRootView {
     
-    public var passwordPublisher: AnyPublisher<String, Never> {
-        passwordField.noWaitTextPublisher.eraseToAnyPublisher()
+    func verifyPassword() {
+        viewModel.verifyPassword(passwordField.text ?? "")
     }
-    
-    public func enableButton(_ enable: Bool) {
-        joinButton.alpha = enable ? 1 : 0.5
-        joinButton.isEnabled = enable
-    }
-}
-
-
-// MARK: - Dependencies
-public protocol JoinHousePresenter {
-    var titleColor: UIColor? { get }
-    var houseCreator: String { get }
-    var details: String { get }
-    var showField: Bool { get }
-    var showButton: Bool { get }
-    var buttonTextColor: UIColor? { get }
-    var buttonBackgroundColor: UIColor? { get }
-    var viewBackgroundColor: UIColor? { get }
-    
-    func verifyPassword()
 }
