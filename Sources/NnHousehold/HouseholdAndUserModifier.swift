@@ -8,11 +8,15 @@
 public final class HouseholdAndUserModifier {
     private init() { }
     
-    public static func makeUpdatedUser(_ user: HouseholdUser, houseId: String) -> HouseholdUser {
+    public static func makeUpdatedUser(_ user: HouseholdUser, houseId: String, isCreator: Bool = false) -> HouseholdUser {
         
         var updatedUser = user
         
         updatedUser.houseId = houseId
+        
+        if isCreator {
+            updatedUser.createdHouseIds.append(houseId)
+        }
         
         return updatedUser
     }

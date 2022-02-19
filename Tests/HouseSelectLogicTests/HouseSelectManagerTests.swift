@@ -117,6 +117,7 @@ final class HouseSelectManagerTests: XCTestCase {
         
         XCTAssertEqual(houses.count, 1)
         XCTAssertEqual(user.houseId, houses[0].id)
+        XCTAssertEqual(user.createdHouseIds.count, 1)
     }
     
     func test_createHouse_uploadSuccess_withOldHouse_uploadedDataVerified() {

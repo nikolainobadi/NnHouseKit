@@ -84,6 +84,7 @@ final class JoinHouseManagerTests: XCTestCase {
             return XCTFail("no user uploaded")
         }
         
+        XCTAssertTrue(user.createdHouseIds.isEmpty)
         XCTAssertEqual(user.houseId, getTestName(.testHouseId))
     }
     

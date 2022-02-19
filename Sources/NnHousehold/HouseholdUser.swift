@@ -10,4 +10,5 @@ public protocol HouseholdUser {
     var name: String { get }
     var houseId: String { get set }
     var currentHouse: Household? { get }
+    var createdHouseIds: [String] { get set }
 }

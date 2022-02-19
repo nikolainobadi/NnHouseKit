@@ -15,16 +15,19 @@ public extension XCTestCase {
         public var name: String
         public var houseId: String
         public var currentHouse: Household?
+        public var createdHouseIds: [String]
         
         public init(id: String = "",
                     name: String = "",
                     houseId: String = "",
-                    currentHouse: Household? = nil) {
+                    currentHouse: Household? = nil,
+                    createdHouseIds: [String] = []) {
             
             self.id = id
             self.name = name
             self.houseId = houseId
             self.currentHouse = currentHouse
+            self.createdHouseIds = createdHouseIds
         }
     }
     

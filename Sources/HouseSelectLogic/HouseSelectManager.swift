@@ -87,7 +87,7 @@ private extension HouseSelectManager {
         }
         
         let newHouse = factory.makeNewHouse(name: name, password: password)
-        let updatedUser = HouseholdAndUserModifier.makeUpdatedUser(user, houseId: newHouse.id)
+        let updatedUser = makeUpdatedUser(user, houseId: newHouse.id)
         
         houseList.append(newHouse)
         
@@ -99,6 +99,12 @@ private extension HouseSelectManager {
                 self?.finished()
             }
         }
+    }
+    
+    func makeUpdatedUser(_ user: HouseholdUser, houseId: String) -> HouseholdUser {
+        
+        HouseholdAndUserModifier
+            .makeUpdatedUser(user, houseId: houseId, isCreator: true)
     }
 }
 
