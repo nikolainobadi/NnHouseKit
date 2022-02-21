@@ -68,14 +68,12 @@ public final class HouseKitComposite {
         
         let uiResponder = makeHouseDetailUIResponder(manager,
                                                      switchHouse: switchHouse)
-        let presenter = HouseListPresentationAdapter(
+        let tableVC = makeHouseListTable(
             title: "Household Members",
             publisher: cellInfoPublisher,
             responder: (delete: manager.deleteMember(memberId:),
                         buttonAction: manager.toggleAdminStatus(memberId:)))
-        
-        let tableVC = HouseListTableVC(presenter: presenter)
-    
+            
         return HouseDetailVC(tableVC: tableVC,
                              houseName: houseName,
                              config: viewConfig,
@@ -129,12 +127,9 @@ public final class HouseKitComposite {
             responder: (changeSearchParameter: manager.changeSearchParameter(_:),
                         searchForHouse: manager.searchForHouse(_:)))
         
-        let presenter = HouseListPresentationAdapter(
-            title: "",
+        let tableVC = makeHouseListTable(
             publisher: cellInfoPublisher,
             responder: (delete: nil, buttonAction: showJoinHouse))
-        
-        let tableVC = HouseListTableVC(presenter: presenter)
         
         return HouseSearchVC(searchView: searchView,
                              tableVC: tableVC,
@@ -168,6 +163,17 @@ public final class HouseKitComposite {
         
         return JoinHouseVC(rootView: rootView,
                            fieldsToObserve: [rootView.passwordField])
+    }
+    
+    
+    // MARK: - HouseList
+    public static func makeHouseListTable(title: String = "",
+                                          publisher: HouseListCellInfoPublisher,
+                                          responder: HouseListCellResponder) -> UIViewController {
+        HouseListTableVC(
+            presenter:HouseListPresentationAdapter(title: title,
+                                                   publisher: publisher,
+                                                   responder: responder))
     }
 }
 
