@@ -108,9 +108,6 @@ let package = Package(
             name: "JoinHouseLogic",
             dependencies: ["NnHousehold"]),
         .testTarget(
-            name: "JoinHouseUITests",
-            dependencies: ["JoinHouseUI", "TestHelpers"]),
-        .testTarget(
             name: "JoinHouseLogicTests",
             dependencies: ["JoinHouseLogic", "TestHelpers"]),
         // MARK: JoinHouse

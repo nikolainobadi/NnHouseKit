@@ -57,6 +57,7 @@ final class HouseholdLoadManagerTests: XCTestCase {
         
         remote.fetchComplete(house)
         memberLoader.complete(with: house)
+        store.complete(with: nil)
         
         XCTAssertNotNil(store.house)
         
@@ -168,9 +169,25 @@ extension HouseholdLoadManagerTests {
     class MockHouseholdStore: HouseholdStore {
         
         var house: Household?
+        var completion: ((Error?) -> Void)?
         
-        func setHouse(_ house: Household) {
+        func setHouse(_ house: Household,
+                      completion: @escaping (Error?) -> Void) {
+            
             self.house = house
+            self.completion = completion
+        }
+        
+        func complete(with error: Error?,
+                      file: StaticString = #filePath,
+                      line: UInt = #line) {
+            guard
+                let completion = completion
+            else {
+                return XCTFail("Request never made", file: file, line: line)
+            }
+            
+            completion(error)
         }
     }
     

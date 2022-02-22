@@ -39,8 +39,9 @@ public final class HouseKitComposite {
         modifier: ConvertedHouseholdModifier,
         currentMemberList: [HouseholdMember]) -> HouseholdLoader {
             
-            let memberLoader = makeMemberLoader(remote: remote,
-                                            memberList: [])
+            let memberLoader = makeMemberLoader(
+                remote: remote,
+                memberList: currentMemberList)
         
             return HouseholdLoadManager(houseId: houseId,
                                         store: store,
