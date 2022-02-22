@@ -7,8 +7,6 @@
 
 import UIKit
 import NnUIKitHelpers
-import HouseDetailLogic
-
 
 let CELL_ID = "Cell_ID"
 enum TableSection { case main }

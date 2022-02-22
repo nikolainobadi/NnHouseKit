@@ -52,6 +52,8 @@ final class HouseListCellContentView: NnView {
     }
     
     override func setupConstraints() {
+        nameLabel.setContentHuggingPriority(.defaultLow,
+                                            for: .horizontal)
         nameLabel.anchor(topAnchor,
                          left: leftAnchor,
                          bottom: centerYAnchor,
@@ -66,10 +68,11 @@ final class HouseListCellContentView: NnView {
                               leftConstant: widthPercent(2),
                               bottomConstant: heightPercent(1))
         
+        cellButton.setContentHuggingPriority(.defaultHigh,
+                                             for: .horizontal)
         cellButton.anchorCenterYToSuperview()
         cellButton.anchor(right: rightAnchor,
-                          rightConstant: widthPercent(1),
-                          widthConstant: widthPercent(20))
+                          rightConstant: widthPercent(1))
     }
     
     
