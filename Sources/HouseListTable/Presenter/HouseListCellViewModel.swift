@@ -49,10 +49,11 @@ extension HouseListCellViewModel: Hashable {
     
     public func hash(into hasher: inout Hasher) {
         hasher.combine(info.id)
+        hasher.combine(info.buttonText)
     }
     
     public static func == (lhs: HouseListCellViewModel, rhs: HouseListCellViewModel) -> Bool {
-        
-        lhs.info.id == rhs.info.id
+    
+        lhs.info.id == rhs.info.id && lhs.buttonText == rhs.buttonText
     }
 }
