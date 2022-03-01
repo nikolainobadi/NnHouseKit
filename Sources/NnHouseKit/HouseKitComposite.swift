@@ -53,32 +53,33 @@ public final class HouseKitComposite {
     
     
     // MARK: HouseDetail
-    public static func makeHouseDetailVC(isCreator: Bool,
-                                         houseName: String,
-                                         alerts: HouseDetailAlerts,
-                                         remote: HouseDetailRemoteAPI,
-                                         houseCache: HouseholdCache,
-                                         cellInfoPublisher: HouseListCellInfoPublisher,
-                                         viewConfig: HouseDetailViewConfig,
-                                         switchHouse: @escaping () -> Void) -> UIViewController {
+    public static func makeHouseDetailVC<Cache: GenericHouseholdCache, Remote: GenericDetailRemoteAPI>(isCreator: Bool,
+                                houseName: String,
+                                alerts: HouseDetailAlerts,
+                                remote: Remote,
+                                houseCache: Cache,
+                                cellInfoPublisher: HouseListCellInfoPublisher,
+                                viewConfig: HouseDetailViewConfig,
+                                switchHouse: @escaping () -> Void) -> UIViewController where Remote.House == Cache.House {
         
-        let manager = HouseDetailManager(isCreator: isCreator,
-                                         alerts: alerts,
-                                         remote: remote,
-                                         houseCache: houseCache)
-        
-        let uiResponder = makeHouseDetailUIResponder(manager,
-                                                     switchHouse: switchHouse)
+        let adapter = makeAdapter(remote: remote, cache: houseCache)
+        let manager = GenericDetailManager(isCreator: isCreator,
+                                           alerts: alerts,
+                                           adapter: adapter)
         let tableVC = makeHouseListTable(
             title: "Household Members",
             publisher: cellInfoPublisher,
             responder: (delete: manager.deleteMember(memberId:),
                         buttonAction: manager.toggleAdminStatus(memberId:)))
             
-        return HouseDetailVC(tableVC: tableVC,
-                             houseName: houseName,
-                             config: viewConfig,
-                             responder: uiResponder)
+        return HouseDetailVC(
+            tableVC: tableVC,
+            houseName: houseName,
+            config: viewConfig,
+            responder: (editHouse: manager.editHouse,
+                        switchHouse: switchHouse,
+                        showPassword: manager.showPassword)
+        )
     }
     
     
@@ -181,6 +182,18 @@ public final class HouseKitComposite {
 
 // MARK: - Private Methods
 private extension HouseKitComposite {
+    
+    static func makeAdapter<Remote: GenericDetailRemoteAPI, Cache: GenericHouseholdCache>(remote: Remote, cache: Cache) -> MyAdapter<Remote.House> where Remote.House == Cache.House {
+        
+        return (
+            getHouse: { cache.house },
+            uploadHouse: { (house, completion) in
+                remote.uploadHouse(house, completion: completion)
+            }, checkForDuplicates: { (name, completion) in
+                remote.checkForDuplicates(name: name, completion: completion)
+            }
+        )
+    }
     
     static func makeMemberLoader(remote: HouseholdMemberRemoteAPI,
                                  memberList: [HouseholdMember]) -> HouseholdMemberLoader {
