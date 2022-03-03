@@ -31,6 +31,29 @@ public extension XCTestCase {
         }
     }
     
+    struct TestNnHouseUser: NnHouseUser {
+        public typealias House = TestNnHouse
+        
+        public var id: String
+        public var name: String
+        public var houseId: String
+        public var currentHouse: House?
+        public var createdHouseIds: [String]
+        
+        public init(id: String = "",
+                    name: String = "",
+                    houseId: String = "",
+                    currentHouse: House? = nil,
+                    createdHouseIds: [String] = []) {
+            
+            self.id = id
+            self.name = name
+            self.houseId = houseId
+            self.currentHouse = currentHouse
+            self.createdHouseIds = createdHouseIds
+        }
+    }
+    
     struct TestNnHouse: NnHouse {
         public typealias Member = TestNnHouseMember
         

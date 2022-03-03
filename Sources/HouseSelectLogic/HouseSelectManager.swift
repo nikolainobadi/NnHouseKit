@@ -8,37 +8,37 @@
 import NnHousehold
 import HouseDetailLogic
 
-public final class HouseSelectManager {
+public final class HouseSelectManager<Remote: HouseSelectRemoteAPI, Factory: NnHouseFactory> where Remote.House == Factory.House {
+    
+    public typealias User = Remote.User
+    
+    typealias House = Remote.House
     
     // MARK: - Properties
-    private let user: HouseholdUser
-    private let currentHouse: Household?
+    private let user: User
     private let policy: HouseSelectPolicy
     private let alerts: HouseSelectAlerts
-    private let remote: HouseSelectRemoteAPI
-    private let factory: HouseholdFactory
-    private let finished: () -> Void
-    private let showDeleteHouse: () -> Void
+    private let remote: Remote
+    private let factory: Factory
+    private let router: HouseSelectRouter
+    
+    private var currentHouse: House? { user.currentHouse }
 
     
     // MARK: - Init
-    public init(user: HouseholdUser,
-                currentHouse: Household?,
+    public init(user: User,
                 policy: HouseSelectPolicy,
                 alerts: HouseSelectAlerts,
-                remote: HouseSelectRemoteAPI,
-                factory: HouseholdFactory,
-                finished: @escaping () -> Void,
-                showDeleteHouse: @escaping () -> Void) {
+                remote: Remote,
+                factory: Factory,
+                router: HouseSelectRouter) {
         
         self.user = user
-        self.currentHouse = currentHouse
         self.policy = policy
         self.alerts = alerts
         self.remote = remote
         self.factory = factory
-        self.finished = finished
-        self.showDeleteHouse = showDeleteHouse
+        self.router = router
     }
 }
 
@@ -47,7 +47,9 @@ public final class HouseSelectManager {
 extension HouseSelectManager {
     
     public func createNewHouse() {
-        guard policy.canCreateMoreHouses else { return showDeleteHouse() }
+        guard policy.canCreateMoreHouses else {
+            return router.showDeleteHouse()
+        }
         
         alerts.showCreateHouseAlert { [weak self] name, password in
             self?.handleUserInput(name: name, password: password)
@@ -83,15 +85,16 @@ private extension HouseSelectManager {
     }
     
     func uploadNewHouse(name: String, password: String) {
-        var houseList = [Household]()
+        var houseList = [House]()
         
         if let oldHouse = currentHouse {
-            houseList.append(HouseholdAndUserModifier.removeUser(user, from: oldHouse))
+            houseList.append(removeUserFromHouse(oldHouse))
         }
         
-        let newHouse = factory.makeNewHouse(name: name, password: password)
-        let updatedUser = makeUpdatedUser(user, houseId: newHouse.id)
-        
+        let newHouse = factory.makeNewHouse(name: name,
+                                            password: password)
+        let updatedUser = makeUpdatedUser(user,
+                                          houseId: newHouse.id)
         houseList.append(newHouse)
         
         remote.upload(user: updatedUser, houses: houseList) { [weak self] error in
@@ -99,21 +102,34 @@ private extension HouseSelectManager {
             if let error = error {
                 self?.alerts.showError(error)
             } else {
-                self?.finished()
+                self?.router.finished()
             }
         }
     }
     
-    func makeUpdatedUser(_ user: HouseholdUser, houseId: String) -> HouseholdUser {
-        
-        HouseholdAndUserModifier
-            .makeUpdatedUser(user, houseId: houseId, isCreator: true)
+    func removeUserFromHouse(_ house: House) -> House {
+        NnUserAndHouseModifier.removeUser(user, from: house)
+    }
+    
+    func makeUpdatedUser(_ user: User, houseId: String) -> User {
+        NnUserAndHouseModifier.makeUpdatedUser(user,
+                                               houseId: houseId,
+                                               isCreator: true)
     }
 }
 
 
 // MARK: - Dependencies
-public typealias HouseSelectRemoteAPI = HouseholdAndUserRemoteAPI & DuplcatesRemoteAPI
+public typealias HouseSelectRouter = (finished: () -> Void,
+                                      showDeleteHouse: () -> Void)
+
+public typealias HouseSelectRemoteAPI = NnUserAndHouseRemoteAPI & DuplcatesRemoteAPI
+
+public protocol NnHouseFactory {
+    associatedtype House: NnHouse
+    
+    func makeNewHouse(name: String, password: String) -> House
+}
 
 public protocol HouseholdFactory {
     func makeNewHouse(name: String, password: String) -> Household

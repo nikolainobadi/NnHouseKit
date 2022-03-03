@@ -17,6 +17,18 @@ import NnHousehold
 
 public extension XCTestCase {
     
+    // MARK: - User
+    func makeTestUser(_ house: TestNnHouse? = nil) -> TestNnHouseUser {
+        
+        TestNnHouseUser(id: getTestName(.testUserId),
+                        name: getTestName(.testUsername),
+                        houseId: house?.id ?? "",
+                        currentHouse: house,
+                        createdHouseIds: [])
+    }
+    
+    
+    // MARK: - House
     func makeTestHouse(members: [TestNnHouseMember] = []) -> TestNnHouse {
         
         TestNnHouse(id: getTestName(.testHouseId),
@@ -24,6 +36,8 @@ public extension XCTestCase {
                     members: members)
     }
     
+    
+    // MARK: - Members
     func makeTestMemberList(withNames: Bool = true) -> [TestNnHouseMember] {
         [makeTestMember(name: withNames ? nil : "",
                         isAdmin: true),
