@@ -7,31 +7,30 @@
 
 import NnHousehold
 
-public final class HouseholdLoadManager {
+public final class HouseholdLoadManager<Store: HouseholdStore, Remote: HouseholdLoadRemoteAPI> where Store.House == Remote.House  {
     
     // MARK: - Properties
+    public typealias House = Remote.House
+    public typealias Member = House.Member
+    
     private let houseId: String
-    private let store: HouseholdStore
-    private let policy: HouseholdLoadPolicy
-    private let remote: HouseholdLoadRemoteAPI
-    private let memberLoader: HouseholdMemberLoader
-    private let modifier: ConvertedHouseholdModifier
+    private let store: Store
+    private let remote: Remote
+    
+    // MARK: - TODO
+    private var completeMembers = [Member]()
     
     
     // MARK: - Init
     public init(houseId: String,
-                store: HouseholdStore,
-                policy: HouseholdLoadPolicy,
-                remote: HouseholdLoadRemoteAPI,
-                memberLoader: HouseholdMemberLoader,
-                modifier: ConvertedHouseholdModifier) {
-
+                store: Store,
+                remote: Remote,
+                currentMembers: [Member]) {
+        
         self.houseId = houseId
         self.store = store
-        self.policy = policy
         self.remote = remote
-        self.memberLoader = memberLoader
-        self.modifier = modifier
+        self.completeMembers = currentMembers
     }
 }
 
@@ -46,7 +45,7 @@ extension HouseholdLoadManager: HouseholdLoader {
         remote.fetchHouse(houseId) { [weak self] result in
             switch result {
             case .success(let house):
-                self?.handleRecievedHouse(house, completion: completion)
+                self?.handleRecievedHouse(house, completion)
             case .failure(let error):
                 completion(error)
             }
@@ -58,61 +57,96 @@ extension HouseholdLoadManager: HouseholdLoader {
 // MARK: - Private Methods
 private extension HouseholdLoadManager {
     
-    func handleRecievedHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
-    
-        if policy.isMember(of: house) {
-            saveHouse(house, completion: completion)
-        } else if policy.isConverting(house) {
-            convertHouse(house, completion: completion)
-        } else {
-            completion(HouseFetchError.noAccess)
-        }
-    }
-    
-    func saveHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
+    func handleRecievedHouse(_ house: House,
+                             _ completion: @escaping (Error?) -> Void) {
+        guard
+            store.isMember(of: house)
+        else { return completion(HouseFetchError.noAccess) }
         
-        memberLoader.loadMembers(for: house) { [weak self] updatedHouse in
-            guard let updatedHouse = updatedHouse else {
+        fetchHouseMembers(for: house) { [weak self] members in
+            guard let members = members else {
                 return completion(HouseFetchError.fetchError)
             }
-            
-            self?.store.setHouse(updatedHouse, completion: completion)
+
+            self?.saveHouse(house, members: members)
+            completion(nil)
         }
     }
     
-    func convertHouse(_ house: Household, completion: @escaping (Error?) -> Void) {
-        do {
-            let updatedHouse = try modifier.convertHouse(house)
-            
-            remote.uploadHouse(updatedHouse, completion: completion)
-        } catch {
-            completion(error)
+    func fetchHouseMembers(for house: House,
+                           completion: @escaping ([Member]?) -> Void) {
+        
+        let missingIds = getMissingMemberIds(house.members.map({ $0.id }))
+
+        guard missingIds.count != 0 else { return completion([]) }
+
+        remote.fetchInfoList(memberIds: missingIds) { result in
+            switch result {
+            case .success(let infoList): completion(infoList)
+            case .failure: completion(nil)
+            }
         }
+    }
+    
+    func getMissingMemberIds(_ memberIds: [String]) -> [String] {
+        memberIds.filter { id in
+            !(completeMembers.map({ $0.id }).contains(id))
+        }
+    }
+    
+    func saveHouse(_ house: House, members: [Member]) {
+        var updatedHouse = house
+        
+        updatedHouse.members = getUpdatedMembers(houseMembers: house.members, newList: members)
+        
+        store.setHouse(updatedHouse)
+    }
+    
+    func getUpdatedMembers(houseMembers: [Member],
+                           newList: [Member]) -> [Member] {
+
+        // get current info list
+        let allMembers = completeMembers + newList
+        let currentList = allMembers.filter { info in
+            houseMembers.contains(where: { $0.id == info.id })
+        }
+
+        // save current info
+        completeMembers = currentList.compactMap { member in
+            makeUpdatedMember(member, houseMembers: houseMembers)
+        }
+
+        return completeMembers
+    }
+    
+    func makeUpdatedMember(_ member: Member,
+                           houseMembers: [Member]) -> Member? {
+        guard
+            let houseMember = houseMembers.first(where: {$0.id == member.id })
+        else { return nil }
+
+        var updatedMember = member
+
+        updatedMember.isAdmin = houseMember.isAdmin
+
+        return updatedMember
     }
 }
 
 
 // MARK: - Dependencies
 public protocol HouseholdStore {
-    func setHouse(_ house: Household, completion: @escaping (Error?) -> Void)
-}
-
-public protocol HouseholdLoadPolicy {
-    func isMember(of house: Household) -> Bool
-    func isConverting(_ house: Household) -> Bool
+    associatedtype House: NnHouse
+    
+    func isMember(of house: House) -> Bool
+    func setHouse(_ house: House)
 }
 
 public protocol HouseholdLoadRemoteAPI {
-    func fetchHouse(_ id: String, completion: @escaping (Result<Household, Error>) -> Void)
+    associatedtype House: NnHouse
     
-    func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void)
-}
-
-public protocol HouseholdMemberLoader {
-    func loadMembers(for house: Household,
-                     completion: @escaping (Household?) -> Void)
-}
-
-public protocol ConvertedHouseholdModifier {
-    func convertHouse(_ house: Household) throws -> Household
+    func fetchHouse(_ id: String,
+                    completion: @escaping (Result<House, Error>) -> Void)
+    func fetchInfoList(memberIds: [String],
+                       completion: @escaping (Result<[House.Member], Error>) -> Void)
 }

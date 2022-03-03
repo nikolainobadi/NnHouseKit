@@ -13,84 +13,63 @@ import TestHelpers
 final class HouseholdLoadManagerTests: XCTestCase {
     
     func test_loadHouse_noHouseIdError() {
-        let (sut, _, _) = makeSUT(houseId: "")
-        
+        let (sut, _) = makeSUT(houseId: "")
+
         expect(sut, toCompleteWithError: .noHouse)
     }
-    
+
     func test_loadHouse_fetchError() {
-        let (sut, remote, _) = makeSUT()
-        
+        let (sut, remote) = makeSUT()
+
         expect(sut, toCompleteWithError: .fetchError) {
-            remote.fetchComplete(with: .fetchError)
+            remote.houseComplete(with: .fetchError)
         }
     }
-    
+
     func test_loadHouse_fetchSuccess_noAccessError() {
-        let house = makeHouse()
-        let (sut, remote, _) = makeSUT()
-        
+        let house = makeTestHouse()
+        let (sut, remote) = makeSUT()
+
         expect(sut, toCompleteWithError: .noAccess) {
-            remote.fetchComplete(house)
+            remote.houseComplete(house)
         }
     }
-    
-    func test_loadHouse_fetchSuccess_isMember_memberLoaderError() {
-        let house = makeHouse()
-        let policy = makePolicy(isMember: true)
-        let (sut, remote, memberLoader) = makeSUT(policy: policy)
-        
+
+    func test_loadHouse_fetchSuccess_isMember_memberFetchError() {
+        let incompleteMembers = makeTestMemberList(withNames: false)
+        let house = makeTestHouse(members: incompleteMembers)
+        let store = makeStore(isMember: true)
+        let (sut, remote) = makeSUT(store: store)
+
         expect(sut, toCompleteWithError: .fetchError) {
-            remote.fetchComplete(house)
-            memberLoader.complete(with: nil)
+            remote.houseComplete(house)
+            remote.membersComplete(with: .fetchError)
         }
     }
-    
-    func test_loadHouse_fetchSuccess_isMember_memberLoaderSuccess_houseSet() {
-        let house = makeHouse()
-        let store = makeStore()
-        let policy = makePolicy(isMember: true)
-        let (sut, remote, memberLoader) = makeSUT(store: store, policy: policy)
+
+    func test_loadHouse_fetchSuccess_isMember_memberFetchSuccess_houseSet() {
+        
+        let incompleteMembers = makeTestMemberList(withNames: false)
+        let completeMembers = makeTestMemberList(withNames: true)
+        let house = makeTestHouse(members: incompleteMembers)
+        let store = makeStore(isMember: true)
+        let (sut, remote) = makeSUT(store: store)
         let exp = expectation(description: "waiting for success...")
-        
-        sut.loadHouse { error in XCTAssertNil(error); exp.fulfill() }
-        
-        remote.fetchComplete(house)
-        memberLoader.complete(with: house)
-        store.complete(with: nil)
-        
-        XCTAssertNotNil(store.house)
-        
-        waitForExpectations(timeout: 0.1)
-        
-        
-    }
-    
-    func test_loadHouse_fetchSuccess_isConverting_uploadError() {
-        let house = makeHouse()
-        let policy = makePolicy(isConverting: true)
-        let (sut, remote, _) = makeSUT(policy: policy)
-        
-        expect(sut, toCompleteWithError: .uploadError) {
-            remote.fetchComplete(house)
-            remote.uploadComplete(with: .uploadError)
+
+        sut.loadHouse { error in
+            XCTAssertNil(error)
+            exp.fulfill()
         }
-    }
-    
-    func test_loadHouse_fetchSuccess_isConverting_uploadSuccess() {
-        let house = makeHouse()
-        let policy = makePolicy(isConverting: true)
-        let modifier = makeModifier()
-        let (sut, remote, _) = makeSUT(policy: policy, modifier: modifier)
-        let exp = expectation(description: "waiting for success...")
+
+        remote.houseComplete(house)
+        remote.membersComplete(completeMembers)
         
-        sut.loadHouse { error in XCTAssertNil(error); exp.fulfill() }
+        guard let storedHouse = store.house else {
+            return XCTFail("house not saved")
+        }
         
-        remote.fetchComplete(house)
-        remote.uploadComplete(with: nil)
-        
-        XCTAssertNotNil(modifier.house)
-        
+        XCTAssertEqual(storedHouse.members, completeMembers)
+
         waitForExpectations(timeout: 0.1)
     }
 }
@@ -99,64 +78,48 @@ final class HouseholdLoadManagerTests: XCTestCase {
 // MARK: - SUT
 extension HouseholdLoadManagerTests {
     
+    typealias SUT = HouseholdLoadManager<MockHouseholdStore, HouseholdLoadRemoteAPISpy>
+    
     func makeSUT(houseId: String = "TestId",
-                 store: HouseholdStore? = nil,
-                 policy: HouseholdLoadPolicy? = nil,
-                 modifier: MockConvertedHouseholdModifier? = nil,
-                 file: StaticString = #filePath, line: UInt = #line) -> (sut: HouseholdLoadManager, remote: HouseholdLoadRemoteAPISpy, memberLoader: HouseholdMemberLoaderSpy) {
-        
+                 store: MockHouseholdStore? = nil,
+                 file: StaticString = #filePath, line: UInt = #line) -> (sut: SUT, remote: HouseholdLoadRemoteAPISpy) {
+
+        let store = store ?? makeStore()
         let remote = HouseholdLoadRemoteAPISpy()
-        let memberLoader = HouseholdMemberLoaderSpy()
         let sut = HouseholdLoadManager(houseId: houseId,
-                                       store: store ?? makeStore(),
-                                       policy: policy ?? makePolicy(),
+                                       store: store,
                                        remote: remote,
-                                       memberLoader: memberLoader,
-                                       modifier: modifier ?? makeModifier())
-        
+                                       currentMembers: [])
+
         trackForMemoryLeaks(sut, file: file, line: line)
-        
-        return (sut, remote, memberLoader)
+
+        return (sut, remote)
     }
     
-    func makeHouse() -> Household {
-        TestHouse()
+    func makeStore(isMember: Bool = false) -> MockHouseholdStore {
+        MockHouseholdStore(isMember: isMember)
     }
-    
-    func makeStore() -> MockHouseholdStore {
-        MockHouseholdStore()
-    }
-    
-    func makePolicy(isMember: Bool = false,
-                    isConverting: Bool = false) -> HouseholdLoadPolicy {
-        
-        MockHouseholdLoadPolicy(isMember: isMember, isConverting: isConverting)
-    }
-    
-    func makeModifier() -> MockConvertedHouseholdModifier {
-        MockConvertedHouseholdModifier()
-    }
-    
-    func expect(_ sut: HouseholdLoadManager,
+
+    func expect(_ sut: SUT,
                 toCompleteWithError expectedError: HouseFetchError,
                 when action: (() -> Void)? = nil,
                 file: StaticString = #filePath, line: UInt = #line) {
-        
+
         let exp = expectation(description: "waiting for error...")
-        
+
         sut.loadHouse { error in
             guard let error = error else {
                 return XCTFail("no error")
             }
-            
+
             guard let fetchError = error as? HouseFetchError else {
                 return XCTFail("unexpected error")
             }
-            
+
             XCTAssertEqual(fetchError, expectedError)
             exp.fulfill()
         }
-        
+
         action?()
         waitForExpectations(timeout: 0.1)
     }
@@ -168,131 +131,91 @@ extension HouseholdLoadManagerTests {
     
     class MockHouseholdStore: HouseholdStore {
         
-        var house: Household?
-        var completion: ((Error?) -> Void)?
+        typealias House = TestNnHouse
+
+        var house: House?
+        var isMember: Bool
         
-        func setHouse(_ house: Household,
-                      completion: @escaping (Error?) -> Void) {
-            
-            self.house = house
-            self.completion = completion
-        }
-        
-        func complete(with error: Error?,
-                      file: StaticString = #filePath,
-                      line: UInt = #line) {
-            guard
-                let completion = completion
-            else {
-                return XCTFail("Request never made", file: file, line: line)
-            }
-            
-            completion(error)
-        }
-    }
-    
-    class MockHouseholdLoadPolicy: HouseholdLoadPolicy {
-        
-        private let isMember: Bool
-        private let isConverting: Bool
-        
-        init(isMember: Bool = false, isConverting: Bool = false) {
+        init(isMember: Bool) {
             self.isMember = isMember
-            self.isConverting = isConverting
         }
         
-        func isMember(of house: Household) -> Bool {
+        func isMember(of house: TestNnHouse) -> Bool {
             isMember
         }
         
-        func isConverting(_ house: Household) -> Bool {
-            isConverting
+        func setHouse(_ house: TestNnHouse) {
+            self.house = house
         }
     }
-    
+
     class HouseholdLoadRemoteAPISpy: HouseholdLoadRemoteAPI {
         
-        private var fetchCompletion: ((Result<Household, Error>) -> Void)?
-        private var uploadCompletion: ((Error?) -> Void)?
-        
+        typealias House = TestNnHouse
+
+        var memberIds = [String]()
+        private var houseCompletion: ((Result<House, Error>) -> Void)?
+        private var membersCompletion: ((Result<[TestNnHouseMember], Error>) -> Void)?
+
         func fetchHouse(_ id: String,
-                        completion: @escaping (Result<Household, Error>) -> Void) {
-            
-            self.fetchCompletion = completion
+                        completion: @escaping (Result<House, Error>) -> Void) {
+
+            self.houseCompletion = completion
         }
         
-        func uploadHouse(_ house: Household,
-                         completion: @escaping (Error?) -> Void) {
+        func fetchInfoList(memberIds: [String],
+                           completion: @escaping (Result<[TestNnHouseMember], Error>) -> Void) {
             
-            self.uploadCompletion = completion
+            self.memberIds = memberIds
+            self.membersCompletion = completion
         }
-        
-        func fetchComplete(with error: HouseFetchError,
+
+        func houseComplete(with error: HouseFetchError,
                            file: StaticString = #filePath,
                            line: UInt = #line) {
             guard
-                let fetchCompletion = fetchCompletion
+                let houseCompletion = houseCompletion
             else {
                 return XCTFail("Request never made", file: file, line: line)
             }
-            
-            fetchCompletion(.failure(error))
+
+            houseCompletion(.failure(error))
         }
-        
-        func fetchComplete(_ house: Household,
+
+        func houseComplete(_ house: House,
                            file: StaticString = #filePath,
                            line: UInt = #line) {
             guard
-                let fetchCompletion = fetchCompletion
+                let houseCompletion = houseCompletion
             else {
                 return XCTFail("Request never made", file: file, line: line)
             }
-            
-            fetchCompletion(.success(house))
+
+            houseCompletion(.success(house))
         }
         
-        func uploadComplete(with error: HouseFetchError?,
-                            file: StaticString = #filePath,
-                            line: UInt = #line) {
+        func membersComplete(with error: HouseFetchError,
+                           file: StaticString = #filePath,
+                           line: UInt = #line) {
             guard
-                let uploadCompletion = uploadCompletion
+                let membersCompletion = membersCompletion
             else {
                 return XCTFail("Request never made", file: file, line: line)
             }
-            
-            uploadCompletion(error)
+
+            membersCompletion(.failure(error))
         }
-    }
-    
-    class HouseholdMemberLoaderSpy: HouseholdMemberLoader {
-        
-        private var completion: ((Household?) -> Void)?
-        
-        func loadMembers(for house: Household,
-                         completion: @escaping (Household?) -> Void) {
-            
-            self.completion = completion
-        }
-        
-        func complete(with house: Household?,
-                      file: StaticString = #filePath, line: UInt = #line) {
+
+        func membersComplete(_ list: [TestNnHouseMember],
+                             file: StaticString = #filePath,
+                             line: UInt = #line) {
             guard
-                let completion = completion
+                let membersCompletion = membersCompletion
             else {
                 return XCTFail("Request never made", file: file, line: line)
             }
-            
-            completion(house)
-        }
-    }
-    
-    class MockConvertedHouseholdModifier: ConvertedHouseholdModifier {
-        
-        var house: Household?
-        
-        func convertHouse(_ house: Household) -> Household {
-            self.house = house
-            return house
+
+            membersCompletion(.success(list))
         }
     }
 }

@@ -81,7 +81,7 @@ public extension XCTestCase {
         }
     }
     
-    struct TestNnHouseMember: NnHouseMember {
+    struct TestNnHouseMember: NnHouseMember, Equatable {
         public var id: String
         public var name: String
         public var isAdmin: Bool

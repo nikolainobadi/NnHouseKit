@@ -24,10 +24,11 @@ public extension XCTestCase {
                     members: members)
     }
     
-    func makeTestMemberList() -> [TestNnHouseMember] {
-        [makeTestMember(isAdmin: true),
+    func makeTestMemberList(withNames: Bool = true) -> [TestNnHouseMember] {
+        [makeTestMember(name: withNames ? nil : "",
+                        isAdmin: true),
          makeTestMember(id: getTestName(.secondId),
-                        name: getTestName(.secondName))]
+                        name: withNames ?  getTestName(.secondName) : "")]
     }
     
     func makeTestMember(id: String? = nil,

@@ -29,26 +29,16 @@ public final class HouseKitComposite {
     private init() { }
     
     // MARK: HouseFetch
-    public typealias HouseFetchRemoteAPI = HouseholdLoadRemoteAPI & HouseholdMemberRemoteAPI
-    
-    public static func makeHouseholdLoader(
+    public static func makeHouseholdLoader<Store: HouseholdStore, Remote: HouseholdLoadRemoteAPI>(
         houseId: String,
-        store: HouseholdStore,
-        policy: HouseholdLoadPolicy,
-        remote: HouseFetchRemoteAPI,
-        modifier: ConvertedHouseholdModifier,
-        currentMemberList: [HouseholdMember]) -> HouseholdLoader {
-            
-            let memberLoader = makeMemberLoader(
-                remote: remote,
-                memberList: currentMemberList)
-        
-            return HouseholdLoadManager(houseId: houseId,
-                                        store: store,
-                                        policy: policy,
-                                        remote: remote,
-                                        memberLoader: memberLoader,
-                                        modifier: modifier)
+        store: Store,
+        remote: Remote,
+        currentMemberList: [Remote.House.Member]) -> HouseholdLoader where Store.House == Remote.House {
+    
+            HouseholdLoadManager(houseId: houseId,
+                                 store: store,
+                                 remote: remote,
+                                 currentMembers: currentMemberList)
     }
     
     
@@ -193,19 +183,5 @@ private extension HouseKitComposite {
                 remote.checkForDuplicates(name: name, completion: completion)
             }
         )
-    }
-    
-    static func makeMemberLoader(remote: HouseholdMemberRemoteAPI,
-                                 memberList: [HouseholdMember]) -> HouseholdMemberLoader {
-        
-        HouseholdMemberLoadManager(remote: remote,
-                                   memberList: memberList)
-    }
-    
-    static func makeHouseDetailUIResponder(_ manager: HouseDetailManager,
-                                           switchHouse: @escaping () -> Void) -> HouseDetailUIResponder {
-        return (editHouse: manager.editHouse,
-                switchHouse: switchHouse,
-                showPassword: manager.showPassword)
     }
 }
