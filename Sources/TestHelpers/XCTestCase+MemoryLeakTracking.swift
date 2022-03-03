@@ -31,6 +31,32 @@ public extension XCTestCase {
         }
     }
     
+    struct TestNnHouse: NnHouse {
+        public typealias Member = TestNnHouseMember
+        
+        public var id: String
+        public var name: String
+        public var creator: String
+        public var password: String
+        public var members: [Member]
+        public var lastLogin: String
+        
+        public init(id: String = "",
+                    name: String = "",
+                    creator: String = "",
+                    password: String = "",
+                    members: [Member] = [],
+                    lastLogin: String = "") {
+            
+            self.id = id
+            self.name = name
+            self.creator = creator
+            self.password = password
+            self.members = members
+            self.lastLogin = lastLogin
+        }
+    }
+    
     struct TestHouse: Household {
         public var id: String
         public var name: String
@@ -52,6 +78,21 @@ public extension XCTestCase {
             self.password = password
             self.members = members
             self.lastLogin = lastLogin
+        }
+    }
+    
+    struct TestNnHouseMember: NnHouseMember {
+        public var id: String
+        public var name: String
+        public var isAdmin: Bool
+        
+        public init(id: String = "",
+                    name: String = "",
+                    isAdmin: Bool = false) {
+            
+            self.id = id
+            self.name = name
+            self.isAdmin = isAdmin
         }
     }
     

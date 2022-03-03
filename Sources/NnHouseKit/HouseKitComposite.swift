@@ -63,7 +63,7 @@ public final class HouseKitComposite {
                                 switchHouse: @escaping () -> Void) -> UIViewController where Remote.House == Cache.House {
         
         let adapter = makeAdapter(remote: remote, cache: houseCache)
-        let manager = GenericDetailManager(isCreator: isCreator,
+        let manager = HouseDetailManager(isCreator: isCreator,
                                            alerts: alerts,
                                            adapter: adapter)
         let tableVC = makeHouseListTable(
@@ -84,34 +84,34 @@ public final class HouseKitComposite {
     
     
     // MARK: HouseSelect
-    public static func makeHouseSelectVC(user: HouseholdUser,
-                                         selectType: HouseholdSelectType,
-                                         config: HouseSelectViewConfig,
-                                         policy: HouseSelectPolicy,
-                                         alerts: HouseSelectAlerts,
-                                         remote: HouseSelectRemoteAPI,
-                                         factory: HouseholdFactory,
-                                         joinHouse: @escaping () -> Void,
-                                         showDeleteHouse: @escaping () -> Void,
-                                         reloadData: @escaping () -> Void) -> UIViewController {
-        
-        let manager = HouseSelectManager(user: user,
-                                         policy: policy,
-                                         alerts: alerts,
-                                         remote: remote,
-                                         factory: factory,
-                                         finished: reloadData,
-                                         showDeleteHouse: showDeleteHouse)
-        
-        let viewModel = HouseSelectViewModel(selectType: selectType,
-                                             createHouse: manager.createNewHouse,
-                                             joinHouse: joinHouse)
-        
-        let rootView = HouseSelectRootView(config: config,
-                                           viewModel: viewModel)
-        
-        return HouseSelectVC(rootView: rootView)
-    }
+//    public static func makeHouseSelectVC(user: HouseholdUser,
+//                                         selectType: HouseholdSelectType,
+//                                         config: HouseSelectViewConfig,
+//                                         policy: HouseSelectPolicy,
+//                                         alerts: HouseSelectAlerts,
+//                                         remote: HouseSelectRemoteAPI,
+//                                         factory: HouseholdFactory,
+//                                         joinHouse: @escaping () -> Void,
+//                                         showDeleteHouse: @escaping () -> Void,
+//                                         reloadData: @escaping () -> Void) -> UIViewController {
+//
+//        let manager = HouseSelectManager(user: user,
+//                                         policy: policy,
+//                                         alerts: alerts,
+//                                         remote: remote,
+//                                         factory: factory,
+//                                         finished: reloadData,
+//                                         showDeleteHouse: showDeleteHouse)
+//
+//        let viewModel = HouseSelectViewModel(selectType: selectType,
+//                                             createHouse: manager.createNewHouse,
+//                                             joinHouse: joinHouse)
+//
+//        let rootView = HouseSelectRootView(config: config,
+//                                           viewModel: viewModel)
+//
+//        return HouseSelectVC(rootView: rootView)
+//    }
     
     
     // MARK: HouseSeearch
@@ -140,32 +140,32 @@ public final class HouseKitComposite {
     
     
     // MARK: JoinHouse
-    public static func makeJoinHouseVC(user: HouseholdUser,
-                                       houseToJoin: Household,
-                                       alerts: JoinHouseAlerts,
-                                       remote: HouseholdAndUserRemoteAPI,
-                                       factory: HouseholdMemberFactory,
-                                       config: JoinHouseViewConfig,
-                                       viewModelInfo: JoinHouseViewModelInfo,
-                                       finished: @escaping () -> Void) -> UIViewController {
-        
-        let manager = JoinHouseManager(user: user,
-                                       houseToJoin: houseToJoin,
-                                       alerts: alerts,
-                                       remote: remote,
-                                       factory: factory,
-                                       finished: finished)
-        
-        let viewModel = JoinHouseViewModel(
-            info: viewModelInfo,
-            joinHouse: manager.joinHouse(password:))
-        
-        let rootView = JoinHouseRootView(config: config,
-                                         viewModel: viewModel)
-        
-        return JoinHouseVC(rootView: rootView,
-                           fieldsToObserve: [rootView.passwordField])
-    }
+//    public static func makeJoinHouseVC(user: HouseholdUser,
+//                                       houseToJoin: Household,
+//                                       alerts: JoinHouseAlerts,
+//                                       remote: HouseholdAndUserRemoteAPI,
+//                                       factory: HouseholdMemberFactory,
+//                                       config: JoinHouseViewConfig,
+//                                       viewModelInfo: JoinHouseViewModelInfo,
+//                                       finished: @escaping () -> Void) -> UIViewController {
+//
+//        let manager = JoinHouseManager(user: user,
+//                                       houseToJoin: houseToJoin,
+//                                       alerts: alerts,
+//                                       remote: remote,
+//                                       factory: factory,
+//                                       finished: finished)
+//
+//        let viewModel = JoinHouseViewModel(
+//            info: viewModelInfo,
+//            joinHouse: manager.joinHouse(password:))
+//
+//        let rootView = JoinHouseRootView(config: config,
+//                                         viewModel: viewModel)
+//
+//        return JoinHouseVC(rootView: rootView,
+//                           fieldsToObserve: [rootView.passwordField])
+//    }
     
     
     // MARK: - HouseList

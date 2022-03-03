@@ -2,32 +2,29 @@
 //  HouseDetailManager.swift
 //  
 //
-//  Created by Nikolai Nobadi on 2/3/22.
+//  Created by Nikolai Nobadi on 3/1/22.
 //
 
 import NnHousehold
 
-public final class HouseDetailManager {
+public final class HouseDetailManager<House: NnHouse> {
     
     // MARK: - Properties
     private let isCreator: Bool
     private let alerts: HouseDetailAlerts
-    private let remote: HouseDetailRemoteAPI
-    private let houseCache: HouseholdCache
+    private let adapter: MyAdapter<House>
     
-    private var house: Household { houseCache.house }
+    private var house: House { adapter.getHouse() }
     
     
     // MARK: - Init
     public init(isCreator: Bool,
                 alerts: HouseDetailAlerts,
-                remote: HouseDetailRemoteAPI,
-                houseCache: HouseholdCache) {
+                adapter: MyAdapter<House>) {
         
         self.isCreator = isCreator
         self.alerts = alerts
-        self.remote = remote
-        self.houseCache = houseCache
+        self.adapter = adapter
     }
 }
 
@@ -41,10 +38,10 @@ extension HouseDetailManager {
     
     public func editHouse() {
         guard isCreator else { return showError(HouseDetailError.editHouse) }
-        
+
         alerts.showEditHouseAlert(namePlaceholder: house.name,
                                   passwordPlaceholder: house.password) { [weak self] (newName, newPassword) in
-            
+
             self?.updateHouseDetails(name: newName, password: newPassword)
         }
     }
@@ -56,11 +53,11 @@ extension HouseDetailManager {
     
     public func deleteMember(memberId: String) {
         guard isCreator else { return showError(HouseDetailError.deleteMember) }
-        
+
         var updatedHouse = house
-        
+
         updatedHouse.members = updatedHouse.members.filter { $0.id != memberId }
-        
+
         uploadHouse(updatedHouse)
     }
     
@@ -94,28 +91,28 @@ private extension HouseDetailManager {
         }
     }
     
-    func makeUpdatedHouse(name: String, password: String) -> Household? {
-        
+    func makeUpdatedHouse(name: String, password: String) -> House? {
+
         var updatedHouse = house
         var didChange = false
-        
+
         if name != "" && name != house.name {
             didChange = true
             updatedHouse.name = name
         }
-        
+
         if password != "" && password != house.password {
             didChange = true
             updatedHouse.password = password
         }
-        
+
         return didChange ? updatedHouse : nil
     }
     
-    func uploadHouse(_ updatedHouse: Household) {
+    func uploadHouse(_ updatedHouse: House) {
         let passwordChanged = house.password != updatedHouse.password
-        
-        remote.uploadHouse(updatedHouse) { [weak self] error in
+
+        adapter.uploadHouse(updatedHouse) { [weak self] error in
             if let error = error {
                 self?.showError(error)
             } else {
@@ -129,10 +126,10 @@ private extension HouseDetailManager {
         guard
             newName != house.name
         else { return completion(nil) }
-        
-        remote.checkForDuplicates(name: newName) { error in
+
+        adapter.checkForDuplicates(newName) { error in
             guard let error = error else { return completion(nil) }
-            
+
             if error == .nameTaken {
                 completion(.houseNameTaken)
             } else {
@@ -152,12 +149,17 @@ private extension HouseDetailManager {
 
 
 // MARK: - Dependencies
-public protocol HouseholdCache {
-    var house: Household { get }
+public protocol GenericHouseholdCache {
+    associatedtype House: NnHouse
+
+    var house: House { get }
 }
 
-public protocol HouseDetailRemoteAPI: DuplcatesRemoteAPI {
-    func uploadHouse(_ house: Household, completion: @escaping (Error?) -> Void)
+public protocol GenericDetailRemoteAPI: DuplcatesRemoteAPI {
+    associatedtype House: NnHouse
+    
+    func uploadHouse(_ house: House,
+                     completion: @escaping (Error?) -> Void)
 }
 
 public protocol HouseDetailAlerts {
@@ -169,3 +171,7 @@ public protocol HouseDetailAlerts {
                             completion: @escaping (String, String) -> Void)
 }
 
+public typealias MyAdapter<House: NnHouse> = (
+    getHouse: () -> House,
+    uploadHouse: (House, @escaping (Error?) -> Void) -> Void,
+    checkForDuplicates: (String, @escaping (DuplicateError?) -> Void) -> Void)

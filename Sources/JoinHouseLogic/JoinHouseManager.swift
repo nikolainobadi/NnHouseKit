@@ -11,6 +11,7 @@ public final class JoinHouseManager {
     
     // MARK: - Properties
     private let user: HouseholdUser
+    private let currentHouse: Household?
     private let houseToJoin: Household
     private let alerts: JoinHouseAlerts
     private let remote: HouseholdAndUserRemoteAPI
@@ -22,6 +23,7 @@ public final class JoinHouseManager {
     
     // MARK: - Init
     public init(user: HouseholdUser,
+                currentHouse: Household?,
                 houseToJoin: Household,
                 alerts: JoinHouseAlerts,
                 remote: HouseholdAndUserRemoteAPI,
@@ -29,6 +31,7 @@ public final class JoinHouseManager {
                 finished: @escaping () -> Void) {
         
         self.user = user
+        self.currentHouse = currentHouse
         self.alerts = alerts
         self.remote = remote
         self.factory = factory
@@ -69,7 +72,7 @@ private extension JoinHouseManager {
     func makeUpdatedHouseList() -> [Household] {
         var list = [Household]()
         
-        if let oldHouse = user.currentHouse {
+        if let oldHouse = currentHouse {
             list.append(HouseholdAndUserModifier.removeUser(user, from: oldHouse))
         }
         

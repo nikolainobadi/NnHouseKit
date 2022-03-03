@@ -12,6 +12,7 @@ public final class HouseSelectManager {
     
     // MARK: - Properties
     private let user: HouseholdUser
+    private let currentHouse: Household?
     private let policy: HouseSelectPolicy
     private let alerts: HouseSelectAlerts
     private let remote: HouseSelectRemoteAPI
@@ -22,6 +23,7 @@ public final class HouseSelectManager {
     
     // MARK: - Init
     public init(user: HouseholdUser,
+                currentHouse: Household?,
                 policy: HouseSelectPolicy,
                 alerts: HouseSelectAlerts,
                 remote: HouseSelectRemoteAPI,
@@ -30,6 +32,7 @@ public final class HouseSelectManager {
                 showDeleteHouse: @escaping () -> Void) {
         
         self.user = user
+        self.currentHouse = currentHouse
         self.policy = policy
         self.alerts = alerts
         self.remote = remote
@@ -82,7 +85,7 @@ private extension HouseSelectManager {
     func uploadNewHouse(name: String, password: String) {
         var houseList = [Household]()
         
-        if let oldHouse = user.currentHouse {
+        if let oldHouse = currentHouse {
             houseList.append(HouseholdAndUserModifier.removeUser(user, from: oldHouse))
         }
         
