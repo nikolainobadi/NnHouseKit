@@ -135,32 +135,34 @@ public extension HouseKitComposite {
     
     
     // MARK: JoinHouse
-//    public static func makeJoinHouseVC(user: HouseholdUser,
-//                                       houseToJoin: Household,
-//                                       alerts: JoinHouseAlerts,
-//                                       remote: HouseholdAndUserRemoteAPI,
-//                                       factory: HouseholdMemberFactory,
-//                                       config: JoinHouseViewConfig,
-//                                       viewModelInfo: JoinHouseViewModelInfo,
-//                                       finished: @escaping () -> Void) -> UIViewController {
-//
-//        let manager = JoinHouseManager(user: user,
-//                                       houseToJoin: houseToJoin,
-//                                       alerts: alerts,
-//                                       remote: remote,
-//                                       factory: factory,
-//                                       finished: finished)
-//
-//        let viewModel = JoinHouseViewModel(
-//            info: viewModelInfo,
-//            joinHouse: manager.joinHouse(password:))
-//
-//        let rootView = JoinHouseRootView(config: config,
-//                                         viewModel: viewModel)
-//
-//        return JoinHouseVC(rootView: rootView,
-//                           fieldsToObserve: [rootView.passwordField])
-//    }
+    static func makeJoinHouseVC<Remote: NnUserAndHouseRemoteAPI,
+                                Factory: NnHouseMemberFactory>(
+                                    user: Remote.User,
+                                    houseToJoin: Remote.House,
+                                    alerts: JoinHouseAlerts,
+                                    remote: Remote,
+                                    factory: Factory,
+                                    config: JoinHouseViewConfig,
+                                    viewModelInfo: JoinHouseViewModelInfo,
+                                    finished: @escaping () -> Void) -> UIViewController where Remote.House.Member == Factory.Member {
+
+        let manager = JoinHouseManager(user: user,
+                                       houseToJoin: houseToJoin,
+                                       alerts: alerts,
+                                       remote: remote,
+                                       factory: factory,
+                                       finished: finished)
+
+        let viewModel = JoinHouseViewModel(
+            info: viewModelInfo,
+            joinHouse: manager.joinHouse(password:))
+
+        let rootView = JoinHouseRootView(config: config,
+                                         viewModel: viewModel)
+
+        return JoinHouseVC(rootView: rootView,
+                           fieldsToObserve: [rootView.passwordField])
+    }
     
     
     // MARK: - HouseList
