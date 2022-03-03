@@ -36,7 +36,7 @@ public extension HouseKitComposite {
         houseId: String,
         store: Store,
         remote: Remote,
-        currentMemberList: [Remote.House.Member]) -> HouseholdLoader where Store.House == Remote.House {
+        currentMemberList: [Remote.House.Member]) -> NnHouseLoader where Store.House == Remote.House {
     
             HouseholdLoadManager(houseId: houseId,
                                  store: store,
@@ -46,7 +46,7 @@ public extension HouseKitComposite {
     
     
     // MARK: HouseDetail
-    static func makeHouseDetailVC<Cache: GenericHouseholdCache, Remote: GenericDetailRemoteAPI>(isCreator: Bool,
+    static func makeHouseDetailVC<Cache: NnHouseCache, Remote: NnHouseDetailRemoteAPI>(isCreator: Bool,
                                 houseName: String,
                                 alerts: HouseDetailAlerts,
                                 remote: Remote,
@@ -55,7 +55,7 @@ public extension HouseKitComposite {
                                 viewConfig: HouseDetailViewConfig,
                                 switchHouse: @escaping () -> Void) -> UIViewController where Remote.House == Cache.House {
         
-        let adapter = makeAdapter(remote: remote, cache: houseCache)
+        let adapter = makeDetailAdapter(remote: remote, cache: houseCache)
         let manager = HouseDetailManager(isCreator: isCreator,
                                            alerts: alerts,
                                            adapter: adapter)
@@ -180,7 +180,7 @@ public extension HouseKitComposite {
 // MARK: - Private Methods
 private extension HouseKitComposite {
     
-    static func makeAdapter<Remote: GenericDetailRemoteAPI, Cache: GenericHouseholdCache>(remote: Remote, cache: Cache) -> MyAdapter<Remote.House> where Remote.House == Cache.House {
+    static func makeDetailAdapter<Remote: NnHouseDetailRemoteAPI, Cache: NnHouseCache>(remote: Remote, cache: Cache) -> MyAdapter<Remote.House> where Remote.House == Cache.House {
         
         return (
             getHouse: { cache.house },

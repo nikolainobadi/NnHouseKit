@@ -35,7 +35,7 @@ public final class HouseholdLoadManager<Store: HouseholdStore, Remote: Household
 }
 
 // MARK: - Loader
-extension HouseholdLoadManager: HouseholdLoader {
+extension HouseholdLoadManager: NnHouseLoader {
     
     public func loadHouse(completion: @escaping (Error?) -> Void) {
         guard houseId != "" else {

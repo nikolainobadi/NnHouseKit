@@ -149,13 +149,13 @@ private extension HouseDetailManager {
 
 
 // MARK: - Dependencies
-public protocol GenericHouseholdCache {
+public protocol NnHouseCache {
     associatedtype House: NnHouse
 
     var house: House { get }
 }
 
-public protocol GenericDetailRemoteAPI: DuplcatesRemoteAPI {
+public protocol NnHouseDetailRemoteAPI: DuplcatesRemoteAPI {
     associatedtype House: NnHouse
     
     func uploadHouse(_ house: House,

@@ -278,7 +278,7 @@ extension HouseDetailManagerTests {
 // MARK: - Helper Classes
 extension HouseDetailManagerTests {
 
-    class MockHouseholdCache: GenericHouseholdCache {
+    class MockHouseholdCache: NnHouseCache {
 
         typealias House = TestNnHouse
 
@@ -334,7 +334,7 @@ extension HouseDetailManagerTests {
         }
     }
 
-    class HouseDetailRemoteAPISpy: GenericDetailRemoteAPI {
+    class HouseDetailRemoteAPISpy: NnHouseDetailRemoteAPI {
 
         typealias House = TestNnHouse
 

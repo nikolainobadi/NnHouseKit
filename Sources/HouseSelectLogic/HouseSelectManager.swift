@@ -131,10 +131,6 @@ public protocol NnHouseFactory {
     func makeNewHouse(name: String, password: String) -> House
 }
 
-public protocol HouseholdFactory {
-    func makeNewHouse(name: String, password: String) -> Household
-}
-
 public protocol HouseSelectPolicy {
     var canCreateMoreHouses: Bool { get }
 }

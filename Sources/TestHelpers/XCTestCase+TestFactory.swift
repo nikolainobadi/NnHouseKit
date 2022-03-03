@@ -17,7 +17,106 @@ import NnHousehold
 
 public extension XCTestCase {
     
-    // MARK: - User
+    // MARK: - Enum
+    enum TestName: String {
+        case testUserId
+        case testUsername
+        
+        case testHouseId
+        case testHouseName
+        
+        case testRoomId
+        case testRoomName
+        
+        case testTaskId
+        case testTaskName
+        
+        case firstId
+        case secondId
+        case thirdId
+        
+        case firstName
+        case secondName
+        case thirdName
+    }
+    
+    func getTestName(_ value: TestName) -> String {
+        value.rawValue
+    }
+    
+    
+    // MARK: - Test Structs
+    struct TestNnHouseUser: NnHouseUser {
+        public typealias House = TestNnHouse
+        
+        public var id: String
+        public var name: String
+        public var houseId: String
+        public var currentHouse: House?
+        public var createdHouseIds: [String]
+        
+        public init(id: String = "",
+                    name: String = "",
+                    houseId: String = "",
+                    currentHouse: House? = nil,
+                    createdHouseIds: [String] = []) {
+            
+            self.id = id
+            self.name = name
+            self.houseId = houseId
+            self.currentHouse = currentHouse
+            self.createdHouseIds = createdHouseIds
+        }
+    }
+    
+    struct TestNnHouse: NnHouse {
+        public typealias Member = TestNnHouseMember
+        
+        public var id: String
+        public var name: String
+        public var creator: String
+        public var password: String
+        public var members: [Member]
+        public var lastLogin: String
+        
+        public init(id: String = "",
+                    name: String = "",
+                    creator: String = "",
+                    password: String = "",
+                    members: [Member] = [],
+                    lastLogin: String = "") {
+            
+            self.id = id
+            self.name = name
+            self.creator = creator
+            self.password = password
+            self.members = members
+            self.lastLogin = lastLogin
+        }
+    }
+    
+    struct TestNnHouseMember: NnHouseMember, Equatable {
+        public var id: String
+        public var name: String
+        public var isAdmin: Bool
+        
+        public init(id: String = "",
+                    name: String = "",
+                    isAdmin: Bool = false) {
+            
+            self.id = id
+            self.name = name
+            self.isAdmin = isAdmin
+        }
+    }
+}
+
+
+// MARK: - Factory
+
+public extension XCTestCase {
+    
+    // MARK: User
     func makeTestUser(houseId: String = "",
                       house: TestNnHouse? = nil) -> TestNnHouseUser {
         
@@ -29,7 +128,7 @@ public extension XCTestCase {
     }
     
     
-    // MARK: - House
+    // MARK: House
     func makeTestHouse(id: String? = nil,
                        name: String? = nil,
                        creator: String = "",
@@ -44,7 +143,7 @@ public extension XCTestCase {
     }
     
     
-    // MARK: - Members
+    // MARK: Members
     func makeTestMemberList(withNames: Bool = true) -> [TestNnHouseMember] {
         [makeTestMember(name: withNames ? nil : "",
                         isAdmin: true),
