@@ -27,9 +27,12 @@ import JoinHouseLogic
 
 public final class HouseKitComposite {
     private init() { }
+}
+
+public extension HouseKitComposite {
     
     // MARK: HouseFetch
-    public static func makeHouseholdLoader<Store: HouseholdStore, Remote: HouseholdLoadRemoteAPI>(
+    static func makeHouseholdLoader<Store: HouseholdStore, Remote: HouseholdLoadRemoteAPI>(
         houseId: String,
         store: Store,
         remote: Remote,
@@ -43,7 +46,7 @@ public final class HouseKitComposite {
     
     
     // MARK: HouseDetail
-    public static func makeHouseDetailVC<Cache: GenericHouseholdCache, Remote: GenericDetailRemoteAPI>(isCreator: Bool,
+    static func makeHouseDetailVC<Cache: GenericHouseholdCache, Remote: GenericDetailRemoteAPI>(isCreator: Bool,
                                 houseName: String,
                                 alerts: HouseDetailAlerts,
                                 remote: Remote,
@@ -74,38 +77,39 @@ public final class HouseKitComposite {
     
     
     // MARK: HouseSelect
-//    public static func makeHouseSelectVC(user: HouseholdUser,
-//                                         selectType: HouseholdSelectType,
-//                                         config: HouseSelectViewConfig,
-//                                         policy: HouseSelectPolicy,
-//                                         alerts: HouseSelectAlerts,
-//                                         remote: HouseSelectRemoteAPI,
-//                                         factory: HouseholdFactory,
-//                                         joinHouse: @escaping () -> Void,
-//                                         showDeleteHouse: @escaping () -> Void,
-//                                         reloadData: @escaping () -> Void) -> UIViewController {
-//
-//        let manager = HouseSelectManager(user: user,
-//                                         policy: policy,
-//                                         alerts: alerts,
-//                                         remote: remote,
-//                                         factory: factory,
-//                                         finished: reloadData,
-//                                         showDeleteHouse: showDeleteHouse)
-//
-//        let viewModel = HouseSelectViewModel(selectType: selectType,
-//                                             createHouse: manager.createNewHouse,
-//                                             joinHouse: joinHouse)
-//
-//        let rootView = HouseSelectRootView(config: config,
-//                                           viewModel: viewModel)
-//
-//        return HouseSelectVC(rootView: rootView)
-//    }
+    static func makeHouseSelectVC<Remote: HouseSelectRemoteAPI,
+                                    Factory: NnHouseFactory>(
+                                        user: Remote.User,
+                                        selectType: HouseholdSelectType,
+                                        config: HouseSelectViewConfig,
+                                        policy: HouseSelectPolicy,
+                                        alerts: HouseSelectAlerts,
+                                        remote: Remote,
+                                        factory: Factory,
+                                        joinHouse: @escaping () -> Void,
+                                        showDeleteHouse: @escaping () -> Void,
+                                        reloadData: @escaping () -> Void) -> UIViewController where Remote.House == Factory.House {
+        let manager = HouseSelectManager(
+            user: user,
+            policy: policy,
+            alerts: alerts,
+            remote: remote,
+            factory: factory,
+            router: (finished: reloadData, showDeleteHouse: showDeleteHouse))
+
+        let viewModel = HouseSelectViewModel(selectType: selectType,
+                                             createHouse: manager.createNewHouse,
+                                             joinHouse: joinHouse)
+
+        let rootView = HouseSelectRootView(config: config,
+                                           viewModel: viewModel)
+
+        return HouseSelectVC(rootView: rootView)
+    }
     
     
     // MARK: HouseSeearch
-    public static func makeHouseSearchVC(config: SearchViewConfig,
+    static func makeHouseSearchVC(config: SearchViewConfig,
                                         backgroundColor: UIColor?,
                                         alerts: HouseSearchAlerts,
                                         remote: HouseSearchRemoteAPI,
@@ -159,9 +163,9 @@ public final class HouseKitComposite {
     
     
     // MARK: - HouseList
-    public static func makeHouseListTable(title: String = "",
-                                          publisher: HouseListCellInfoPublisher,
-                                          responder: HouseListCellResponder) -> UIViewController {
+    static func makeHouseListTable(title: String = "",
+                                   publisher: HouseListCellInfoPublisher,
+                                   responder: HouseListCellResponder) -> UIViewController {
         HouseListTableVC(
             presenter:HouseListPresentationAdapter(title: title,
                                                    publisher: publisher,
