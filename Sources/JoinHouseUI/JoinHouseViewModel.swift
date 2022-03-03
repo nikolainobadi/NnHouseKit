@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import NnHousehold
 
 public final class JoinHouseViewModel {
     

@@ -90,13 +90,17 @@ extension HouseDetailManagerTests {
     }
 
     func test_editHouse_uploadSuccess_passwordChanged_houseNameSame() {
+        
+        let house = makeTestHouse(name: "")
         let newPassword = newPassword
-        let (sut, alerts, remote) = makeSUT(isCreator: true)
-
+        let (sut, alerts, remote) = makeSUT(isCreator: true,
+                                            house: house)
         expect(alerts, toShowError: nil) {
             sut.editHouse()
-            alerts.completeWithDetails(name: "", password: newPassword)
-            remote.complete(with: nil, newPassword: newPassword)
+            alerts.completeWithDetails(name: "",
+                                       password: newPassword)
+            remote.complete(with: nil,
+                            newPassword: newPassword)
         }
 
         XCTAssertTrue(alerts.passwordDidChange)

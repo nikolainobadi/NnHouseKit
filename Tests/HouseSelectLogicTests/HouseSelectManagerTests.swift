@@ -127,7 +127,7 @@ final class HouseSelectManagerTests: XCTestCase {
     func test_createHouse_uploadSuccess_withOldHouse_uploadedDataVerified() {
         let member = makeTestMember()
         let house = makeTestHouse(members: [member])
-        let user = makeTestUser(house)
+        let user = makeTestUser(house: house)
         let (sut, alerts, remote) = makeSUT(user: user,
                                             canCreate: true)
         sut.createNewHouse()

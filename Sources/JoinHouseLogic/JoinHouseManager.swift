@@ -7,31 +7,33 @@
 
 import NnHousehold
 
-public final class JoinHouseManager {
+public final class JoinHouseManager<Remote: NnUserAndHouseRemoteAPI, Factory: NnHouseMemberFactory> where Remote.House.Member == Factory.Member {
+    
+    public typealias User = Remote.User
+    public typealias House = Remote.House
+    public typealias Member = House.Member
     
     // MARK: - Properties
-    private let user: HouseholdUser
-    private let currentHouse: Household?
-    private let houseToJoin: Household
+    private let user: User
+    private let houseToJoin: House
     private let alerts: JoinHouseAlerts
-    private let remote: HouseholdAndUserRemoteAPI
-    private let factory: HouseholdMemberFactory
+    private let remote: Remote
+    private let factory: Factory
     private let finished: () -> Void
     
+    private var currentHouse: House? { user.currentHouse }
     private var isCreator: Bool { user.name == houseToJoin.creator }
     
     
     // MARK: - Init
-    public init(user: HouseholdUser,
-                currentHouse: Household?,
-                houseToJoin: Household,
+    public init(user: User,
+                houseToJoin: House,
                 alerts: JoinHouseAlerts,
-                remote: HouseholdAndUserRemoteAPI,
-                factory: HouseholdMemberFactory,
+                remote: Remote,
+                factory: Factory,
                 finished: @escaping () -> Void) {
         
         self.user = user
-        self.currentHouse = currentHouse
         self.alerts = alerts
         self.remote = remote
         self.factory = factory
@@ -65,20 +67,29 @@ extension JoinHouseManager {
 // MARK: - Private Methods
 private extension JoinHouseManager {
     
-    func makeUpdatedUser() -> HouseholdUser {
-        HouseholdAndUserModifier.makeUpdatedUser(user, houseId: houseToJoin.id)
+    func makeUpdatedUser() -> User {
+        NnUserAndHouseModifier.makeUpdatedUser(user,
+                                               houseId: houseToJoin.id)
     }
     
-    func makeUpdatedHouseList() -> [Household] {
-        var list = [Household]()
+    func makeUpdatedHouseList() -> [House] {
+        var list = [House]()
         
         if let oldHouse = currentHouse {
-            list.append(HouseholdAndUserModifier.removeUser(user, from: oldHouse))
+            list.append(removeUserFromHouse(oldHouse))
         }
         
-        list.append(HouseholdAndUserModifier.addMember(factory.makeMember(), to: houseToJoin))
+        list.append(addMemberToHouse(houseToJoin))
         
         return list
+    }
+    
+    func removeUserFromHouse(_ house: House) -> House {
+        NnUserAndHouseModifier.removeUser(user, from: house)
+    }
+    
+    func addMemberToHouse(_ house: House) -> House {
+        NnUserAndHouseModifier.addMember(factory.makeMember(), to: house)
     }
 }
 
@@ -88,6 +99,8 @@ public protocol JoinHouseAlerts {
     func showError(_ error: Error)
 }
 
-public protocol HouseholdMemberFactory {
-    func makeMember() -> HouseholdMember
+public protocol NnHouseMemberFactory {
+    associatedtype Member: NnHouseMember
+    
+    func makeMember() -> Member
 }

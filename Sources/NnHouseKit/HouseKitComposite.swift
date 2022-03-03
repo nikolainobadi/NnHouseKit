@@ -110,18 +110,19 @@ public extension HouseKitComposite {
     
     // MARK: HouseSeearch
     static func makeHouseSearchVC(config: SearchViewConfig,
-                                        backgroundColor: UIColor?,
-                                        alerts: HouseSearchAlerts,
-                                        remote: HouseSearchRemoteAPI,
-                                        cellInfoPublisher: HouseListCellInfoPublisher,
-                                        showJoinHouse: @escaping (String) -> Void) -> UIViewController {
+                                  backgroundColor: UIColor?,
+                                  alerts: HouseSearchAlerts,
+                                  remote: HouseSearchRemoteAPI,
+                                  cellInfoPublisher: HouseListCellInfoPublisher,
+                                  showJoinHouse: @escaping (String) -> Void) -> UIViewController {
         
-        let manager = HouseSearchManager(alerts: alerts,
-                                         remote: remote)
+        let manager = HouseSearchManager(alerts: alerts, remote: remote)
         let searchView = HouseSearchSearchView(
             config: config,
-            responder: (changeSearchParameter: manager.changeSearchParameter(_:),
-                        searchForHouse: manager.searchForHouse(_:)))
+            responder: (
+                changeSearchParameter: manager.changeSearchParameter(_:),
+                searchForHouse: manager.searchForHouse(_:))
+        )
         
         let tableVC = makeHouseListTable(
             publisher: cellInfoPublisher,

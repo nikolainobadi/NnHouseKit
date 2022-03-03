@@ -18,21 +18,28 @@ import NnHousehold
 public extension XCTestCase {
     
     // MARK: - User
-    func makeTestUser(_ house: TestNnHouse? = nil) -> TestNnHouseUser {
+    func makeTestUser(houseId: String = "",
+                      house: TestNnHouse? = nil) -> TestNnHouseUser {
         
         TestNnHouseUser(id: getTestName(.testUserId),
                         name: getTestName(.testUsername),
-                        houseId: house?.id ?? "",
+                        houseId: houseId,
                         currentHouse: house,
                         createdHouseIds: [])
     }
     
     
     // MARK: - House
-    func makeTestHouse(members: [TestNnHouseMember] = []) -> TestNnHouse {
+    func makeTestHouse(id: String? = nil,
+                       name: String? = nil,
+                       creator: String = "",
+                       password: String? = nil,
+                       members: [TestNnHouseMember] = []) -> TestNnHouse {
         
-        TestNnHouse(id: getTestName(.testHouseId),
-                    password: getTestName(.testHouseName),
+        TestNnHouse(id: id ?? getTestName(.testHouseId),
+                    name: name ?? getTestName(.testHouseName),
+                    creator: creator,
+                    password: password ?? getTestName(.testHouseName),
                     members: members)
     }
     
