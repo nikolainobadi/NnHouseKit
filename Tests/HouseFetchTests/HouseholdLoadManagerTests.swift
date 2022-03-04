@@ -129,7 +129,7 @@ extension HouseholdLoadManagerTests {
 // MARK: - Helper Classes
 extension HouseholdLoadManagerTests {
     
-    class MockHouseholdStore: HouseholdStore {
+    class MockHouseholdStore: NnHouseStore {
         
         typealias House = TestNnHouse
 

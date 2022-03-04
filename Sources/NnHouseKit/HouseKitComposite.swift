@@ -32,7 +32,7 @@ public final class HouseKitComposite {
 public extension HouseKitComposite {
     
     // MARK: HouseFetch
-    static func makeHouseholdLoader<Store: HouseholdStore, Remote: HouseholdLoadRemoteAPI>(
+    static func makeHouseholdLoader<Store: NnHouseStore, Remote: HouseholdLoadRemoteAPI>(
         houseId: String,
         store: Store,
         remote: Remote,

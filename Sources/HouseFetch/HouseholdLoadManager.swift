@@ -7,7 +7,7 @@
 
 import NnHousehold
 
-public final class HouseholdLoadManager<Store: HouseholdStore, Remote: HouseholdLoadRemoteAPI> where Store.House == Remote.House  {
+public final class HouseholdLoadManager<Store: NnHouseStore, Remote: HouseholdLoadRemoteAPI> where Store.House == Remote.House  {
     
     // MARK: - Properties
     public typealias House = Remote.House
@@ -135,7 +135,7 @@ private extension HouseholdLoadManager {
 
 
 // MARK: - Dependencies
-public protocol HouseholdStore {
+public protocol NnHouseStore {
     associatedtype House: NnHouse
     
     func isMember(of house: House) -> Bool
