@@ -7,27 +7,27 @@
 
 import NnHousehold
 
-public final class JoinHouseManager<Remote: NnUserAndHouseRemoteAPI, Factory: NnHouseMemberFactory> where Remote.House.Member == Factory.Member {
+public final class JoinHouseManager<Remote: NnUserAndHouseRemoteAPI, Factory: NnHouseMemberFactory> where Remote.NnHouse.Member == Factory.Member {
     
-    public typealias User = Remote.User
-    public typealias House = Remote.House
-    public typealias Member = House.Member
+    public typealias NnUser = Remote.NnUser
+    public typealias NnHouse = Remote.NnHouse
+    public typealias Member = NnHouse.Member
     
     // MARK: - Properties
-    private let user: User
-    private let houseToJoin: House
+    private let user: NnUser
+    private let houseToJoin: NnHouse
     private let alerts: JoinHouseAlerts
     private let remote: Remote
     private let factory: Factory
     private let finished: () -> Void
     
-    private var currentHouse: House? { user.currentHouse }
+    private var currentHouse: NnHouse? { user.currentHouse }
     private var isCreator: Bool { user.name == houseToJoin.creator }
     
     
     // MARK: - Init
-    public init(user: User,
-                houseToJoin: House,
+    public init(user: NnUser,
+                houseToJoin: NnHouse,
                 alerts: JoinHouseAlerts,
                 remote: Remote,
                 factory: Factory,
@@ -67,13 +67,13 @@ extension JoinHouseManager {
 // MARK: - Private Methods
 private extension JoinHouseManager {
     
-    func makeUpdatedUser() -> User {
+    func makeUpdatedUser() -> NnUser {
         NnUserAndHouseModifier.makeUpdatedUser(user,
                                                houseId: houseToJoin.id)
     }
     
-    func makeUpdatedHouseList() -> [House] {
-        var list = [House]()
+    func makeUpdatedHouseList() -> [NnHouse] {
+        var list = [NnHouse]()
         
         if let oldHouse = currentHouse {
             list.append(removeUserFromHouse(oldHouse))
@@ -84,11 +84,11 @@ private extension JoinHouseManager {
         return list
     }
     
-    func removeUserFromHouse(_ house: House) -> House {
+    func removeUserFromHouse(_ house: NnHouse) -> NnHouse {
         NnUserAndHouseModifier.removeUser(user, from: house)
     }
     
-    func addMemberToHouse(_ house: House) -> House {
+    func addMemberToHouse(_ house: NnHouse) -> NnHouse {
         NnUserAndHouseModifier.addMember(factory.makeMember(), to: house)
     }
 }

@@ -6,11 +6,11 @@
 //
 
 public protocol NnUserAndHouseRemoteAPI {
-    associatedtype User: NnHouseUser
+    associatedtype NnUser: NnHouseUser
     
-    typealias House = User.House
+    typealias NnHouse = NnUser.NnHouse
     
-    func upload(user: User,
-                houses: [House],
+    func upload(user: NnUser,
+                houses: [NnHouse],
                 completion: @escaping (Error?) -> Void)
 }

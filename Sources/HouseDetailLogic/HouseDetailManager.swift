@@ -7,20 +7,20 @@
 
 import NnHousehold
 
-public final class HouseDetailManager<House: NnHouse> {
+public final class HouseDetailManager<NnHouse: NnHousehold> {
     
     // MARK: - Properties
     private let isCreator: Bool
     private let alerts: HouseDetailAlerts
-    private let adapter: MyAdapter<House>
+    private let adapter: MyAdapter<NnHouse>
     
-    private var house: House { adapter.getHouse() }
+    private var house: NnHouse { adapter.getHouse() }
     
     
     // MARK: - Init
     public init(isCreator: Bool,
                 alerts: HouseDetailAlerts,
-                adapter: MyAdapter<House>) {
+                adapter: MyAdapter<NnHouse>) {
         
         self.isCreator = isCreator
         self.alerts = alerts
@@ -91,7 +91,7 @@ private extension HouseDetailManager {
         }
     }
     
-    func makeUpdatedHouse(name: String, password: String) -> House? {
+    func makeUpdatedHouse(name: String, password: String) -> NnHouse? {
 
         var updatedHouse = house
         var didChange = false
@@ -109,7 +109,7 @@ private extension HouseDetailManager {
         return didChange ? updatedHouse : nil
     }
     
-    func uploadHouse(_ updatedHouse: House) {
+    func uploadHouse(_ updatedHouse: NnHouse) {
         let passwordChanged = house.password != updatedHouse.password
 
         adapter.uploadHouse(updatedHouse) { [weak self] error in
@@ -150,15 +150,15 @@ private extension HouseDetailManager {
 
 // MARK: - Dependencies
 public protocol NnHouseCache {
-    associatedtype House: NnHouse
+    associatedtype NnHouse: NnHousehold
 
-    var house: House { get }
+    var house: NnHouse { get }
 }
 
 public protocol NnHouseDetailRemoteAPI: DuplcatesRemoteAPI {
-    associatedtype House: NnHouse
+    associatedtype NnHouse: NnHousehold
     
-    func uploadHouse(_ house: House,
+    func uploadHouse(_ house: NnHouse,
                      completion: @escaping (Error?) -> Void)
 }
 
@@ -171,7 +171,7 @@ public protocol HouseDetailAlerts {
                             completion: @escaping (String, String) -> Void)
 }
 
-public typealias MyAdapter<House: NnHouse> = (
-    getHouse: () -> House,
-    uploadHouse: (House, @escaping (Error?) -> Void) -> Void,
+public typealias MyAdapter<NnHouse: NnHousehold> = (
+    getHouse: () -> NnHouse,
+    uploadHouse: (NnHouse, @escaping (Error?) -> Void) -> Void,
     checkForDuplicates: (String, @escaping (DuplicateError?) -> Void) -> Void)

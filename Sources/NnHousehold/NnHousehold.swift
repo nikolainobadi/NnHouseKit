@@ -1,11 +1,11 @@
 //
-//  NnHouse.swift
+//  NnHousehold.swift
 //  
 //
 //  Created by Nikolai Nobadi on 2/3/22.
 //
 
-public protocol NnHouse {
+public protocol NnHousehold {
     associatedtype Member: NnHouseMember
     
     var id: String { get }

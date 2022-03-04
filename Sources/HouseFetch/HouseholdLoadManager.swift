@@ -7,11 +7,11 @@
 
 import NnHousehold
 
-public final class HouseholdLoadManager<Store: NnHouseStore, Remote: HouseholdLoadRemoteAPI> where Store.House == Remote.House  {
+public final class HouseholdLoadManager<Store: NnHouseStore, Remote: HouseholdLoadRemoteAPI> where Store.NnHouse == Remote.NnHouse  {
     
     // MARK: - Properties
-    public typealias House = Remote.House
-    public typealias Member = House.Member
+    public typealias NnHouse = Remote.NnHouse
+    public typealias Member = NnHouse.Member
     
     private let houseId: String
     private let store: Store
@@ -57,7 +57,7 @@ extension HouseholdLoadManager: NnHouseLoader {
 // MARK: - Private Methods
 private extension HouseholdLoadManager {
     
-    func handleRecievedHouse(_ house: House,
+    func handleRecievedHouse(_ house: NnHouse,
                              _ completion: @escaping (Error?) -> Void) {
         guard
             store.isMember(of: house)
@@ -73,7 +73,7 @@ private extension HouseholdLoadManager {
         }
     }
     
-    func fetchHouseMembers(for house: House,
+    func fetchHouseMembers(for house: NnHouse,
                            completion: @escaping ([Member]?) -> Void) {
         
         let missingIds = getMissingMemberIds(house.members.map({ $0.id }))
@@ -94,7 +94,7 @@ private extension HouseholdLoadManager {
         }
     }
     
-    func saveHouse(_ house: House, members: [Member]) {
+    func saveHouse(_ house: NnHouse, members: [Member]) {
         var updatedHouse = house
         
         updatedHouse.members = getUpdatedMembers(houseMembers: house.members, newList: members)
@@ -136,17 +136,17 @@ private extension HouseholdLoadManager {
 
 // MARK: - Dependencies
 public protocol NnHouseStore {
-    associatedtype House: NnHouse
+    associatedtype NnHouse: NnHousehold
     
-    func isMember(of house: House) -> Bool
-    func setHouse(_ house: House)
+    func isMember(of house: NnHouse) -> Bool
+    func setHouse(_ house: NnHouse)
 }
 
 public protocol HouseholdLoadRemoteAPI {
-    associatedtype House: NnHouse
+    associatedtype NnHouse: NnHousehold
     
     func fetchHouse(_ id: String,
-                    completion: @escaping (Result<House, Error>) -> Void)
+                    completion: @escaping (Result<NnHouse, Error>) -> Void)
     func fetchInfoList(memberIds: [String],
-                       completion: @escaping (Result<[House.Member], Error>) -> Void)
+                       completion: @escaping (Result<[NnHouse.Member], Error>) -> Void)
 }

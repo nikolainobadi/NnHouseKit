@@ -6,11 +6,11 @@
 //
 
 public protocol NnHouseUser {
-    associatedtype House: NnHouse
+    associatedtype NnHouse: NnHousehold
     
     var id: String { get }
     var name: String { get }
     var houseId: String { get set }
-    var currentHouse: House? { get }
+    var currentHouse: NnHouse? { get }
     var createdHouseIds: [String] { get set }
 }

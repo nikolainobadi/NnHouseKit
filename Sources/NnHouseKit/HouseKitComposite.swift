@@ -36,7 +36,7 @@ public extension HouseKitComposite {
         houseId: String,
         store: Store,
         remote: Remote,
-        currentMemberList: [Remote.House.Member]) -> NnHouseLoader where Store.House == Remote.House {
+        currentMemberList: [Remote.NnHouse.Member]) -> NnHouseLoader where Store.NnHouse == Remote.NnHouse {
     
             HouseholdLoadManager(houseId: houseId,
                                  store: store,
@@ -53,12 +53,12 @@ public extension HouseKitComposite {
                                 houseCache: Cache,
                                 cellInfoPublisher: HouseListCellInfoPublisher,
                                 viewConfig: HouseDetailViewConfig,
-                                switchHouse: @escaping () -> Void) -> UIViewController where Remote.House == Cache.House {
+                                switchHouse: @escaping () -> Void) -> UIViewController where Remote.NnHouse == Cache.NnHouse {
         
         let adapter = makeDetailAdapter(remote: remote, cache: houseCache)
         let manager = HouseDetailManager(isCreator: isCreator,
-                                           alerts: alerts,
-                                           adapter: adapter)
+                                         alerts: alerts,
+                                         adapter: adapter)
         let tableVC = makeHouseListTable(
             title: "Household Members",
             publisher: cellInfoPublisher,
@@ -79,7 +79,7 @@ public extension HouseKitComposite {
     // MARK: HouseSelect
     static func makeHouseSelectVC<Remote: HouseSelectRemoteAPI,
                                     Factory: NnHouseFactory>(
-                                        user: Remote.User,
+                                        user: Remote.NnUser,
                                         selectType: HouseholdSelectType,
                                         config: HouseSelectViewConfig,
                                         policy: HouseSelectPolicy,
@@ -88,7 +88,7 @@ public extension HouseKitComposite {
                                         factory: Factory,
                                         joinHouse: @escaping () -> Void,
                                         showDeleteHouse: @escaping () -> Void,
-                                        reloadData: @escaping () -> Void) -> UIViewController where Remote.House == Factory.House {
+                                        reloadData: @escaping () -> Void) -> UIViewController where Remote.NnHouse == Factory.NnHouse {
         let manager = HouseSelectManager(
             user: user,
             policy: policy,
@@ -137,14 +137,14 @@ public extension HouseKitComposite {
     // MARK: JoinHouse
     static func makeJoinHouseVC<Remote: NnUserAndHouseRemoteAPI,
                                 Factory: NnHouseMemberFactory>(
-                                    user: Remote.User,
-                                    houseToJoin: Remote.House,
+                                    user: Remote.NnUser,
+                                    houseToJoin: Remote.NnHouse,
                                     alerts: JoinHouseAlerts,
                                     remote: Remote,
                                     factory: Factory,
                                     config: JoinHouseViewConfig,
                                     viewModelInfo: JoinHouseViewModelInfo,
-                                    finished: @escaping () -> Void) -> UIViewController where Remote.House.Member == Factory.Member {
+                                    finished: @escaping () -> Void) -> UIViewController where Remote.NnHouse.Member == Factory.Member {
 
         let manager = JoinHouseManager(user: user,
                                        houseToJoin: houseToJoin,
@@ -180,7 +180,7 @@ public extension HouseKitComposite {
 // MARK: - Private Methods
 private extension HouseKitComposite {
     
-    static func makeDetailAdapter<Remote: NnHouseDetailRemoteAPI, Cache: NnHouseCache>(remote: Remote, cache: Cache) -> MyAdapter<Remote.House> where Remote.House == Cache.House {
+    static func makeDetailAdapter<Remote: NnHouseDetailRemoteAPI, Cache: NnHouseCache>(remote: Remote, cache: Cache) -> MyAdapter<Remote.NnHouse> where Remote.NnHouse == Cache.NnHouse {
         
         return (
             getHouse: { cache.house },

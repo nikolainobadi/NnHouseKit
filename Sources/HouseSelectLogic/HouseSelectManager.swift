@@ -8,25 +8,25 @@
 import NnHousehold
 import HouseDetailLogic
 
-public final class HouseSelectManager<Remote: HouseSelectRemoteAPI, Factory: NnHouseFactory> where Remote.House == Factory.House {
+public final class HouseSelectManager<Remote: HouseSelectRemoteAPI, Factory: NnHouseFactory> where Remote.NnHouse == Factory.NnHouse {
     
-    public typealias User = Remote.User
+    public typealias NnUser = Remote.NnUser
     
-    typealias House = Remote.House
+    typealias NnHouse = Remote.NnHouse
     
     // MARK: - Properties
-    private let user: User
+    private let user: NnUser
     private let policy: HouseSelectPolicy
     private let alerts: HouseSelectAlerts
     private let remote: Remote
     private let factory: Factory
     private let router: HouseSelectRouter
     
-    private var currentHouse: House? { user.currentHouse }
+    private var currentHouse: NnHouse? { user.currentHouse }
 
     
     // MARK: - Init
-    public init(user: User,
+    public init(user: NnUser,
                 policy: HouseSelectPolicy,
                 alerts: HouseSelectAlerts,
                 remote: Remote,
@@ -85,7 +85,7 @@ private extension HouseSelectManager {
     }
     
     func uploadNewHouse(name: String, password: String) {
-        var houseList = [House]()
+        var houseList = [NnHouse]()
         
         if let oldHouse = currentHouse {
             houseList.append(removeUserFromHouse(oldHouse))
@@ -107,11 +107,11 @@ private extension HouseSelectManager {
         }
     }
     
-    func removeUserFromHouse(_ house: House) -> House {
+    func removeUserFromHouse(_ house: NnHouse) -> NnHouse {
         NnUserAndHouseModifier.removeUser(user, from: house)
     }
     
-    func makeUpdatedUser(_ user: User, houseId: String) -> User {
+    func makeUpdatedUser(_ user: NnUser, houseId: String) -> NnUser {
         NnUserAndHouseModifier.makeUpdatedUser(user,
                                                houseId: houseId,
                                                isCreator: true)
@@ -126,9 +126,9 @@ public typealias HouseSelectRouter = (finished: () -> Void,
 public typealias HouseSelectRemoteAPI = NnUserAndHouseRemoteAPI & DuplcatesRemoteAPI
 
 public protocol NnHouseFactory {
-    associatedtype House: NnHouse
+    associatedtype NnHouse: NnHousehold
     
-    func makeNewHouse(name: String, password: String) -> House
+    func makeNewHouse(name: String, password: String) -> NnHouse
 }
 
 public protocol HouseSelectPolicy {

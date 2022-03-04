@@ -69,7 +69,7 @@ public extension XCTestCase {
         }
     }
     
-    struct TestNnHouse: NnHouse {
+    struct TestNnHouse: NnHousehold {
         public typealias Member = TestNnHouseMember
         
         public var id: String

@@ -11,9 +11,9 @@ public final class NnUserAndHouseModifier {
 
 public extension NnUserAndHouseModifier {
 
-    static func makeUpdatedUser<User>(_ user: User,
+    static func makeUpdatedUser<NnUser>(_ user: NnUser,
                                       houseId: String,
-                                      isCreator: Bool = false) -> User where User: NnHouseUser {
+                                      isCreator: Bool = false) -> NnUser where NnUser: NnHouseUser {
         var updatedUser = user
         
         updatedUser.houseId = houseId
@@ -25,8 +25,8 @@ public extension NnUserAndHouseModifier {
         return updatedUser
     }
     
-    static func removeUser<User>(_ user: User,
-                                 from house: User.House) -> User.House where User: NnHouseUser {
+    static func removeUser<NnUser>(_ user: NnUser,
+                                 from house: NnUser.NnHouse) -> NnUser.NnHouse where NnUser: NnHouseUser {
         var updatedHouse = house
         
         updatedHouse.members = updatedHouse.members.filter { $0.id != user.id }
@@ -34,8 +34,8 @@ public extension NnUserAndHouseModifier {
         return updatedHouse
     }
     
-    static func addMember<House>(_ member: House.Member,
-                                 to house: House) -> House where House: NnHouse {
+    static func addMember<NnHouse>(_ member: NnHouse.Member,
+                                 to house: NnHouse) -> NnHouse where NnHouse: NnHousehold {
         var updatedHouse = house
         
         updatedHouse.members.append(member)
