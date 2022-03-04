@@ -68,8 +68,9 @@ private extension HouseholdLoadManager {
                 return completion(HouseFetchError.fetchError)
             }
 
-            self?.saveHouse(house, members: members)
-            completion(nil)
+            self?.saveHouse(house,
+                            members: members,
+                            completion: completion)
         }
     }
     
@@ -94,12 +95,15 @@ private extension HouseholdLoadManager {
         }
     }
     
-    func saveHouse(_ house: NnHouse, members: [Member]) {
+    func saveHouse(_ house: NnHouse,
+                   members: [Member],
+                   completion: @escaping (Error?) -> Void) {
+        
         var updatedHouse = house
         
         updatedHouse.members = getUpdatedMembers(houseMembers: house.members, newList: members)
         
-        store.setHouse(updatedHouse)
+        store.setHouse(updatedHouse, completion: completion)
     }
     
     func getUpdatedMembers(houseMembers: [Member],
@@ -139,7 +143,8 @@ public protocol NnHouseStore {
     associatedtype NnHouse: NnHousehold
     
     func isMember(of house: NnHouse) -> Bool
-    func setHouse(_ house: NnHouse)
+    func setHouse(_ house: NnHouse,
+                  completion: @escaping (Error?) -> Void)
 }
 
 public protocol HouseholdLoadRemoteAPI {

@@ -46,6 +46,21 @@ final class HouseholdLoadManagerTests: XCTestCase {
             remote.membersComplete(with: .fetchError)
         }
     }
+    
+    func test_loadHouse_fetchSuccess_isMember_memberFetchSuccess_storeError() {
+        
+        let incompleteMembers = makeTestMemberList(withNames: false)
+        let completeMembers = makeTestMemberList(withNames: true)
+        let house = makeTestHouse(members: incompleteMembers)
+        let store = makeStore(isMember: true)
+        let (sut, remote) = makeSUT(store: store)
+
+        expect(sut, toCompleteWithError: .uploadError) {
+            remote.houseComplete(house)
+            remote.membersComplete(completeMembers)
+            store.complete(with: HouseFetchError.uploadError)
+        }
+    }
 
     func test_loadHouse_fetchSuccess_isMember_memberFetchSuccess_houseSet() {
         
@@ -63,6 +78,7 @@ final class HouseholdLoadManagerTests: XCTestCase {
 
         remote.houseComplete(house)
         remote.membersComplete(completeMembers)
+        store.complete(with: nil)
         
         guard let storedHouse = store.house else {
             return XCTFail("house not saved")
@@ -131,10 +147,11 @@ extension HouseholdLoadManagerTests {
     
     class MockHouseholdStore: NnHouseStore {
         
-        typealias House = TestNnHouse
+        typealias NnHouse = TestNnHouse
 
-        var house: House?
+        var house: NnHouse?
         var isMember: Bool
+        private var completion: ((Error?) -> Void)?
         
         init(isMember: Bool) {
             self.isMember = isMember
@@ -144,21 +161,37 @@ extension HouseholdLoadManagerTests {
             isMember
         }
         
-        func setHouse(_ house: TestNnHouse) {
+        func setHouse(_ house: TestNnHouse,
+                      completion: @escaping (Error?) -> Void) {
+            
             self.house = house
+            self.completion = completion
         }
+        
+        func complete(with error: Error?,
+                      file: StaticString = #filePath,
+                      line: UInt = #line) {
+            guard
+                let completion = completion
+            else {
+                return XCTFail("Request never made", file: file, line: line)
+            }
+            
+            completion(error)
+        }
+
     }
 
     class HouseholdLoadRemoteAPISpy: HouseholdLoadRemoteAPI {
         
-        typealias House = TestNnHouse
+        typealias NnHouse = TestNnHouse
 
         var memberIds = [String]()
-        private var houseCompletion: ((Result<House, Error>) -> Void)?
+        private var houseCompletion: ((Result<NnHouse, Error>) -> Void)?
         private var membersCompletion: ((Result<[TestNnHouseMember], Error>) -> Void)?
 
         func fetchHouse(_ id: String,
-                        completion: @escaping (Result<House, Error>) -> Void) {
+                        completion: @escaping (Result<NnHouse, Error>) -> Void) {
 
             self.houseCompletion = completion
         }
@@ -182,7 +215,7 @@ extension HouseholdLoadManagerTests {
             houseCompletion(.failure(error))
         }
 
-        func houseComplete(_ house: House,
+        func houseComplete(_ house: NnHouse,
                            file: StaticString = #filePath,
                            line: UInt = #line) {
             guard

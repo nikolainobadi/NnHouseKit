@@ -8,10 +8,10 @@
 import XCTest
 import NnHousehold
 
-public final class NnUserAndHouseRemoteAPISpy<User: NnHouseUser> {
+public final class NnUserAndHouseRemoteAPISpy<NnUser: NnHouseUser> {
     
-    public var user: User?
-    public var houses: [User.House]?
+    public var user: NnUser?
+    public var houses: [NnUser.NnHouse]?
     
     private var dupeCompletion: ((DuplicateError?) -> Void)?
     private var completion: ((Error?) -> Void)?
@@ -22,8 +22,8 @@ public final class NnUserAndHouseRemoteAPISpy<User: NnHouseUser> {
 
 // MARK: - Remote
 extension NnUserAndHouseRemoteAPISpy: NnUserAndHouseRemoteAPI {
-    public func upload(user: User,
-                       houses: [House],
+    public func upload(user: NnUser,
+                       houses: [NnHouse],
                        completion: @escaping (Error?) -> Void) {
         self.user = user
         self.houses = houses
