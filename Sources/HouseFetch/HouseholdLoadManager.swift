@@ -83,15 +83,18 @@ private extension HouseholdLoadManager {
 
         remote.fetchInfoList(memberIds: missingIds) { result in
             switch result {
-            case .success(let infoList): completion(infoList)
+            case .success(let infoList):
+                completion(infoList)
             case .failure: completion(nil)
             }
         }
     }
     
     func getMissingMemberIds(_ memberIds: [String]) -> [String] {
-        memberIds.filter { id in
-            !(completeMembers.map({ $0.id }).contains(id))
+        let storedMemberIds = completeMembers.map { $0.id }
+        
+        return memberIds.filter { id in
+            !storedMemberIds.contains(id)
         }
     }
     
